@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/style_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120px"
+        android:layout_marginTop="220px"
+        android:text="120,220" />
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/style_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="185px"
+        android:layout_marginTop="480px"
+        android:text="185,480" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/style_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="594px"
+        android:layout_marginTop="384px"
+        android:text="594,384" />
+
+    <TextView
+        android:id="@+id/textView4"
+        style="@style/style_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="773px"
+        android:layout_marginTop="1025px"
+        android:text="773,1025" />
+
+    <TextView
+        android:id="@+id/textView5"
+        style="@style/style_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="408px"
+        android:layout_marginTop="839px"
+        android:text="408,839" />
+
+    <TextView
+        android:id="@+id/textView6"
+        style="@style/style_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="577px"
+        android:layout_marginTop="1228px"
+        android:text="577,1228" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView7"
+            style="@style/style_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="408px"
+            android:layout_marginTop="939px"
+            android:text="408,939" />
+    </FrameLayout>
+
+    <include layout="@layout/layout_test_view" />
+
+    <com.ist.flyframeview.view.FlyFrameView
+        android:id="@+id/fly_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>
