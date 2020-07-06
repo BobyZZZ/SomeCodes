@@ -1,5 +1,6 @@
 package com.ist.flyframeview;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Rect;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     }
 
     private void initView() {
+        hideActionBar();
         mRoot = findViewById(R.id.root);
 
         View textView = findViewById(R.id.textView);
@@ -59,6 +61,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 //        textView5.setOnFocusChangeListener(this);
 //        textView6.setOnFocusChangeListener(this);
 //        textView7.setOnFocusChangeListener(this);
+    }
+
+    private void hideActionBar() {
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.hide();
+        }
     }
 
     @Override

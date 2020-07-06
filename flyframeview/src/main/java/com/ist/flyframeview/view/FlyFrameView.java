@@ -33,6 +33,15 @@ public class FlyFrameView extends View {
         Rect targetRect = getCoorRelativeToRootView(targetView);
         int leftDiff = targetRect.left - currentRect.left;
         int topDiff = targetRect.top - currentRect.top;
+        Log.d(TAG, "moveToTarget leftDiff: " + leftDiff + ",topDiff: " + topDiff);
+
+        if (false) {//这种方式需要考虑标题栏是否存在
+            int[] dxy = testUseCoordinateOnScreen(targetView);
+            leftDiff = dxy[0];
+            topDiff = dxy[1];//如果标题栏存在，需要减去标题栏高度
+            Log.d(TAG, "after moveToTarget leftDiff: " + leftDiff + ",topDiff: " + topDiff);
+        }
+
         //改变大小
         if (getWidth() != targetView.getWidth() || getHeight() != targetView.getHeight()) {
             changeSize(targetView.getWidth(), targetView.getHeight());
@@ -41,6 +50,13 @@ public class FlyFrameView extends View {
         if (leftDiff != 0 || topDiff != 0) {
             changeLocation(leftDiff, topDiff);
         }
+    }
+
+    private int[] testUseCoordinateOnScreen(View targetView) {
+        int[] targetCoordinateOnScreen = getCoordinateOnScreen(targetView);
+//        Log.d(TAG, "testUseCoordinateOnScreen dx: " + (targetCoordinateOnScreen[0] - currentCoordinateOnScreen[0]));
+//        Log.d(TAG, "testUseCoordinateOnScreen dy: " + (targetCoordinateOnScreen[1] - currentCoordinateOnScreen[1]));
+        return targetCoordinateOnScreen;
     }
 
     /**
@@ -83,7 +99,7 @@ public class FlyFrameView extends View {
 
 
     /**
-     * 用于获取目标控件相对（同一个）夫容器的坐标
+     * 用于获取目标控件相对（同一个）父容器的坐标
      *
      * @param target 目标
      * @return
@@ -92,7 +108,20 @@ public class FlyFrameView extends View {
         Rect rect = new Rect();
         mRoot = getParent();
         ((ViewGroup) mRoot).offsetDescendantRectToMyCoords(target, rect);
-        Log.d(TAG, "getCoor: " + rect);
+//        Log.d(TAG, "getCoor: " + rect);
         return rect;
+    }
+
+    /**
+     * 使用view位于屏幕上的坐标，注意标题栏是否存在
+     *
+     * @param target
+     * @return
+     */
+    private int[] getCoordinateOnScreen(View target) {
+        int[] coordinates = new int[2];
+        target.getLocationOnScreen(coordinates);
+//        Log.d(TAG, "getCoordinateOnScreen left: " + coordinates[0] + ",top: " + coordinates[1]);
+        return coordinates;
     }
 }
