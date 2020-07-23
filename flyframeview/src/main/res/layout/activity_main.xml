@@ -83,6 +83,6 @@
 
     <com.ist.flyframeview.view.FlyFrameView
         android:id="@+id/fly_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="1dp"
+        android:layout_height="1dp" />
 </FrameLayout>

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             public void onGlobalFocusChanged(View oldFocus, View newFocus) {
 //                CharSequence oldText = ((TextView) oldFocus).getText();
 //                CharSequence newText = ((TextView) newFocus).getText();
-//                Log.d(TAG, "onGlobalFocusChanged: " + oldText + "--->" + newText);
+//                Log.e(TAG, "onGlobalFocusChanged: " + oldText + "--->" + newText);
                 mFlyFrameView.moveToTarget(newFocus);
             }
         });
@@ -81,6 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         CharSequence text = ((TextView) v).getText();
         Rect rect = new Rect();
         mRoot.offsetDescendantRectToMyCoords(v, rect);
-        Log.d(TAG, "getCoor: " + text + "---" + rect);
+        Log.e(TAG, "getCoor: " + text + "---" + rect);
     }
 }
