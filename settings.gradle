@@ -1,0 +1,3 @@
+include ':fishtoucher'
+include ':flyframeview'
+rootProject.name = "SomeCodes"
