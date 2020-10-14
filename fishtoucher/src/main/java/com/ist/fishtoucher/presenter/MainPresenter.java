@@ -24,7 +24,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
     String TAG = getClass().getSimpleName();
 
     private MainModel mModel;
-    private int mCurrentChapterIndex = 0;//当前阅读第几章
+    private int mCurrentChapterNumber = 0;//当前阅读第几章
     private List<NovelCategory.Chapter> mChapters;
     private Observer<ResponseBody> mChapterObserver;
 
@@ -41,8 +41,8 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
                 try {
                     String bodyStr = responseBody.string();
                     NovelContent novelContent = new NovelContent(bodyStr);
-                    mView.displayContent(novelContent.getBookName() + "\r\n" + novelContent.getContent(),mCurrentChapterIndex);
-                    SPUtils.putInt(SPUtils.KEY_LAST_READ,mCurrentChapterIndex);
+                    mView.displayContent(novelContent.getBookName() + "\r\n" + novelContent.getContent(), mCurrentChapterNumber);
+                    SPUtils.putInt(SPUtils.KEY_LAST_READ, mCurrentChapterNumber);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -110,9 +110,9 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         Log.d(TAG, "read: " + chapterIndex + ",chapterNumber: " + chapterNumber);
         int currentChapterNumber = chapterNumber;
         if (chapterNumber == -1 && (currentChapterNumber = findChapterNumber(chapterIndex)) != -1) {
-            mCurrentChapterIndex = currentChapterNumber;
+            mCurrentChapterNumber = currentChapterNumber;
         } else {
-            mCurrentChapterIndex = currentChapterNumber;
+            mCurrentChapterNumber = currentChapterNumber;
         }
         Observable<ResponseBody> chapterObservable = mModel.getChapter(novelIndex, chapterIndex);
         chapterObservable.compose(RxUtils.<ResponseBody>rxScheduers()).subscribe(mChapterObserver);
@@ -155,7 +155,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         return null;
     }
 
-    public int getCurrentChapterIndex() {
-        return mCurrentChapterIndex;
+    public int getCurrentChapterNumber() {
+        return mCurrentChapterNumber;
     }
 }

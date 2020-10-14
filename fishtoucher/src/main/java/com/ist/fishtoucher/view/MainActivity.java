@@ -4,11 +4,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,8 +22,6 @@ import com.ist.fishtoucher.presenter.MainPresenter;
 import com.ist.fishtoucher.utils.LogUtils;
 import com.ist.fishtoucher.utils.SPUtils;
 import com.ist.fishtoucher.view.adapter.CategoryAdapter;
-
-import java.util.List;
 
 public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener {
     String TAG = "MainActivity";
@@ -55,7 +54,41 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         //左侧菜单
         mRvCategory = findViewById(R.id.rv_category);
 
+        mDrawerLayout.addDrawerListener(getDrawerLayoutListener());
+
         initData();
+    }
+
+    private DrawerLayout.DrawerListener getDrawerLayoutListener() {
+        DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                int currentChapterNumber = getPresenter().getCurrentChapterNumber() - 1;
+                Log.d(TAG, "onDrawerOpened: " + drawerView.getId() + ",currentChapterNumber: " + currentChapterNumber);
+                if (mRvCategory.getAdapter().getItemCount() > currentChapterNumber) {
+//                    mRvCategory.smoothScrollToPosition(currentChapterNumber);
+                    mRvCategory.scrollToPosition(currentChapterNumber);
+                } else {
+                    Log.d(TAG, "cancel scrollToPosition: ");
+                }
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        };
+        return drawerListener;
     }
 
     private void initData() {
@@ -76,7 +109,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         });
         mRvCategory.setAdapter(mCategoryAdapter);
         mRvCategory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        mRvCategory.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+//        mRvCategory.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
     }
 
     @Override
@@ -101,6 +134,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         mDrawerLayout.closeDrawer(GravityCompat.START);
         TextView textView = findViewById(R.id.tv_test);
         textView.setText(content);
+        scrollToTop();
     }
 
 
@@ -116,7 +150,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 }
                 break;
             case R.id.tv_next:
-                getPresenter().read(mNovel, getPresenter().getCurrentChapterIndex() + 1);
+                getPresenter().read(mNovel, getPresenter().getCurrentChapterNumber() + 1);
                 break;
         }
     }
@@ -125,5 +159,10 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: ");
+    }
+
+    private void scrollToTop() {
+        ScrollView scrollView = findViewById(R.id.sv_content);
+        scrollView.scrollTo(0,0);
     }
 }

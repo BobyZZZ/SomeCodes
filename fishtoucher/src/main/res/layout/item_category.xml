@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="12dp"
+    android:paddingHorizontal="8dp"
+    android:background="@drawable/selector_item_bg_category"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical">
 
