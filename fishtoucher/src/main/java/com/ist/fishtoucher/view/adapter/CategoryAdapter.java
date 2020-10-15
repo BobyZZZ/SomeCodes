@@ -6,24 +6,30 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ist.fishtoucher.R;
 import com.ist.fishtoucher.entity.NovelCategory;
+import com.ist.fishtoucher.presenter.MainPresenter;
 
 import org.jetbrains.annotations.NotNull;
 
 
-public class CategoryAdapter extends BaseQuickAdapter<NovelCategory.Chapter,BaseViewHolder> {
+public class CategoryAdapter extends BaseQuickAdapter<NovelCategory.Chapter, BaseViewHolder> {
 
-    public CategoryAdapter(int layoutResId) {
+    private final MainPresenter mPresenter;
+
+    public CategoryAdapter(int layoutResId, MainPresenter presenter) {
         super(layoutResId);
+        this.mPresenter = presenter;
     }
 
     @Override
     protected void convert(@NotNull final BaseViewHolder viewHolder, final NovelCategory.Chapter chapter) {
-        viewHolder.setText(R.id.tv_chapter_name,chapter.getName());
+        viewHolder.itemView.setSelected(mPresenter != null
+                && mPresenter.getCurrentChapterNumber() - 1 == viewHolder.getAdapterPosition() ? true : false);
+        viewHolder.setText(R.id.tv_chapter_name, chapter.getName());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnChapterClickListener != null) {
-                    mOnChapterClickListener.onclick(chapter,viewHolder.getAdapterPosition());
+                    mOnChapterClickListener.onclick(chapter, viewHolder.getAdapterPosition());
                 }
             }
         });
@@ -42,6 +48,6 @@ public class CategoryAdapter extends BaseQuickAdapter<NovelCategory.Chapter,Base
     }
 
     public interface OnChapterClickListener {
-        void onclick(NovelCategory.Chapter chapter,int chapterNumber);
+        void onclick(NovelCategory.Chapter chapter, int chapterNumber);
     }
 }

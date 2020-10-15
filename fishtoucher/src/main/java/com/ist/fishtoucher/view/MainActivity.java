@@ -21,6 +21,7 @@ import com.ist.fishtoucher.iApiService.NovelService;
 import com.ist.fishtoucher.presenter.MainPresenter;
 import com.ist.fishtoucher.utils.LogUtils;
 import com.ist.fishtoucher.utils.SPUtils;
+import com.ist.fishtoucher.utils.SoftInputUtils;
 import com.ist.fishtoucher.view.adapter.CategoryAdapter;
 
 public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener {
@@ -72,7 +73,8 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 Log.d(TAG, "onDrawerOpened: " + drawerView.getId() + ",currentChapterNumber: " + currentChapterNumber);
                 if (mRvCategory.getAdapter().getItemCount() > currentChapterNumber) {
 //                    mRvCategory.smoothScrollToPosition(currentChapterNumber);
-                    mRvCategory.scrollToPosition(currentChapterNumber);
+//                    mRvCategory.scrollToPosition(currentChapterNumber);只滚动到显示出来，不置顶
+                    ((LinearLayoutManager)mRvCategory.getLayoutManager()).scrollToPositionWithOffset(currentChapterNumber,0);
                 } else {
                     Log.d(TAG, "cancel scrollToPosition: ");
                 }
@@ -100,7 +102,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     private void initRV() {
         //左侧菜单-目录
-        mCategoryAdapter = new CategoryAdapter(R.layout.item_category);
+        mCategoryAdapter = new CategoryAdapter(R.layout.item_category,getPresenter());
         mCategoryAdapter.setOnChapterClickListener(new CategoryAdapter.OnChapterClickListener() {
             @Override
             public void onclick(NovelCategory.Chapter chapter, int chapterNumber) {
@@ -114,6 +116,11 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     @Override
     public void onError(Throwable throwable) {
+    }
+
+    @Override
+    public void loading() {
+        hideSoftInput();
     }
 
     @Override
@@ -164,5 +171,9 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     private void scrollToTop() {
         ScrollView scrollView = findViewById(R.id.sv_content);
         scrollView.scrollTo(0,0);
+    }
+
+    private void hideSoftInput() {
+        SoftInputUtils.hideSoftInput(this);
     }
 }

@@ -97,6 +97,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
     @Override
     public void read(String novelIndex, final int chapterNumber) {
 //        Observable<ResponseBody> chapterObservable = mModel.getChapter(novelIndex, getChapterUrl(novelIndex, chapterIndex));
+        mView.loading();
         read(novelIndex,getChapterIndexFromCategory(chapterNumber), chapterNumber);
     }
 

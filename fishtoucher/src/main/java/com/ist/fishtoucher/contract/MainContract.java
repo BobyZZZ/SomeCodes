@@ -12,6 +12,10 @@ public interface MainContract {
     }
 
     interface IMainView {
+        /**
+         * 开始加载
+         */
+        void loading();
         void updateCategory(NovelCategory novelCategory);
         void displayContent(String content,int chapterIndex);
     }
