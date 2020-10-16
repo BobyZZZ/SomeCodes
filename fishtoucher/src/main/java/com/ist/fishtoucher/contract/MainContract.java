@@ -1,6 +1,7 @@
 package com.ist.fishtoucher.contract;
 
 import com.ist.fishtoucher.entity.NovelCategory;
+import com.ist.fishtoucher.entity.NovelChapterInfo;
 
 import io.reactivex.Observable;
 
@@ -17,7 +18,7 @@ public interface MainContract {
          */
         void loading();
         void updateCategory(NovelCategory novelCategory);
-        void displayContent(String content,int chapterIndex);
+        void displayContent(NovelChapterInfo content, int chapterIndex);
     }
 
     interface IMainPresenter {
@@ -40,5 +41,10 @@ public interface MainContract {
          * @param novelIndex 哪本小说
          */
         void getCategory(String novelIndex);
+
+        /**
+         * 加载下一章
+         */
+        void loadMore();
     }
 }

@@ -9,4 +9,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!--小说标题-->
+    <style name="TvNovelTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tv_novel_title_color</item>
+        <item name="android:textSize">@dimen/tv_novel_title_size</item>
+    </style>
 </resources>

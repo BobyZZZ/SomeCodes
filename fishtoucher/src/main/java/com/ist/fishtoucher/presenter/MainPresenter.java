@@ -5,9 +5,10 @@ import android.util.Log;
 import com.ist.fishtoucher.base.BasePresenter;
 import com.ist.fishtoucher.contract.MainContract;
 import com.ist.fishtoucher.entity.NovelCategory;
-import com.ist.fishtoucher.entity.NovelContent;
+import com.ist.fishtoucher.entity.NovelChapterInfo;
 import com.ist.fishtoucher.iApiService.NovelService;
 import com.ist.fishtoucher.model.MainModel;
+import com.ist.fishtoucher.utils.LogUtils;
 import com.ist.fishtoucher.utils.RxUtils;
 import com.ist.fishtoucher.utils.SPUtils;
 import com.ist.fishtoucher.view.MainActivity;
@@ -24,13 +25,16 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
     String TAG = getClass().getSimpleName();
 
     private MainModel mModel;
+    private String mNovelID;
     private int mCurrentChapterNumber = 0;//当前阅读第几章
     private List<NovelCategory.Chapter> mChapters;
-    private Observer<ResponseBody> mChapterObserver;
+    private Observer<ResponseBody> mNovelContentObserver;
 
-    public MainPresenter() {
+    public MainPresenter(String novelID) {
+        this.mNovelID = novelID;
+        LogUtils.d(TAG, "MainPresenter mNovelID: " + mNovelID);
         mModel = new MainModel();
-        mChapterObserver = new Observer<ResponseBody>() {
+        mNovelContentObserver = new Observer<ResponseBody>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -40,8 +44,11 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
             public void onNext(ResponseBody responseBody) {
                 try {
                     String bodyStr = responseBody.string();
-                    NovelContent novelContent = new NovelContent(bodyStr);
-                    mView.displayContent(novelContent.getBookName() + "\r\n" + novelContent.getContent(), mCurrentChapterNumber);
+                    NovelChapterInfo novelChapterInfo = new NovelChapterInfo(bodyStr);
+//                    mView.displayContent(novelChapterInfo.getBookName() + "\r\n" + novelChapterInfo.getContent(), mCurrentChapterNumber);
+                    //当前章节
+                    mCurrentChapterNumber = novelChapterInfo.getChapterNumber();
+                    mView.displayContent(novelChapterInfo, mCurrentChapterNumber);
                     SPUtils.putInt(SPUtils.KEY_LAST_READ, mCurrentChapterNumber);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -98,32 +105,37 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
     public void read(String novelIndex, final int chapterNumber) {
 //        Observable<ResponseBody> chapterObservable = mModel.getChapter(novelIndex, getChapterUrl(novelIndex, chapterIndex));
         mView.loading();
-        read(novelIndex,getChapterIndexFromCategory(chapterNumber), chapterNumber);
+        read(novelIndex, getChapterIndexFromCategory(chapterNumber), chapterNumber);
     }
 
     /**
-     *
-     * @param novelIndex 哪本小说
+     * @param novelIndex    哪本小说
      * @param chapterIndex  该章节的href
      * @param chapterNumber 第几章，不确定时传-1；
      */
-    public void read(String novelIndex, String chapterIndex,int chapterNumber) {
-        Log.d(TAG, "read: " + chapterIndex + ",chapterNumber: " + chapterNumber);
-        int currentChapterNumber = chapterNumber;
-        if (chapterNumber == -1 && (currentChapterNumber = findChapterNumber(chapterIndex)) != -1) {
+    public void read(String novelIndex, String chapterIndex, int chapterNumber) {
+        LogUtils.d(TAG, "read: " + chapterIndex + ",chapterNumber: " + chapterNumber);
+/*        int currentChapterNumber = chapterNumber;
+        if(chapterNumber == -1 && (currentChapterNumber = findChapterNumber(chapterIndex)) != -1) {
             mCurrentChapterNumber = currentChapterNumber;
         } else {
             mCurrentChapterNumber = currentChapterNumber;
-        }
+        }*/
         Observable<ResponseBody> chapterObservable = mModel.getChapter(novelIndex, chapterIndex);
-        chapterObservable.compose(RxUtils.<ResponseBody>rxScheduers()).subscribe(mChapterObserver);
+        chapterObservable.compose(RxUtils.<ResponseBody>rxScheduers()).subscribe(mNovelContentObserver);
+    }
+
+    @Override
+    public void loadMore() {
+        LogUtils.d(TAG, "auto loadMore chapter: " + (getCurrentChapterNumber() + 1) + "章");
+        read(mNovelID, getCurrentChapterNumber() + 1);
     }
 
     private int findChapterNumber(String chapterIndex) {
         if (mChapters != null && !mChapters.isEmpty()) {
             for (int i = 0; i < mChapters.size(); i++) {
                 if (mChapters.get(i).getUrl().equals(chapterIndex)) {
-                    return i+1;
+                    return i + 1;
                 }
             }
         }
@@ -146,6 +158,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
 
     /**
      * 先获取目录，然后从目录中获取准确的地址进行访问
+     *
      * @param chapter
      * @return
      */

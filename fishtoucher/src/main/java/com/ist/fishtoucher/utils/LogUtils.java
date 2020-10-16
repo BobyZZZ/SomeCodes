@@ -2,80 +2,47 @@ package com.ist.fishtoucher.utils;
 
 import android.util.Log;
 
-/**
- * 打印日志的工具类
- *
- * @author donkor
- */
 public class LogUtils {
-    //规定每段显示的长度
-    private static int LOG_MAXLENGTH = 70;
+    private static final int LEVEL_VERBOSE = 4;
+    private static final int LEVEL_DEBUG = 3;
+    private static final int LEVEL_INFO = 2;
+    private static final int LEVEL_WARN = 1;
+    private static final int LEVEL_ERROR = 0;
+
+    private static final int LOG_LEVEL = LEVEL_VERBOSE;
+    private static final boolean DEBUG = true;
+
+    public static void v(String TAG, String msg) {
+        if (LOG_LEVEL >= LEVEL_VERBOSE && isDebug()) {
+            Log.v(TAG, msg);
+        }
+    }
 
     public static void d(String TAG, String msg) {
-        int strLength = msg.length();
-        int start = 0;
-        int end = LOG_MAXLENGTH;
-        for (int i = 0; i < 100; i++) {
-            //剩下的文本还是大于规定长度则继续重复截取并输出
-            if (strLength > end) {
-                Log.d(TAG + i, msg.substring(start, end));
-                start = end;
-                end = end + LOG_MAXLENGTH;
-            } else {
-                Log.d(TAG, msg.substring(start, strLength));
-                break;
-            }
+        if (LOG_LEVEL >= LEVEL_DEBUG && isDebug()) {
+            Log.d(TAG, msg);
         }
     }
 
     public static void i(String TAG, String msg) {
-        int strLength = msg.length();
-        int start = 0;
-        int end = LOG_MAXLENGTH;
-        for (int i = 0; i < 100; i++) {
-            //剩下的文本还是大于规定长度则继续重复截取并输出
-            if (strLength > end) {
-                Log.i(TAG + i, msg.substring(start, end));
-                start = end;
-                end = end + LOG_MAXLENGTH;
-            } else {
-                Log.i(TAG, msg.substring(start, strLength));
-                break;
-            }
+        if (LOG_LEVEL >= LEVEL_INFO && isDebug()) {
+            Log.i(TAG, msg);
         }
     }
 
     public static void w(String TAG, String msg) {
-        int strLength = msg.length();
-        int start = 0;
-        int end = LOG_MAXLENGTH;
-        for (int i = 0; i < 100; i++) {
-            //剩下的文本还是大于规定长度则继续重复截取并输出
-            if (strLength > end) {
-                Log.w(TAG + i, msg.substring(start, end));
-                start = end;
-                end = end + LOG_MAXLENGTH;
-            } else {
-                Log.w(TAG, msg.substring(start, strLength));
-                break;
-            }
+        if (LOG_LEVEL >= LEVEL_WARN && isDebug()) {
+            Log.w(TAG, msg);
         }
     }
 
     public static void e(String TAG, String msg) {
-        int strLength = msg.length();
-        int start = 0;
-        int end = LOG_MAXLENGTH;
-        for (int i = 0; i < 100; i++) {
-            //剩下的文本还是大于规定长度则继续重复截取并输出
-            if (strLength > end) {
-                Log.e(TAG + i, msg.substring(start, end));
-                start = end;
-                end = end + LOG_MAXLENGTH;
-            } else {
-                Log.e(TAG, msg.substring(start, strLength));
-                break;
-            }
+        if (LOG_LEVEL >= LEVEL_ERROR && isDebug()) {
+            Log.e(TAG, msg);
         }
+    }
+
+    private static boolean isDebug() {
+        return DEBUG;
     }
 }
