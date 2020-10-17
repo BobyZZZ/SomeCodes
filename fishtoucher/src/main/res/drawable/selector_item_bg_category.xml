@@ -5,4 +5,9 @@
             <solid android:color="@color/colorAccent" />
         </shape>
     </item>
+    <item android:state_selected="true">
+        <shape>
+            <solid android:color="@color/colorAccent_light" />
+        </shape>
+    </item>
 </selector>

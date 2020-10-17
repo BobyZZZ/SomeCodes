@@ -9,6 +9,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+<!--        <ScrollView
+            android:id="@+id/sv_content"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+
+            <TextView
+                android:id="@+id/tv_test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello World!" />
+        </ScrollView>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_novel_content"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -57,18 +74,6 @@
                     android:textSize="18sp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ScrollView
-            android:id="@+id/sv_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_test"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Hello World!" />
-        </ScrollView>
     </LinearLayout>
 
     <!--左侧菜单-->

@@ -4,8 +4,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
@@ -13,25 +11,32 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.module.BaseLoadMoreModule;
 import com.ist.fishtoucher.R;
 import com.ist.fishtoucher.base.BaseMvpActivity;
 import com.ist.fishtoucher.contract.MainContract;
 import com.ist.fishtoucher.entity.NovelCategory;
+import com.ist.fishtoucher.entity.NovelChapterInfo;
 import com.ist.fishtoucher.iApiService.NovelService;
 import com.ist.fishtoucher.presenter.MainPresenter;
 import com.ist.fishtoucher.utils.LogUtils;
+import com.ist.fishtoucher.utils.LongLogUtils;
 import com.ist.fishtoucher.utils.SPUtils;
+import com.ist.fishtoucher.utils.SoftInputUtils;
 import com.ist.fishtoucher.view.adapter.CategoryAdapter;
+import com.ist.fishtoucher.view.adapter.NovelContentAdapter;
 
 public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener {
     String TAG = "MainActivity";
-    private String mNovel = NovelService.DIYI_XULIE_NOVEL_INDEX;
+    private final String KEY_NOVELID = "novelID";
+    private String mNovelID = NovelService.DIYI_XULIE_NOVEL_INDEX;
 
     private EditText mEditText;
     private boolean firstInit = true;
     private DrawerLayout mDrawerLayout;
-    private RecyclerView mRvCategory;
+    private RecyclerView mRvCategory, mRvNovelContent;
     private CategoryAdapter mCategoryAdapter;
+    private NovelContentAdapter mNovelContentAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -40,7 +45,10 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     @Override
     protected MainPresenter createPresenter() {
-        return new MainPresenter();
+        if (getIntent().hasExtra(KEY_NOVELID)) {
+            mNovelID = getIntent().getStringExtra("novelID");
+        }
+        return new MainPresenter(mNovelID);
     }
 
     @Override
@@ -53,6 +61,8 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         mDrawerLayout = findViewById(R.id.drawerlayout);
         //左侧菜单
         mRvCategory = findViewById(R.id.rv_category);
+        //小说内容recyclerView
+        mRvNovelContent = findViewById(R.id.rv_novel_content);
 
         mDrawerLayout.addDrawerListener(getDrawerLayoutListener());
 
@@ -69,12 +79,13 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
                 int currentChapterNumber = getPresenter().getCurrentChapterNumber() - 1;
-                Log.d(TAG, "onDrawerOpened: " + drawerView.getId() + ",currentChapterNumber: " + currentChapterNumber);
+                LogUtils.d(TAG, "onDrawerOpened: " + drawerView.getId() + ",currentChapterNumber: " + currentChapterNumber);
                 if (mRvCategory.getAdapter().getItemCount() > currentChapterNumber) {
 //                    mRvCategory.smoothScrollToPosition(currentChapterNumber);
-                    mRvCategory.scrollToPosition(currentChapterNumber);
+//                    mRvCategory.scrollToPosition(currentChapterNumber);只滚动到显示出来，不置顶
+                    ((LinearLayoutManager) mRvCategory.getLayoutManager()).scrollToPositionWithOffset(currentChapterNumber, 0);
                 } else {
-                    Log.d(TAG, "cancel scrollToPosition: ");
+                    LogUtils.d(TAG, "cancel scrollToPosition: ");
                 }
             }
 
@@ -93,27 +104,43 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     private void initData() {
         mEditText.setText(SPUtils.getInt(SPUtils.KEY_LAST_READ, 1) + "");
-        getPresenter().getCategory(mNovel);
+        getPresenter().getCategory(mNovelID);
 
         initRV();
     }
 
     private void initRV() {
         //左侧菜单-目录
-        mCategoryAdapter = new CategoryAdapter(R.layout.item_category);
+        mCategoryAdapter = new CategoryAdapter(R.layout.item_category, getPresenter());
         mCategoryAdapter.setOnChapterClickListener(new CategoryAdapter.OnChapterClickListener() {
             @Override
             public void onclick(NovelCategory.Chapter chapter, int chapterNumber) {
-                getPresenter().read(mNovel, chapter.getUrl(), chapterNumber + 1);
+                getPresenter().read(mNovelID, chapter.getUrl(), chapterNumber + 1);
             }
         });
         mRvCategory.setAdapter(mCategoryAdapter);
         mRvCategory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 //        mRvCategory.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+
+        //小说内容
+        mNovelContentAdapter = new NovelContentAdapter(R.layout.item_novel_content,getPresenter());
+        mRvNovelContent.setAdapter(mNovelContentAdapter);
+        mRvNovelContent.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mNovelContentAdapter.initAutoLoadMoreEvent();
     }
 
     @Override
     public void onError(Throwable throwable) {
+        BaseLoadMoreModule loadMoreModule = mNovelContentAdapter.getLoadMoreModule();
+        if (loadMoreModule.isLoading()) {
+            LogUtils.d(TAG, "onError: loadMoreFail");
+            loadMoreModule.loadMoreFail();
+        }
+    }
+
+    @Override
+    public void loading() {
+//        hideSoftInput();
     }
 
     @Override
@@ -122,19 +149,25 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         Log.e(TAG, "updateCategory: " + novelCategory);
         if (firstInit) {//首次打开时自动打开上次观看章节
             firstInit = false;
-            getPresenter().read(mNovel, SPUtils.getInt(SPUtils.KEY_LAST_READ, 1));
+            getPresenter().read(mNovelID, SPUtils.getInt(SPUtils.KEY_LAST_READ, 1));
         }
 
     }
 
     @Override
-    public void displayContent(String content, int chapterNumber) {
-        LogUtils.w(TAG, "displayContent: " + content);
+    public void displayContent(NovelChapterInfo novelChapterInfo, int chapterNumber) {
+        LongLogUtils.w(TAG, "displayContent: " + novelChapterInfo);
         mEditText.setText(chapterNumber + "");
         mDrawerLayout.closeDrawer(GravityCompat.START);
-        TextView textView = findViewById(R.id.tv_test);
-        textView.setText(content);
-        scrollToTop();
+
+//        TextView textView = findViewById(R.id.tv_test);
+//        textView.setText(novelChapterInfo);
+//        scrollToTop();
+        mNovelContentAdapter.addData(novelChapterInfo);
+        if (mNovelContentAdapter.getLoadMoreModule().isLoading()) {
+            LogUtils.d(TAG, "load more complete: " + chapterNumber);
+            mNovelContentAdapter.getLoadMoreModule().loadMoreComplete();
+        }
     }
 
 
@@ -145,12 +178,12 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 String text = mEditText.getText().toString().trim();
                 if (!TextUtils.isEmpty(text)) {
                     int chapter = Integer.parseInt(text);
-                    Log.d(TAG, "onClick chapter: " + chapter + "---novel: " + mNovel);
-                    getPresenter().read(mNovel, chapter);
+                    LogUtils.d(TAG, "onClick chapter: " + chapter + "---novel: " + mNovelID);
+                    getPresenter().read(mNovelID, chapter);
                 }
                 break;
             case R.id.tv_next:
-                getPresenter().read(mNovel, getPresenter().getCurrentChapterNumber() + 1);
+                getPresenter().read(mNovelID, getPresenter().getCurrentChapterNumber() + 1);
                 break;
         }
     }
@@ -162,7 +195,11 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     }
 
     private void scrollToTop() {
-        ScrollView scrollView = findViewById(R.id.sv_content);
-        scrollView.scrollTo(0,0);
+//        ScrollView scrollView = findViewById(R.id.sv_content);
+//        scrollView.scrollTo(0,0);
+    }
+
+    private void hideSoftInput() {
+        SoftInputUtils.hideSoftInput(this);
     }
 }

@@ -44,7 +44,7 @@ public class NovelCategory {
                 boolean matches = chapterName.matches(regex);
                 boolean find = pattern.matcher(chapterName).find();
                 boolean match = pattern.matcher(chapterName).matches();
-//                Log.d(TAG, "filterUselessInfo next: " + next + ",matches: " + matches + ",find: " + find + ",match: " + match);
+//                LogUtils.d(TAG, "filterUselessInfo next: " + next + ",matches: " + matches + ",find: " + find + ",match: " + match);
                 if (!find) {
                     iterator.remove();
                     mHrefs.remove(i);
