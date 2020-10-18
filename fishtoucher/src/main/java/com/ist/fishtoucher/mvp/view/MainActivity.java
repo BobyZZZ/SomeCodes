@@ -1,9 +1,11 @@
 package com.ist.fishtoucher.mvp.view;
 
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
@@ -25,6 +27,8 @@ import com.ist.fishtoucher.utils.SPUtils;
 import com.ist.fishtoucher.utils.SoftInputUtils;
 import com.ist.fishtoucher.adapter.CategoryAdapter;
 import com.ist.fishtoucher.adapter.NovelContentAdapter;
+
+import java.util.ArrayList;
 
 public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener {
     String TAG = "MainActivity";
@@ -57,9 +61,8 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         findViewById(R.id.tv_confirm).setOnClickListener(this);
         findViewById(R.id.tv_next).setOnClickListener(this);
         mEditText = findViewById(R.id.et_which_chapter);
-
-        mDrawerLayout = findViewById(R.id.drawerlayout);
         //左侧菜单
+        mDrawerLayout = findViewById(R.id.drawerlayout);
         mRvCategory = findViewById(R.id.rv_category);
         //小说内容recyclerView
         mRvNovelContent = findViewById(R.id.rv_novel_content);
@@ -78,7 +81,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
-                int currentChapterNumber = getPresenter().getCurrentChapterNumber() - 1;
+                int currentChapterNumber = getPresenter().getCurrentReading() - 1;
                 LogUtils.d(TAG, "onDrawerOpened: " + drawerView.getId() + ",currentChapterNumber: " + currentChapterNumber);
                 if (mRvCategory.getAdapter().getItemCount() > currentChapterNumber) {
 //                    mRvCategory.smoothScrollToPosition(currentChapterNumber);
@@ -115,7 +118,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         mCategoryAdapter.setOnChapterClickListener(new CategoryAdapter.OnChapterClickListener() {
             @Override
             public void onclick(NovelCategory.Chapter chapter, int chapterNumber) {
-                getPresenter().read(mNovelID, chapter.getUrl(), chapterNumber + 1);
+                getPresenter().read(mNovelID, chapter.getUrl(), true);
             }
         });
         mRvCategory.setAdapter(mCategoryAdapter);
@@ -123,10 +126,56 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 //        mRvCategory.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
 
         //小说内容
-        mNovelContentAdapter = new NovelContentAdapter(R.layout.item_novel_content,getPresenter());
+        mNovelContentAdapter = new NovelContentAdapter(R.layout.item_novel_content, getPresenter());
         mRvNovelContent.setAdapter(mNovelContentAdapter);
-        mRvNovelContent.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        final LinearLayoutManager novelContentLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mRvNovelContent.setLayoutManager(novelContentLayoutManager);
         mNovelContentAdapter.initAutoLoadMoreEvent();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mRvNovelContent.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                private int lastReadingItemPosition = -1;
+
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    int readingItemPosition = -1;
+                    if (oldScrollY >= 0) {
+                        //手指向下滑动
+                        readingItemPosition = novelContentLayoutManager.findFirstVisibleItemPosition();
+                    } else {
+                        //手指向上滑动
+                        readingItemPosition = novelContentLayoutManager.findLastVisibleItemPosition();
+                    }
+//                    LogUtils.d(TAG, "onScrollChange this---new: " + this.lastReadingItemPosition + "," + readingItemPosition);
+                    if (this.lastReadingItemPosition != readingItemPosition) {
+                        RecyclerView.ViewHolder readingItemViewHolder = mRvNovelContent.findViewHolderForLayoutPosition(readingItemPosition);
+                        if (readingItemViewHolder != null) {
+                            int top = readingItemViewHolder.itemView.getTop();
+                            if (top <= 0) {
+                                LogUtils.d(TAG, "onScrollChange readingItemPosition: " + mNovelContentAdapter.getItem(readingItemPosition).getChapterName() + ",top: " + top);
+                                onCurrentReadingChapterChange(mNovelContentAdapter.getItem(readingItemPosition).getChapterNumber(),
+                                        mNovelContentAdapter.getItem(readingItemPosition).getChapterName());
+                                this.lastReadingItemPosition = readingItemPosition;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 当前阅读章节变化
+     *
+     * @param currentReadingChapter 第几章
+     * @param chapterName 章节名字
+     */
+    private void onCurrentReadingChapterChange(int currentReadingChapter,String chapterName) {
+        //currentReadingChapter change!!
+
+        getPresenter().setCurrentReading(currentReadingChapter);
+
+        TextView tvReading = findViewById(R.id.tv_current_reading_chapter);
+        tvReading.setText(chapterName);
     }
 
     @Override
@@ -155,15 +204,26 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     }
 
     @Override
-    public void displayContent(NovelChapterInfo novelChapterInfo, int chapterNumber) {
-        LongLogUtils.w(TAG, "displayContent: " + novelChapterInfo);
+    public void loadContentSuccessAndToDisplay(NovelChapterInfo novelChapterInfo, int chapterNumber, boolean resetData) {
+//        LongLogUtils.w(TAG, "displayContent: " + novelChapterInfo + ",resetData: " + resetData);
         mEditText.setText(chapterNumber + "");
         mDrawerLayout.closeDrawer(GravityCompat.START);
 
 //        TextView textView = findViewById(R.id.tv_test);
 //        textView.setText(novelChapterInfo);
-//        scrollToTop();
-        mNovelContentAdapter.addData(novelChapterInfo);
+        if (resetData) {
+            //设置新数据,场景：左侧菜单目录中选择某一章
+            ArrayList<NovelChapterInfo> newData = new ArrayList();
+            newData.add(novelChapterInfo);
+            mNovelContentAdapter.setNewInstance(newData);
+            //重新加载数据后，手动调用一次方法，确保滑动到顶部
+            ((LinearLayoutManager) mRvNovelContent.getLayoutManager()).scrollToPositionWithOffset(0, 0);
+            onCurrentReadingChapterChange(novelChapterInfo.getChapterNumber(),novelChapterInfo.getChapterName());
+        } else {
+            //添加到底部，适用场景：自动加载下一页
+            mNovelContentAdapter.addData(novelChapterInfo);
+        }
+
         if (mNovelContentAdapter.getLoadMoreModule().isLoading()) {
             LogUtils.d(TAG, "load more complete: " + chapterNumber);
             mNovelContentAdapter.getLoadMoreModule().loadMoreComplete();
@@ -183,7 +243,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 }
                 break;
             case R.id.tv_next:
-                getPresenter().read(mNovelID, getPresenter().getCurrentChapterNumber() + 1);
+                getPresenter().read(mNovelID, getPresenter().getCurrentReading() + 1, true);
                 break;
         }
     }
@@ -192,11 +252,6 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: ");
-    }
-
-    private void scrollToTop() {
-//        ScrollView scrollView = findViewById(R.id.sv_content);
-//        scrollView.scrollTo(0,0);
     }
 
     private void hideSoftInput() {

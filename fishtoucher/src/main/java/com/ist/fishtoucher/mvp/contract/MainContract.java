@@ -18,23 +18,23 @@ public interface MainContract {
          */
         void loading();
         void updateCategory(NovelCategory novelCategory);
-        void displayContent(NovelChapterInfo content, int chapterIndex);
+        void loadContentSuccessAndToDisplay(NovelChapterInfo content, int chapterIndex, boolean resetData);
     }
 
     interface IMainPresenter {
         /**
          * 通过确定的href阅读
-         * @param novelIndex 哪本小说
-         * @param chapterIndex  该章节的href
-         * @param chapterNumber 第几章，不确定时传-1；
+         * @param novelID 哪本小说
+         * @param chapterID  该章节的href
+         * @param resetData  是否需要重新设置数据
          */
-        void read(String novelIndex, String chapterIndex,int chapterNumber);
-        /**
+        void read(String novelID, String chapterID, boolean resetData);
+/*        *//**
          * 通过章节数阅读
-         * @param novelIndex 哪本小说
+         * @param novelID 哪本小说
          * @param chapterNumber  第几章
-         */
-        void read(String novelIndex, int chapterNumber);
+         *//*
+        void read(String novelID, int chapterNumber);*/
 
         /**
          * 获取目录

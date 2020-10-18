@@ -26,7 +26,6 @@ public class NovelContentAdapter extends BaseQuickAdapter<NovelChapterInfo, Base
     public NovelContentAdapter(int layoutResId, MainPresenter presenter) {
         super(layoutResId);
         this.mPresenter = presenter;
-
     }
 
     public NovelContentAdapter(int layoutResId, List<NovelChapterInfo> data, MainPresenter presenter) {
@@ -37,9 +36,9 @@ public class NovelContentAdapter extends BaseQuickAdapter<NovelChapterInfo, Base
     @Override
     protected void convert(@NotNull final BaseViewHolder viewHolder, final NovelChapterInfo novelChapterInfo) {
         String text = novelChapterInfo.getContent();
-        LogUtils.d(TAG, "convert getBookName: " + novelChapterInfo.getBookName());
+        LogUtils.d(TAG, "convert getBookName: " + novelChapterInfo.getChapterName());
         LogUtils.d(TAG, "convert getChapterNumber: " + novelChapterInfo.getChapterNumber());
-        viewHolder.setText(R.id.tv_novel_title,novelChapterInfo.getBookName());
+        viewHolder.setText(R.id.tv_novel_title,novelChapterInfo.getChapterName());
         viewHolder.setText(R.id.tv_novel_content, text);
     }
 

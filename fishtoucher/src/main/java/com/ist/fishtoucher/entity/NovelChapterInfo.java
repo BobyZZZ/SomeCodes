@@ -1,15 +1,9 @@
 package com.ist.fishtoucher.entity;
 
 import android.text.TextUtils;
-import android.util.Log;
-
-import com.ist.fishtoucher.utils.LogUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 小说内容实体类
@@ -17,16 +11,16 @@ import java.util.regex.Pattern;
 public class NovelChapterInfo {
     String TAG = "NovelChapterInfo";
     private int chapterNumber;
-    private String bookName;
+    private String chapterName;
     private String content;
 
     public NovelChapterInfo(String body) {
         Document doc = Jsoup.parse(body);
         content = doc.getElementById("content").text();
-        bookName = doc.getElementsByClass("bookname").text();
+        chapterName = doc.getElementsByClass("bookname").text();
 
         //get chapterNumber
-        char[] chars = bookName.toCharArray();
+        char[] chars = chapterName.toCharArray();
         String result = "";
         for (char c : chars) {
             if (Character.isDigit(c)) {
@@ -41,12 +35,12 @@ public class NovelChapterInfo {
 //        LogUtils.d(TAG, this.toString());
     }
 
-    public String getBookName() {
-        return bookName;
+    public String getChapterName() {
+        return chapterName;
     }
 
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
+    public void setChapterName(String chapterName) {
+        this.chapterName = chapterName;
     }
 
     public String getContent() {
@@ -70,7 +64,7 @@ public class NovelChapterInfo {
         return "NovelChapterInfo{" +
                 "TAG='" + TAG + '\'' +
                 ", chapterNumber=" + chapterNumber +
-                ", bookName='" + bookName + '\'' +
+                ", bookName='" + chapterName + '\'' +
                 ", content='" + content + '\'' +
                 '}';
     }

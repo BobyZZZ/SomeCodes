@@ -23,13 +23,13 @@ public class CategoryAdapter extends BaseQuickAdapter<NovelCategory.Chapter, Bas
     @Override
     protected void convert(@NotNull final BaseViewHolder viewHolder, final NovelCategory.Chapter chapter) {
         viewHolder.itemView.setSelected(mPresenter != null
-                && mPresenter.getCurrentChapterNumber() - 1 == viewHolder.getAdapterPosition() ? true : false);
+                && mPresenter.getCurrentReading() - 1 == viewHolder.getAdapterPosition() ? true : false);
         viewHolder.setText(R.id.tv_chapter_name, chapter.getName());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnChapterClickListener != null) {
-                    mOnChapterClickListener.onclick(chapter, viewHolder.getAdapterPosition());
+                    mOnChapterClickListener.onclick(chapter, viewHolder.getAdapterPosition() + 1);
                 }
             }
         });

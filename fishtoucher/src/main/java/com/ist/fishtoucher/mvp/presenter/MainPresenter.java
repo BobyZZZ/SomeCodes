@@ -26,7 +26,8 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
 
     private MainModel mModel;
     private String mNovelID;
-    private int mCurrentChapterNumber = 0;//当前阅读第几章
+    private int mChapterNumberLoaded = 0;//当前以缓存到第几章
+    private int mCurrentReading = 0;//当前正在阅读的章节
     private List<NovelCategory.Chapter> mChapters;
     private Observer<ResponseBody> mNovelContentObserver;
 
@@ -45,11 +46,9 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
                 try {
                     String bodyStr = responseBody.string();
                     NovelChapterInfo novelChapterInfo = new NovelChapterInfo(bodyStr);
-//                    mView.displayContent(novelChapterInfo.getBookName() + "\r\n" + novelChapterInfo.getContent(), mCurrentChapterNumber);
-                    //当前章节
-                    mCurrentChapterNumber = novelChapterInfo.getChapterNumber();
-                    mView.displayContent(novelChapterInfo, mCurrentChapterNumber);
-                    SPUtils.putInt(SPUtils.KEY_LAST_READ, mCurrentChapterNumber);
+                    //已缓存章节
+                    mChapterNumberLoaded = novelChapterInfo.getChapterNumber();
+                    mView.loadContentSuccessAndToDisplay(novelChapterInfo, novelChapterInfo.getChapterNumber(), false);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -101,34 +100,69 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         });
     }
 
-    @Override
-    public void read(String novelIndex, final int chapterNumber) {
-//        Observable<ResponseBody> chapterObservable = mModel.getChapter(novelIndex, getChapterUrl(novelIndex, chapterIndex));
-        mView.loading();
-        read(novelIndex, getChapterIndexFromCategory(chapterNumber), chapterNumber);
+    public void read(String novelID, final int chapterNumber,boolean resetData) {
+        read(novelID, getChapterIndexFromCategory(chapterNumber),resetData);
+    }
+
+    public void read(String novelID, final int chapterNumber) {
+        read(novelID, getChapterIndexFromCategory(chapterNumber), false);
     }
 
     /**
-     * @param novelIndex    哪本小说
-     * @param chapterIndex  该章节的href
-     * @param chapterNumber 第几章，不确定时传-1；
+     * @param novelID    哪本小说
+     * @param chapterID  该章节的href
      */
-    public void read(String novelIndex, String chapterIndex, int chapterNumber) {
-        LogUtils.d(TAG, "read: " + chapterIndex + ",chapterNumber: " + chapterNumber);
-/*        int currentChapterNumber = chapterNumber;
-        if(chapterNumber == -1 && (currentChapterNumber = findChapterNumber(chapterIndex)) != -1) {
-            mCurrentChapterNumber = currentChapterNumber;
-        } else {
-            mCurrentChapterNumber = currentChapterNumber;
-        }*/
-        Observable<ResponseBody> chapterObservable = mModel.getChapter(novelIndex, chapterIndex);
-        chapterObservable.compose(RxUtils.<ResponseBody>rxScheduers()).subscribe(mNovelContentObserver);
+    public void read(String novelID, String chapterID) {
+        read(novelID,chapterID,false);
+    }
+
+    /**
+     * @param novelID    哪本小说
+     * @param chapterID  该章节的href
+     * @param resetData  是否需要重新设置数据
+     */
+    public void read(final String novelID, final String chapterID, final boolean resetData) {
+        mView.loading();
+        LogUtils.d(TAG, "read: " + chapterID);
+
+        Observer<ResponseBody> observer = new Observer<ResponseBody>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                try {
+                    String bodyStr = responseBody.string();
+                    NovelChapterInfo novelChapterInfo = new NovelChapterInfo(bodyStr);
+                    //已缓存章节
+                    mChapterNumberLoaded = novelChapterInfo.getChapterNumber();
+                    mView.loadContentSuccessAndToDisplay(novelChapterInfo, novelChapterInfo.getChapterNumber(),resetData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "read onError: " + e.getMessage());
+                mView.onError(e);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+        Observable<ResponseBody> chapterObservable = mModel.getChapter(novelID, chapterID);
+        chapterObservable.compose(RxUtils.<ResponseBody>rxScheduers()).subscribe(observer);
     }
 
     @Override
     public void loadMore() {
-        LogUtils.d(TAG, "auto loadMore chapter: " + (getCurrentChapterNumber() + 1) + "章");
-        read(mNovelID, getCurrentChapterNumber() + 1);
+        LogUtils.d(TAG, "auto loadMore chapter: " + (getChapterNumberHaveLoaded() + 1) + "章");
+        read(mNovelID, getChapterNumberHaveLoaded() + 1);
     }
 
     private int findChapterNumber(String chapterIndex) {
@@ -169,7 +203,16 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         return null;
     }
 
-    public int getCurrentChapterNumber() {
-        return mCurrentChapterNumber;
+    public int getChapterNumberHaveLoaded() {
+        return mChapterNumberLoaded;
+    }
+
+    public int getCurrentReading() {
+        return mCurrentReading;
+    }
+
+    public void setCurrentReading(int currentReading) {
+        this.mCurrentReading = currentReading;
+        SPUtils.putInt(SPUtils.KEY_LAST_READ, currentReading);
     }
 }
