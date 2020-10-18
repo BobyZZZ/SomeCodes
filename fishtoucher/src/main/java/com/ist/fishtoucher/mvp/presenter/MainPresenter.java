@@ -1,17 +1,17 @@
-package com.ist.fishtoucher.presenter;
+package com.ist.fishtoucher.mvp.presenter;
 
 import android.util.Log;
 
 import com.ist.fishtoucher.base.BasePresenter;
-import com.ist.fishtoucher.contract.MainContract;
+import com.ist.fishtoucher.mvp.contract.MainContract;
 import com.ist.fishtoucher.entity.NovelCategory;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
 import com.ist.fishtoucher.iApiService.NovelService;
-import com.ist.fishtoucher.model.MainModel;
+import com.ist.fishtoucher.mvp.modle.MainModel;
 import com.ist.fishtoucher.utils.LogUtils;
 import com.ist.fishtoucher.utils.RxUtils;
 import com.ist.fishtoucher.utils.SPUtils;
-import com.ist.fishtoucher.view.MainActivity;
+import com.ist.fishtoucher.mvp.view.MainActivity;
 
 import java.io.IOException;
 import java.util.List;

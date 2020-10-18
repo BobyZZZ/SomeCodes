@@ -1,4 +1,4 @@
-package com.ist.fishtoucher.view;
+package com.ist.fishtoucher.mvp.view;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,17 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.module.BaseLoadMoreModule;
 import com.ist.fishtoucher.R;
 import com.ist.fishtoucher.base.BaseMvpActivity;
-import com.ist.fishtoucher.contract.MainContract;
+import com.ist.fishtoucher.mvp.contract.MainContract;
 import com.ist.fishtoucher.entity.NovelCategory;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
 import com.ist.fishtoucher.iApiService.NovelService;
-import com.ist.fishtoucher.presenter.MainPresenter;
+import com.ist.fishtoucher.mvp.presenter.MainPresenter;
 import com.ist.fishtoucher.utils.LogUtils;
 import com.ist.fishtoucher.utils.LongLogUtils;
 import com.ist.fishtoucher.utils.SPUtils;
 import com.ist.fishtoucher.utils.SoftInputUtils;
-import com.ist.fishtoucher.view.adapter.CategoryAdapter;
-import com.ist.fishtoucher.view.adapter.NovelContentAdapter;
+import com.ist.fishtoucher.adapter.CategoryAdapter;
+import com.ist.fishtoucher.adapter.NovelContentAdapter;
 
 public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener {
     String TAG = "MainActivity";

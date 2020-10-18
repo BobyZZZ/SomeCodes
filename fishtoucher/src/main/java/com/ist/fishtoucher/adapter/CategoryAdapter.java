@@ -1,4 +1,4 @@
-package com.ist.fishtoucher.view.adapter;
+package com.ist.fishtoucher.adapter;
 
 import android.view.View;
 
@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ist.fishtoucher.R;
 import com.ist.fishtoucher.entity.NovelCategory;
-import com.ist.fishtoucher.presenter.MainPresenter;
+import com.ist.fishtoucher.mvp.presenter.MainPresenter;
 
 import org.jetbrains.annotations.NotNull;
 

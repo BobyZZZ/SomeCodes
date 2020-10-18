@@ -1,7 +1,7 @@
-package com.ist.fishtoucher.model;
+package com.ist.fishtoucher.mvp.modle;
 
 
-import com.ist.fishtoucher.contract.MainContract;
+import com.ist.fishtoucher.mvp.contract.MainContract;
 import com.ist.fishtoucher.iApiService.NovelService;
 import com.ist.fishtoucher.utils.RetrofitManager;
 

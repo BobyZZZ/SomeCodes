@@ -1,6 +1,5 @@
-package com.ist.fishtoucher.view.adapter;
+package com.ist.fishtoucher.adapter;
 
-import android.util.Log;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -11,7 +10,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ist.fishtoucher.R;
 import com.ist.fishtoucher.entity.NovelCategory;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
-import com.ist.fishtoucher.presenter.MainPresenter;
+import com.ist.fishtoucher.mvp.presenter.MainPresenter;
 import com.ist.fishtoucher.utils.LogUtils;
 
 import org.jetbrains.annotations.NotNull;

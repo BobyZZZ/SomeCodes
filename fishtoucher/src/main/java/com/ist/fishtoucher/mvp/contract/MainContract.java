@@ -1,4 +1,4 @@
-package com.ist.fishtoucher.contract;
+package com.ist.fishtoucher.mvp.contract;
 
 import com.ist.fishtoucher.entity.NovelCategory;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
