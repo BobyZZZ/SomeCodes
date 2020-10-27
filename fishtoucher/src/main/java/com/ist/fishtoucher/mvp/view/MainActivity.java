@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.module.BaseLoadMoreModule;
 import com.ist.fishtoucher.R;
 import com.ist.fishtoucher.base.BaseMvpActivity;
+import com.ist.fishtoucher.constant.GlobalConstant;
 import com.ist.fishtoucher.mvp.contract.MainContract;
 import com.ist.fishtoucher.entity.NovelCategory;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
@@ -33,7 +34,8 @@ import java.util.ArrayList;
 public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener {
     String TAG = "MainActivity";
     private final String KEY_NOVELID = "novelID";
-    private String mNovelID = NovelService.DIYI_XULIE_NOVEL_INDEX;
+    private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
+//    private String mNovelID = NovelService.DIYI_XULIE_NOVEL_INDEX;
 
     private EditText mEditText;
     private boolean firstInit = true;
@@ -205,28 +207,31 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     @Override
     public void loadContentSuccessAndToDisplay(NovelChapterInfo novelChapterInfo, int chapterNumber, boolean resetData) {
-//        LongLogUtils.w(TAG, "displayContent: " + novelChapterInfo + ",resetData: " + resetData);
-        mEditText.setText(chapterNumber + "");
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+        closeCategoryMenu();
+        if (GlobalConstant.isFishMode()) {
+        LongLogUtils.w(TAG, "displayContent: " + novelChapterInfo + ",resetData: " + resetData);
+        } else {
+            mEditText.setText(chapterNumber + "");
 
 //        TextView textView = findViewById(R.id.tv_test);
 //        textView.setText(novelChapterInfo);
-        if (resetData) {
-            //设置新数据,场景：左侧菜单目录中选择某一章
-            ArrayList<NovelChapterInfo> newData = new ArrayList();
-            newData.add(novelChapterInfo);
-            mNovelContentAdapter.setNewInstance(newData);
-            //重新加载数据后，手动调用一次方法，确保滑动到顶部
-            ((LinearLayoutManager) mRvNovelContent.getLayoutManager()).scrollToPositionWithOffset(0, 0);
-            onCurrentReadingChapterChange(novelChapterInfo.getChapterNumber(),novelChapterInfo.getChapterName());
-        } else {
-            //添加到底部，适用场景：自动加载下一页
-            mNovelContentAdapter.addData(novelChapterInfo);
-        }
+            if (resetData) {
+                //设置新数据,场景：左侧菜单目录中选择某一章
+                ArrayList<NovelChapterInfo> newData = new ArrayList();
+                newData.add(novelChapterInfo);
+                mNovelContentAdapter.setNewInstance(newData);
+                //重新加载数据后，手动调用一次方法，确保滑动到顶部
+                ((LinearLayoutManager) mRvNovelContent.getLayoutManager()).scrollToPositionWithOffset(0, 0);
+                onCurrentReadingChapterChange(novelChapterInfo.getChapterNumber(), novelChapterInfo.getChapterName());
+            } else {
+                //添加到底部，适用场景：自动加载下一页
+                mNovelContentAdapter.addData(novelChapterInfo);
+            }
 
-        if (mNovelContentAdapter.getLoadMoreModule().isLoading()) {
-            LogUtils.d(TAG, "load more complete: " + chapterNumber);
-            mNovelContentAdapter.getLoadMoreModule().loadMoreComplete();
+            if (mNovelContentAdapter.getLoadMoreModule().isLoading()) {
+                LogUtils.d(TAG, "load more complete: " + chapterNumber);
+                mNovelContentAdapter.getLoadMoreModule().loadMoreComplete();
+            }
         }
     }
 
@@ -254,7 +259,24 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         Log.d(TAG, "onDestroy: ");
     }
 
+    @Override
+    public void onBackPressed() {
+        if (ifCategoryMenuShowing()) {
+            closeCategoryMenu();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void hideSoftInput() {
         SoftInputUtils.hideSoftInput(this);
+    }
+
+    private boolean ifCategoryMenuShowing() {
+        return mDrawerLayout.isDrawerOpen(GravityCompat.START);
+    }
+
+    private void closeCategoryMenu() {
+        mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 }

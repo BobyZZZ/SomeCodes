@@ -3,6 +3,8 @@ package com.ist.fishtoucher.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.ist.fishtoucher.constant.GlobalConstant;
+
 public class FishApplication extends Application {
 
     public static Context mContext;
@@ -11,5 +13,11 @@ public class FishApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+
+        initConfig();
+    }
+
+    private void initConfig() {
+        GlobalConstant.setFishMode(true);
     }
 }

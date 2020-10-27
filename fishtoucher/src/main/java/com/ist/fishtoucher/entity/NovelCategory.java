@@ -34,10 +34,13 @@ public class NovelCategory {
 
     private void filterUselessInfo() {
         if (mHrefs != null && mTitles != null && !mTitles.isEmpty() && mHrefs.size() == mTitles.size()) {
+            List<String> titles = new ArrayList<String>(mTitles);
+            List<String> hrefs = new ArrayList<String>(mHrefs);
+
             String regex = "\\d+\\W[\\u4e00-\\u9fa5]*";//44、只准吃两口
             Pattern pattern = Pattern.compile(regex);
 
-            Iterator<String> iterator = mTitles.iterator();
+            Iterator<String> iterator = titles.iterator();
             int i = 0;
             while (iterator.hasNext()) {
                 String chapterName = iterator.next();
@@ -47,12 +50,20 @@ public class NovelCategory {
 //                LogUtils.d(TAG, "filterUselessInfo next: " + next + ",matches: " + matches + ",find: " + find + ",match: " + match);
                 if (!find) {
                     iterator.remove();
-                    mHrefs.remove(i);
+                    hrefs.remove(i);
                 } else {
-                    mChapters.add(new Chapter(chapterName, mHrefs.get(i++)));
+                    mChapters.add(new Chapter(chapterName, hrefs.get(i++)));
                 }
             }
-            Log.e(TAG, "filterUselessInfo after filter,the remain length is: " + mHrefs.size());
+            Log.e(TAG, "filterUselessInfo after filter,the remain length is: " + mChapters.size());
+            if (mChapters.isEmpty()) {
+                //如果过滤后没有数据，则使用过滤前的数据去填充
+                int maxLength = Math.min(mTitles.size(),mTitles.size());
+                for (int j = 0; j < maxLength; j++) {
+                    mChapters.add(new Chapter(mTitles.get(j),mHrefs.get(j)));
+                }
+                Log.d(TAG, "filterUselessInfo without filter: " + mChapters);
+            }
         }
     }
 
