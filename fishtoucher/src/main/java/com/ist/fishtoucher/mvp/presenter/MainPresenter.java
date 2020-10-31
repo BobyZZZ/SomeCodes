@@ -29,42 +29,11 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
     private int mChapterNumberLoaded = 0;//当前以缓存到第几章
     private int mCurrentReading = 0;//当前正在阅读的章节
     private List<NovelCategory.Chapter> mChapters;
-    private Observer<ResponseBody> mNovelContentObserver;
 
     public MainPresenter(String novelID) {
         this.mNovelID = novelID;
         LogUtils.d(TAG, "MainPresenter mNovelID: " + mNovelID);
         mModel = new MainModel();
-        mNovelContentObserver = new Observer<ResponseBody>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(ResponseBody responseBody) {
-                try {
-                    String bodyStr = responseBody.string();
-                    NovelChapterInfo novelChapterInfo = new NovelChapterInfo(bodyStr);
-                    //已缓存章节
-                    mChapterNumberLoaded = novelChapterInfo.getChapterNumber();
-                    mView.loadContentSuccessAndToDisplay(novelChapterInfo, novelChapterInfo.getChapterNumber(), false);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "read onError: " + e.getMessage());
-                mView.onError(e);
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
     }
 
     @Override
@@ -100,8 +69,8 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         });
     }
 
-    public void read(String novelID, final int chapterNumber,boolean resetData) {
-        read(novelID, getChapterIndexFromCategory(chapterNumber),resetData);
+    public void read(String novelID, final int chapterNumber, boolean resetData) {
+        read(novelID, getChapterIndexFromCategory(chapterNumber), resetData);
     }
 
     public void read(String novelID, final int chapterNumber) {
@@ -109,17 +78,17 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
     }
 
     /**
-     * @param novelID    哪本小说
-     * @param chapterID  该章节的href
+     * @param novelID   哪本小说
+     * @param chapterID 该章节的href
      */
     public void read(String novelID, String chapterID) {
-        read(novelID,chapterID,false);
+        read(novelID, chapterID, false);
     }
 
     /**
-     * @param novelID    哪本小说
-     * @param chapterID  该章节的href
-     * @param resetData  是否需要重新设置数据
+     * @param novelID   哪本小说
+     * @param chapterID 该章节的href
+     * @param resetData 是否需要重新设置数据
      */
     public void read(final String novelID, final String chapterID, final boolean resetData) {
         mView.loading();
@@ -138,7 +107,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
                     NovelChapterInfo novelChapterInfo = new NovelChapterInfo(bodyStr);
                     //已缓存章节
                     mChapterNumberLoaded = novelChapterInfo.getChapterNumber();
-                    mView.loadContentSuccessAndToDisplay(novelChapterInfo, novelChapterInfo.getChapterNumber(),resetData);
+                    mView.loadContentSuccessAndToDisplay(novelChapterInfo, novelChapterInfo.getChapterNumber(), resetData);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -197,7 +166,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
      * @return
      */
     private String getChapterIndexFromCategory(int chapter) {
-        if (mChapters != null && !mChapters.isEmpty()) {
+        if (mChapters != null && !mChapters.isEmpty() && chapter > 0 && chapter < mChapters.size()) {
             return mChapters.get(chapter - 1).getUrl();
         }
         return null;

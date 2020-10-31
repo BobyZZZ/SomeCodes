@@ -4,20 +4,28 @@ import android.text.TextUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  * 小说内容实体类
  */
 public class NovelChapterInfo {
     String TAG = "NovelChapterInfo";
-    private int chapterNumber;
+    private int chapterNumber = 1;
     private String chapterName;
     private String content;
 
     public NovelChapterInfo(String body) {
         Document doc = Jsoup.parse(body);
         content = doc.getElementById("content").text();
-        chapterName = doc.getElementsByClass("bookname").text();
+
+        //解析获取章节名
+        Element booknameBody = Jsoup.parseBodyFragment(doc.getElementsByClass("bookname").html()).body();
+        Elements h1Tags = booknameBody.getElementsByTag("h1");
+        if (h1Tags.size() > 0) {
+            chapterName = h1Tags.get(0).text();
+        }
 
         //get chapterNumber
         char[] chars = chapterName.toCharArray();

@@ -2,6 +2,8 @@ package com.ist.fishtoucher.entity;
 
 import android.util.Log;
 
+import com.ist.fishtoucher.utils.LogUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -62,7 +64,7 @@ public class NovelCategory {
                 for (int j = 0; j < maxLength; j++) {
                     mChapters.add(new Chapter(mTitles.get(j),mHrefs.get(j)));
                 }
-                Log.d(TAG, "filterUselessInfo without filter: " + mChapters);
+                LogUtils.d(TAG, "filterUselessInfo without filter,size is: " + mChapters.size());
             }
         }
     }

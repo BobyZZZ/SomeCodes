@@ -11,6 +11,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -19,18 +20,25 @@ public class RetrofitManager {
     private Retrofit mRetrofit;
 
     private RetrofitManager() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()./*addNetworkInterceptor(new Interceptor() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                LogUtils.v("loggingInterceptor",message);
+            }
+        });
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()/*.addNetworkInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
-                Log.e("LogInterceptor", "request:" + request);
-                Log.e("LogInterceptor", "System.nanoTime():" + System.nanoTime());
+                LogUtils.v("LogInterceptor", "request:" + request);
+                LogUtils.v("LogInterceptor", "System.nanoTime():" + System.nanoTime());
                 Response response = chain.proceed(request);
-                Log.e("LogInterceptor", "request:" + request);
-                Log.e("LogInterceptor", "System.nanoTime():" + System.nanoTime());
+                LogUtils.v("LogInterceptor", "request:" + request);
+                LogUtils.v("LogInterceptor", "System.nanoTime():" + System.nanoTime());
                 return response;
             }
-        }).*/connectTimeout(15, TimeUnit.SECONDS)
+        })*/.addNetworkInterceptor(loggingInterceptor).connectTimeout(15, TimeUnit.SECONDS)
                 .build();
         mRetrofit = new Retrofit.Builder()
                 .client(okHttpClient)
