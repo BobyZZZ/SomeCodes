@@ -22,6 +22,7 @@ import com.ist.fishtoucher.entity.NovelCategory;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
 import com.ist.fishtoucher.iApiService.NovelService;
 import com.ist.fishtoucher.mvp.presenter.MainPresenter;
+import com.ist.fishtoucher.test.DrawerTest;
 import com.ist.fishtoucher.utils.LogUtils;
 import com.ist.fishtoucher.utils.LongLogUtils;
 import com.ist.fishtoucher.utils.SPUtils;
@@ -278,5 +279,10 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     private void closeCategoryMenu() {
         mDrawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    @Override
+    protected void test() {
+        new DrawerTest().test(this);
     }
 }
