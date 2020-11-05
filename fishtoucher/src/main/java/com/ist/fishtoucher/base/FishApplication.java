@@ -18,6 +18,6 @@ public class FishApplication extends Application {
     }
 
     private void initConfig() {
-        GlobalConstant.setFishMode(true);
+        GlobalConstant.setFishMode(false);
     }
 }

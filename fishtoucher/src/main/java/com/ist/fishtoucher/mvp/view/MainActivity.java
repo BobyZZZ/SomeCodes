@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.module.BaseLoadMoreModule;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ist.fishtoucher.R;
 import com.ist.fishtoucher.base.BaseMvpActivity;
 import com.ist.fishtoucher.constant.GlobalConstant;
@@ -25,14 +26,16 @@ import com.ist.fishtoucher.mvp.presenter.MainPresenter;
 import com.ist.fishtoucher.test.DrawerTest;
 import com.ist.fishtoucher.utils.LogUtils;
 import com.ist.fishtoucher.utils.LongLogUtils;
+import com.ist.fishtoucher.utils.RecyclerViewUtils;
 import com.ist.fishtoucher.utils.SPUtils;
 import com.ist.fishtoucher.utils.SoftInputUtils;
 import com.ist.fishtoucher.adapter.CategoryAdapter;
 import com.ist.fishtoucher.adapter.NovelContentAdapter;
+import com.ist.fishtoucher.view.BScrollerControl;
 
 import java.util.ArrayList;
 
-public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener {
+public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener, BScrollerControl.OnScrollChange {
     String TAG = "MainActivity";
     private final String KEY_NOVELID = "novelID";
     private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
@@ -44,6 +47,8 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     private RecyclerView mRvCategory, mRvNovelContent;
     private CategoryAdapter mCategoryAdapter;
     private NovelContentAdapter mNovelContentAdapter;
+    private BScrollerControl mScrollerControl;
+    private LinearLayoutManager mLayoutManagerCategory;
 
     @Override
     protected int getLayoutId() {
@@ -67,7 +72,11 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         //左侧菜单
         mDrawerLayout = findViewById(R.id.drawerlayout);
         mRvCategory = findViewById(R.id.rv_category);
-        //小说内容recyclerView
+        mScrollerControl = findViewById(R.id.bsc_scroller);
+        //通过监听菜单滚动条来同步滚动菜单
+        mScrollerControl.setOnScrollChange(this);
+
+        //内容recyclerView
         mRvNovelContent = findViewById(R.id.rv_novel_content);
 
         mDrawerLayout.addDrawerListener(getDrawerLayoutListener());
@@ -84,6 +93,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
                 int currentChapterNumber = getPresenter().getCurrentReading() - 1;
                 LogUtils.d(TAG, "onDrawerOpened: " + drawerView.getId() + ",currentChapterNumber: " + currentChapterNumber);
                 if (mRvCategory.getAdapter().getItemCount() > currentChapterNumber) {
@@ -97,7 +107,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
 
             @Override
@@ -125,8 +135,22 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
             }
         });
         mRvCategory.setAdapter(mCategoryAdapter);
-        mRvCategory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mLayoutManagerCategory = new LinearLayoutManager(getApplicationContext());
+        mRvCategory.setLayoutManager(mLayoutManagerCategory);
 //        mRvCategory.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+        /**
+         * 通过监听菜单的滚动同步滚动条的位置
+         */
+        mRvCategory.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                int countInScreen = RecyclerViewUtils.calculateItemCountInScreen(mRvCategory);
+                LogUtils.i(TAG,"onScrolled: " + dy + "---countInScreen: " + countInScreen);
+                int firstVisibleItemPosition = mLayoutManagerCategory.findFirstVisibleItemPosition();
+                float fraction = firstVisibleItemPosition * 1f / (mCategoryAdapter.getItemCount() - countInScreen);
+                mScrollerControl.setFraction(fraction);
+            }
+        });
 
         //小说内容
         mNovelContentAdapter = new NovelContentAdapter(R.layout.item_novel_content, getPresenter());
@@ -134,36 +158,36 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         final LinearLayoutManager novelContentLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRvNovelContent.setLayoutManager(novelContentLayoutManager);
         mNovelContentAdapter.initAutoLoadMoreEvent();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mRvNovelContent.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                private int lastReadingItemPosition = -1;
-
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    int readingItemPosition = -1;
-                    if (oldScrollY >= 0) {
-                        //手指向下滑动
-                        readingItemPosition = novelContentLayoutManager.findFirstVisibleItemPosition();
-                    } else {
-                        //手指向上滑动
-                        readingItemPosition = novelContentLayoutManager.findLastVisibleItemPosition();
-                    }
+        /**
+         * 内容页面滚动，用于更新"当前正在阅读"
+         */
+        mRvNovelContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            private int lastReadingItemPosition = -1;
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                int readingItemPosition = -1;
+                if (dy <= 0) {
+                    //手指向下滑动
+                    readingItemPosition = novelContentLayoutManager.findFirstVisibleItemPosition();
+                } else {
+                    //手指向上滑动
+                    readingItemPosition = novelContentLayoutManager.findLastVisibleItemPosition();
+                }
 //                    LogUtils.d(TAG, "onScrollChange this---new: " + this.lastReadingItemPosition + "," + readingItemPosition);
-                    if (this.lastReadingItemPosition != readingItemPosition) {
-                        RecyclerView.ViewHolder readingItemViewHolder = mRvNovelContent.findViewHolderForLayoutPosition(readingItemPosition);
-                        if (readingItemViewHolder != null) {
-                            int top = readingItemViewHolder.itemView.getTop();
-                            if (top <= 0) {
-                                LogUtils.d(TAG, "onScrollChange readingItemPosition: " + mNovelContentAdapter.getItem(readingItemPosition).getChapterName() + ",top: " + top);
-                                onCurrentReadingChapterChange(mNovelContentAdapter.getItem(readingItemPosition).getChapterNumber(),
-                                        mNovelContentAdapter.getItem(readingItemPosition).getChapterName());
-                                this.lastReadingItemPosition = readingItemPosition;
-                            }
+                if (this.lastReadingItemPosition != readingItemPosition) {
+                    RecyclerView.ViewHolder readingItemViewHolder = mRvNovelContent.findViewHolderForLayoutPosition(readingItemPosition);
+                    if (readingItemViewHolder != null) {
+                        int top = readingItemViewHolder.itemView.getTop();
+                        if (top <= 0) {
+                            LogUtils.d(TAG, "onScrollChange readingItemPosition: " + mNovelContentAdapter.getItem(readingItemPosition).getChapterName() + ",top: " + top);
+                            onCurrentReadingChapterChange(mNovelContentAdapter.getItem(readingItemPosition).getChapterNumber(),
+                                    mNovelContentAdapter.getItem(readingItemPosition).getChapterName());
+                            this.lastReadingItemPosition = readingItemPosition;
                         }
                     }
                 }
-            });
-        }
+            }
+        });
     }
 
     /**
@@ -283,6 +307,14 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     @Override
     protected void test() {
-        new DrawerTest().test(this);
+//        new DrawerTest().test(this);
+    }
+
+    @Override
+    public void onScrollBarScroll(float scrollY, float fraction) {
+        //目录滚动条
+        int itemCountInScreen = RecyclerViewUtils.calculateItemCountInScreen(mRvCategory);
+        int position = (int) (fraction * (mCategoryAdapter.getItemCount() - itemCountInScreen));
+        mLayoutManagerCategory.scrollToPositionWithOffset(position, 0);
     }
 }
