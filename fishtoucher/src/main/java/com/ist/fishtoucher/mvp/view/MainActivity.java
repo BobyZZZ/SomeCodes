@@ -308,6 +308,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     @Override
     protected void test() {
 //        new DrawerTest().test(this);
+//        getPresenter().mytest2();
     }
 
     @Override

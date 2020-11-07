@@ -2,13 +2,12 @@ package com.ist.fishtoucher.mvp.contract;
 
 import com.ist.fishtoucher.entity.NovelCategory;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
-
-import io.reactivex.Observable;
+import com.ist.fishtoucher.mvp.callback.BaseCallback;
 
 public interface MainContract {
     interface IMainModel {
-        Observable getChapter(String novelIndex, String chapterIndex);
-        Observable getCategory(String novelIndex);
+        void getChapter(String novelIndex, String chapterIndex,BaseCallback baseCallback);
+        void getCategory(String novelIndex, BaseCallback baseCallback);
 
     }
 

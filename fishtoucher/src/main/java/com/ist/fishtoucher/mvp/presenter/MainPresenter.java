@@ -1,8 +1,7 @@
 package com.ist.fishtoucher.mvp.presenter;
 
-import android.util.Log;
-
 import com.ist.fishtoucher.base.BasePresenter;
+import com.ist.fishtoucher.mvp.callback.BaseCallback;
 import com.ist.fishtoucher.mvp.contract.MainContract;
 import com.ist.fishtoucher.entity.NovelCategory;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
@@ -38,33 +37,17 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
 
     @Override
     public void getCategory(String novelIndex) {
-        Observable<ResponseBody> category = mModel.getCategory(novelIndex);
-        category.compose(RxUtils.<ResponseBody>rxScheduers()).subscribe(new Observer<ResponseBody>() {
+        mModel.getCategory(novelIndex, new BaseCallback() {
             @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(ResponseBody responseBody) {
-                try {
-                    String body = responseBody.string();
-                    NovelCategory novelCategory = new NovelCategory(body);
-                    mChapters = novelCategory.getChapters();
-                    mView.updateCategory(novelCategory);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            public <T> void onSuccess(T data) {
+                NovelCategory novelCategory = (NovelCategory) data;
+                mChapters = novelCategory.getChapters();
+                mView.updateCategory(novelCategory);
             }
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onComplete() {
-
+                mView.onError(e);
             }
         });
     }
@@ -93,39 +76,20 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
     public void read(final String novelID, final String chapterID, final boolean resetData) {
         mView.loading();
         LogUtils.d(TAG, "read: " + chapterID);
-
-        Observer<ResponseBody> observer = new Observer<ResponseBody>() {
+        mModel.getChapter(novelID, chapterID, new BaseCallback() {
             @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(ResponseBody responseBody) {
-                try {
-                    String bodyStr = responseBody.string();
-                    NovelChapterInfo novelChapterInfo = new NovelChapterInfo(bodyStr);
-                    //已缓存章节
-                    mChapterNumberLoaded = novelChapterInfo.getChapterNumber();
-                    mView.loadContentSuccessAndToDisplay(novelChapterInfo, novelChapterInfo.getChapterNumber(), resetData);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            public <T> void onSuccess(T data) {
+                NovelChapterInfo novelChapterInfo = (NovelChapterInfo) data;
+                //已缓存章节
+                mChapterNumberLoaded = novelChapterInfo.getChapterNumber();
+                mView.loadContentSuccessAndToDisplay(novelChapterInfo, novelChapterInfo.getChapterNumber(), resetData);
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "read onError: " + e.getMessage());
                 mView.onError(e);
             }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-        Observable<ResponseBody> chapterObservable = mModel.getChapter(novelID, chapterID);
-        chapterObservable.compose(RxUtils.<ResponseBody>rxScheduers()).subscribe(observer);
+        });
     }
 
     @Override
@@ -184,4 +148,21 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         this.mCurrentReading = currentReading;
         SPUtils.putInt(SPUtils.KEY_LAST_READ, currentReading);
     }
+
+    public void mytest2() {
+        String text = "";
+        BaseCallback baseCallback = new BaseCallback() {
+            @Override
+            public <T> void onSuccess(T data) {
+                List<NovelCategory.Chapter> changeData = (List<NovelCategory.Chapter>) data;
+                for (NovelCategory.Chapter chapter : changeData) {
+                }
+                LogUtils.i("zhouyc mytest2: ", changeData.toString());
+                LogUtils.e("zhouyc mytest2: ", "==============================================");
+            }
+        };
+        mModel.test2(baseCallback);
+    }
+
+
 }
