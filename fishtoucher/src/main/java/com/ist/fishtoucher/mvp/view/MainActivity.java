@@ -1,6 +1,5 @@
 package com.ist.fishtoucher.mvp.view;
 
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,16 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.module.BaseLoadMoreModule;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ist.fishtoucher.R;
 import com.ist.fishtoucher.base.BaseMvpActivity;
 import com.ist.fishtoucher.constant.GlobalConstant;
-import com.ist.fishtoucher.mvp.contract.MainContract;
-import com.ist.fishtoucher.entity.NovelCategory;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
+import com.ist.fishtoucher.mvp.contract.MainContract;
+import com.ist.fishtoucher.entity.NovelChapterContent;
 import com.ist.fishtoucher.iApiService.NovelService;
 import com.ist.fishtoucher.mvp.presenter.MainPresenter;
-import com.ist.fishtoucher.test.DrawerTest;
 import com.ist.fishtoucher.utils.LogUtils;
 import com.ist.fishtoucher.utils.LongLogUtils;
 import com.ist.fishtoucher.utils.RecyclerViewUtils;
@@ -34,6 +31,7 @@ import com.ist.fishtoucher.adapter.NovelContentAdapter;
 import com.ist.fishtoucher.view.BScrollerControl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener, BScrollerControl.OnScrollChange {
     String TAG = "MainActivity";
@@ -120,9 +118,9 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     private void initData() {
         mEditText.setText(SPUtils.getInt(SPUtils.KEY_LAST_READ, 1) + "");
-        getPresenter().getCategory(mNovelID);
-
         initRV();
+
+        getPresenter().getCategory(mNovelID);
     }
 
     private void initRV() {
@@ -130,7 +128,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         mCategoryAdapter = new CategoryAdapter(R.layout.item_category, getPresenter());
         mCategoryAdapter.setOnChapterClickListener(new CategoryAdapter.OnChapterClickListener() {
             @Override
-            public void onclick(NovelCategory.Chapter chapter, int chapterNumber) {
+            public void onclick(NovelChapterInfo chapter, int chapterNumber) {
                 getPresenter().read(mNovelID, chapter.getUrl(), true);
             }
         });
@@ -220,21 +218,20 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     }
 
     @Override
-    public void updateCategory(NovelCategory novelCategory) {
-        mCategoryAdapter.setNewInstance(novelCategory.getChapters());
-        Log.e(TAG, "updateCategory: " + novelCategory);
+    public void updateCategory(List<NovelChapterInfo> novelCategory) {
+        mCategoryAdapter.setNewInstance(novelCategory);
+//        LogUtils.e(TAG, "updateCategory: " + novelCategory);
         if (firstInit) {//首次打开时自动打开上次观看章节
             firstInit = false;
             getPresenter().read(mNovelID, SPUtils.getInt(SPUtils.KEY_LAST_READ, 1));
         }
-
     }
 
     @Override
-    public void loadContentSuccessAndToDisplay(NovelChapterInfo novelChapterInfo, int chapterNumber, boolean resetData) {
+    public void loadContentSuccessAndToDisplay(NovelChapterContent novelChapterContent, int chapterNumber, boolean resetData) {
         closeCategoryMenu();
         if (GlobalConstant.isFishMode()) {
-        LongLogUtils.w(TAG, "displayContent: " + novelChapterInfo + ",resetData: " + resetData);
+        LongLogUtils.w(TAG, "displayContent: " + novelChapterContent + ",resetData: " + resetData);
         } else {
             mEditText.setText(chapterNumber + "");
 
@@ -242,15 +239,15 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 //        textView.setText(novelChapterInfo);
             if (resetData) {
                 //设置新数据,场景：左侧菜单目录中选择某一章
-                ArrayList<NovelChapterInfo> newData = new ArrayList();
-                newData.add(novelChapterInfo);
+                ArrayList<NovelChapterContent> newData = new ArrayList();
+                newData.add(novelChapterContent);
                 mNovelContentAdapter.setNewInstance(newData);
                 //重新加载数据后，手动调用一次方法，确保滑动到顶部
                 ((LinearLayoutManager) mRvNovelContent.getLayoutManager()).scrollToPositionWithOffset(0, 0);
-                onCurrentReadingChapterChange(novelChapterInfo.getChapterNumber(), novelChapterInfo.getChapterName());
+                onCurrentReadingChapterChange(novelChapterContent.getChapterNumber(), novelChapterContent.getChapterName());
             } else {
                 //添加到底部，适用场景：自动加载下一页
-                mNovelContentAdapter.addData(novelChapterInfo);
+                mNovelContentAdapter.addData(novelChapterContent);
             }
 
             if (mNovelContentAdapter.getLoadMoreModule().isLoading()) {
@@ -309,6 +306,10 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     protected void test() {
 //        new DrawerTest().test(this);
 //        getPresenter().mytest2();
+
+/*        DaoFactory daoFactory = DaoFactory.getInstance();
+        daoFactory.init(this);
+        daoFactory.testGreenDaoDBManager();*/
     }
 
     @Override

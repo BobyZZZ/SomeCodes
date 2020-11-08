@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.ist.fishtoucher.constant.GlobalConstant;
+import com.ist.fishtoucher.db.DaoHelper;
 
 public class FishApplication extends Application {
 
@@ -15,6 +16,7 @@ public class FishApplication extends Application {
         mContext = getApplicationContext();
 
         initConfig();
+        DaoHelper.getInstance().init(this);
     }
 
     private void initConfig() {

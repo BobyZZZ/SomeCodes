@@ -1,8 +1,11 @@
 package com.ist.fishtoucher.mvp.contract;
 
 import com.ist.fishtoucher.entity.NovelCategory;
+import com.ist.fishtoucher.entity.NovelChapterContent;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
 import com.ist.fishtoucher.mvp.callback.BaseCallback;
+
+import java.util.List;
 
 public interface MainContract {
     interface IMainModel {
@@ -16,8 +19,8 @@ public interface MainContract {
          * 开始加载
          */
         void loading();
-        void updateCategory(NovelCategory novelCategory);
-        void loadContentSuccessAndToDisplay(NovelChapterInfo content, int chapterIndex, boolean resetData);
+        void updateCategory(List<NovelChapterInfo> novelCategory);
+        void loadContentSuccessAndToDisplay(NovelChapterContent content, int chapterIndex, boolean resetData);
     }
 
     interface IMainPresenter {

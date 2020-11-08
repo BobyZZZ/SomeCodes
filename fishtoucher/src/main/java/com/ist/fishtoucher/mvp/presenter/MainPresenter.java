@@ -1,24 +1,18 @@
 package com.ist.fishtoucher.mvp.presenter;
 
 import com.ist.fishtoucher.base.BasePresenter;
+import com.ist.fishtoucher.entity.NovelChapterInfo;
 import com.ist.fishtoucher.mvp.callback.BaseCallback;
 import com.ist.fishtoucher.mvp.contract.MainContract;
 import com.ist.fishtoucher.entity.NovelCategory;
-import com.ist.fishtoucher.entity.NovelChapterInfo;
+import com.ist.fishtoucher.entity.NovelChapterContent;
 import com.ist.fishtoucher.iApiService.NovelService;
 import com.ist.fishtoucher.mvp.modle.MainModel;
 import com.ist.fishtoucher.utils.LogUtils;
-import com.ist.fishtoucher.utils.RxUtils;
 import com.ist.fishtoucher.utils.SPUtils;
 import com.ist.fishtoucher.mvp.view.MainActivity;
 
-import java.io.IOException;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import okhttp3.ResponseBody;
 
 public class MainPresenter extends BasePresenter<MainActivity> implements MainContract.IMainPresenter {
     String TAG = getClass().getSimpleName();
@@ -27,7 +21,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
     private String mNovelID;
     private int mChapterNumberLoaded = 0;//当前以缓存到第几章
     private int mCurrentReading = 0;//当前正在阅读的章节
-    private List<NovelCategory.Chapter> mChapters;
+    private List<NovelChapterInfo> mChapters;
 
     public MainPresenter(String novelID) {
         this.mNovelID = novelID;
@@ -40,8 +34,8 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         mModel.getCategory(novelIndex, new BaseCallback() {
             @Override
             public <T> void onSuccess(T data) {
-                NovelCategory novelCategory = (NovelCategory) data;
-                mChapters = novelCategory.getChapters();
+                List<NovelChapterInfo> novelCategory = (List<NovelChapterInfo>) data;
+                mChapters = novelCategory;
                 mView.updateCategory(novelCategory);
             }
 
@@ -79,10 +73,10 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         mModel.getChapter(novelID, chapterID, new BaseCallback() {
             @Override
             public <T> void onSuccess(T data) {
-                NovelChapterInfo novelChapterInfo = (NovelChapterInfo) data;
+                NovelChapterContent novelChapterContent = (NovelChapterContent) data;
                 //已缓存章节
-                mChapterNumberLoaded = novelChapterInfo.getChapterNumber();
-                mView.loadContentSuccessAndToDisplay(novelChapterInfo, novelChapterInfo.getChapterNumber(), resetData);
+                mChapterNumberLoaded = novelChapterContent.getChapterNumber();
+                mView.loadContentSuccessAndToDisplay(novelChapterContent, novelChapterContent.getChapterNumber(), resetData);
             }
 
             @Override
@@ -154,8 +148,8 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         BaseCallback baseCallback = new BaseCallback() {
             @Override
             public <T> void onSuccess(T data) {
-                List<NovelCategory.Chapter> changeData = (List<NovelCategory.Chapter>) data;
-                for (NovelCategory.Chapter chapter : changeData) {
+                List<NovelChapterInfo> changeData = (List<NovelChapterInfo>) data;
+                for (NovelChapterInfo chapter : changeData) {
                 }
                 LogUtils.i("zhouyc mytest2: ", changeData.toString());
                 LogUtils.e("zhouyc mytest2: ", "==============================================");

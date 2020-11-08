@@ -1,79 +1,53 @@
 package com.ist.fishtoucher.entity;
 
-import android.text.TextUtils;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
- * 小说内容实体类
+ * Created by Android Studio.
+ * User: Boby
+ * Date: 2020/11/8
+ * Time: 1:03
  */
 public class NovelChapterInfo {
-    String TAG = "NovelChapterInfo";
-    private int chapterNumber = 1;
-    private String chapterName;
-    private String content;
+    private String novelID;
+    private String name;
+    private String url;
 
-    public NovelChapterInfo(String body) {
-        Document doc = Jsoup.parse(body);
-        content = doc.getElementById("content").text();
-
-        //解析获取章节名
-        Element booknameBody = Jsoup.parseBodyFragment(doc.getElementsByClass("bookname").html()).body();
-        Elements h1Tags = booknameBody.getElementsByTag("h1");
-        if (h1Tags.size() > 0) {
-            chapterName = h1Tags.get(0).text();
-        }
-
-        //get chapterNumber
-        char[] chars = chapterName.toCharArray();
-        String result = "";
-        for (char c : chars) {
-            if (Character.isDigit(c)) {
-                result += c;
-            } else {
-                break;
-            }
-        }
-        if (!TextUtils.isEmpty(result)) {
-            chapterNumber = Integer.parseInt(result);
-        }
-//        LogUtils.d(TAG, this.toString());
+    public NovelChapterInfo(String novelID, String name, String url) {
+        this.novelID = novelID;
+        this.name = name;
+        this.url = url;
     }
 
-    public String getChapterName() {
-        return chapterName;
+    public String getNovelID() {
+        return novelID;
     }
 
-    public void setChapterName(String chapterName) {
-        this.chapterName = chapterName;
+    public void setNovelID(String novelID) {
+        this.novelID = novelID;
     }
 
-    public String getContent() {
-        return content;
+    public String getName() {
+        return name;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getChapterNumber() {
-        return chapterNumber;
+    public String getUrl() {
+        return url;
     }
 
-    public void setChapterNumber(int chapterNumber) {
-        this.chapterNumber = chapterNumber;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
     public String toString() {
         return "NovelChapterInfo{" +
-                "TAG='" + TAG + '\'' +
-                ", chapterNumber=" + chapterNumber +
-                ", bookName='" + chapterName + '\'' +
-                ", content='" + content + '\'' +
+                "novelID='" + novelID + '\'' +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

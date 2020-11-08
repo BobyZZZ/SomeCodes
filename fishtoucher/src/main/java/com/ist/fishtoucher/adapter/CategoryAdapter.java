@@ -5,13 +5,13 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ist.fishtoucher.R;
-import com.ist.fishtoucher.entity.NovelCategory;
+import com.ist.fishtoucher.entity.NovelChapterInfo;
 import com.ist.fishtoucher.mvp.presenter.MainPresenter;
 
 import org.jetbrains.annotations.NotNull;
 
 
-public class CategoryAdapter extends BaseQuickAdapter<NovelCategory.Chapter, BaseViewHolder> {
+public class CategoryAdapter extends BaseQuickAdapter<NovelChapterInfo, BaseViewHolder> {
 
     private final MainPresenter mPresenter;
 
@@ -21,7 +21,7 @@ public class CategoryAdapter extends BaseQuickAdapter<NovelCategory.Chapter, Bas
     }
 
     @Override
-    protected void convert(@NotNull final BaseViewHolder viewHolder, final NovelCategory.Chapter chapter) {
+    protected void convert(@NotNull final BaseViewHolder viewHolder, final NovelChapterInfo chapter) {
         viewHolder.itemView.setSelected(mPresenter != null
                 && mPresenter.getCurrentReading() - 1 == viewHolder.getAdapterPosition() ? true : false);
         viewHolder.setText(R.id.tv_chapter_name, chapter.getName());
@@ -48,6 +48,6 @@ public class CategoryAdapter extends BaseQuickAdapter<NovelCategory.Chapter, Bas
     }
 
     public interface OnChapterClickListener {
-        void onclick(NovelCategory.Chapter chapter, int chapterNumber);
+        void onclick(NovelChapterInfo chapter, int chapterNumber);
     }
 }

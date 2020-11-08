@@ -4,40 +4,52 @@ import android.util.Log;
 
 import com.ist.fishtoucher.utils.LogUtils;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.greenrobot.greendao.annotation.Generated;
 
-
+@Entity
 public class NovelCategory {
-    String TAG = "NovelCategory";
-    private final String ATTR_HREF = "href";
-    private final String ATTR_A = "a";
+    static String TAG = "NovelCategory";
 
-    private Elements mATagList;
-    private final List<String> mHrefs;
-    private final List<String> mTitles;
-    private List<Chapter> mChapters;
+    @Id
+    private String mNovelId;
+    private String responseBody;
 
-    public NovelCategory(String body) {
-        Document doc = Jsoup.parse(body);
-        mATagList = doc.getElementById("list").getElementsByTag(ATTR_A);
-        mHrefs = mATagList.eachAttr(ATTR_HREF);
-        mTitles = mATagList.eachText();
-        mChapters = new ArrayList<>();
-        filterUselessInfo();
+    private static final String ATTR_HREF = "href";
+    private static final String ATTR_A = "a";
+
+    @Generated(hash = 444063137)
+    public NovelCategory(String mNovelId, String responseBody) {
+        this.mNovelId = mNovelId;
+        this.responseBody = responseBody;
     }
 
-    private void filterUselessInfo() {
-        if (mHrefs != null && mTitles != null && !mTitles.isEmpty() && mHrefs.size() == mTitles.size()) {
-            List<String> titles = new ArrayList<String>(mTitles);
-            List<String> hrefs = new ArrayList<String>(mHrefs);
+    @Generated(hash = 531682760)
+    public NovelCategory() {
+    }
+
+    public static List<NovelChapterInfo> parse(String novelId,String body) {
+        Document doc = Jsoup.parse(body);
+        Elements mATagList = doc.getElementById("list").getElementsByTag(ATTR_A);
+        List<String> hrefs = mATagList.eachAttr(ATTR_HREF);
+        List<String> titles = mATagList.eachText();
+        return filterUselessInfo(novelId,hrefs,titles);
+    }
+
+    private static List<NovelChapterInfo> filterUselessInfo(String novelId, List<String> originHrefs, List<String> originTitles) {
+        List<NovelChapterInfo> mChapters = new ArrayList<>();
+        if (originHrefs != null && originTitles != null && !originTitles.isEmpty() && originHrefs.size() == originTitles.size()) {
+            List<String> titles = new ArrayList<String>(originTitles);
+            List<String> hrefs = new ArrayList<String>(originHrefs);
 
             String regex = "\\d+\\W[\\u4e00-\\u9fa5]*";//44、只准吃两口
             Pattern pattern = Pattern.compile(regex);
@@ -54,38 +66,26 @@ public class NovelCategory {
                     iterator.remove();
                     hrefs.remove(i);
                 } else {
-                    mChapters.add(new Chapter(chapterName, hrefs.get(i++)));
+                    mChapters.add(new NovelChapterInfo(novelId,chapterName, hrefs.get(i++)));
                 }
             }
             Log.e(TAG, "filterUselessInfo after filter,the remain length is: " + mChapters.size());
             if (mChapters.isEmpty()) {
                 //如果过滤后没有数据，则使用过滤前的数据去填充
-                int maxLength = Math.min(mTitles.size(),mTitles.size());
+                int maxLength = Math.min(originTitles.size(),originTitles.size());
                 for (int j = 0; j < maxLength; j++) {
-                    mChapters.add(new Chapter(mTitles.get(j),mHrefs.get(j)));
+                    mChapters.add(new NovelChapterInfo(novelId,originTitles.get(j),originHrefs.get(j)));
                 }
                 LogUtils.d(TAG, "filterUselessInfo without filter,size is: " + mChapters.size());
             }
         }
-    }
-
-    public int size() {
-        return mChapters == null ? 0 : mChapters.size();
-    }
-
-    public List<Chapter> getChapters() {
         return mChapters;
     }
-
-    @Override
-    public String toString() {
-        return "NovelCategory{" +
-                "TAG='" + TAG + '\'' +
-                ", mChapters=" + mChapters +
-                '}';
-    }
-
+/*
+    @Entity
     public static class Chapter {
+        @Id
+        private String novelID;
         private String name;
         private String url;
 
@@ -117,5 +117,29 @@ public class NovelCategory {
                     ", url='" + url + '\'' +
                     '}';
         }
+    }*/
+
+    public String getMNovelId() {
+        return this.mNovelId;
+    }
+
+    public void setMNovelId(String mNovelId) {
+        this.mNovelId = mNovelId;
+    }
+
+    public String getResponseBody() {
+        return this.responseBody;
+    }
+
+    public void setResponseBody(String responseBody) {
+        this.responseBody = responseBody;
+    }
+
+    @Override
+    public String toString() {
+        return "NovelCategory{" +
+                "mNovelId='" + mNovelId + '\'' +
+                ", responseBody='" + responseBody + '\'' +
+                '}';
     }
 }
