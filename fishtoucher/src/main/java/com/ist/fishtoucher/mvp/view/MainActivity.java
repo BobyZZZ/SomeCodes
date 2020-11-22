@@ -36,8 +36,8 @@ import java.util.List;
 public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener, BScrollerControl.OnScrollChange {
     String TAG = "MainActivity";
     private final String KEY_NOVELID = "novelID";
-    private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
-//    private String mNovelID = NovelService.DIYI_XULIE_NOVEL_INDEX;
+//    private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
+    private String mNovelID = NovelService.DIYI_XULIE_NOVEL_INDEX;
 
     private EditText mEditText;
     private boolean firstInit = true;
@@ -98,6 +98,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 //                    mRvCategory.smoothScrollToPosition(currentChapterNumber);
 //                    mRvCategory.scrollToPosition(currentChapterNumber);只滚动到显示出来，不置顶
                     ((LinearLayoutManager) mRvCategory.getLayoutManager()).scrollToPositionWithOffset(currentChapterNumber, 0);
+                    mCategoryAdapter.notifyDataSetChanged();
                 } else {
                     LogUtils.d(TAG, "cancel scrollToPosition: ");
                 }
