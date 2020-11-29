@@ -15,6 +15,10 @@ public interface NovelService {
     public static long SIYANG_HUMAN_FIRST_CHAPTER_INDEX = 12898729;//http://www.biquge.info/69_69120/12898729.html
 
     public static String JIAN_LAI_NOVEL_INDEX = "1_1245";//http://www.biquge.info/69_69120/12898729.html
+    /**
+     * 放开那个魔女
+     */
+    public static String FKNGMN_NOVEL_INDEX = "24_24159";
 
     @GET("{novel_index}/{chapter_href}")
     Observable<ResponseBody> getChapter(@Path("novel_index")String novel_index, @Path("chapter_href")String chapter_href);

@@ -2,11 +2,14 @@ package com.ist.fishtoucher.base;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -29,6 +32,30 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void initPresenter();
 
     protected void test() {
+    }
+
+    /**
+     * 启动Fragment
+     *
+     * @param id       id
+     * @param fragment 碎片
+     */
+    protected void startFragment(int id, Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(id, fragment);
+        fragmentTransaction.commit();
+    }
+
+    public void showToast(int resId) {
+        showToast(getString(resId));
+    }
+
+    public void showToast(String info) {
+        Toast.makeText(FishApplication.mContext, info, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showProgress() {
+
     }
 
     /******************************************************** Permissions ************************************************************************/

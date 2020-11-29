@@ -23,8 +23,8 @@ import com.ist.fishtoucher.iApiService.NovelService;
 import com.ist.fishtoucher.mvp.presenter.MainPresenter;
 import com.ist.fishtoucher.utils.LogUtils;
 import com.ist.fishtoucher.utils.LongLogUtils;
+import com.ist.fishtoucher.utils.NovelUtils;
 import com.ist.fishtoucher.utils.RecyclerViewUtils;
-import com.ist.fishtoucher.utils.SPUtils;
 import com.ist.fishtoucher.utils.SoftInputUtils;
 import com.ist.fishtoucher.adapter.CategoryAdapter;
 import com.ist.fishtoucher.adapter.NovelContentAdapter;
@@ -37,10 +37,10 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     String TAG = "MainActivity";
     private final String KEY_NOVELID = "novelID";
 //    private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
-    private String mNovelID = NovelService.DIYI_XULIE_NOVEL_INDEX;
+//    private String mNovelID = NovelService.DIYI_XULIE_NOVEL_INDEX;
+    private String mNovelID = NovelService.FKNGMN_NOVEL_INDEX;
 
     private EditText mEditText;
-    private boolean firstInit = true;
     private DrawerLayout mDrawerLayout;
     private RecyclerView mRvCategory, mRvNovelContent;
     private CategoryAdapter mCategoryAdapter;
@@ -92,16 +92,8 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-                int currentChapterNumber = getPresenter().getCurrentReading() - 1;
-                LogUtils.d(TAG, "onDrawerOpened: " + drawerView.getId() + ",currentChapterNumber: " + currentChapterNumber);
-                if (mRvCategory.getAdapter().getItemCount() > currentChapterNumber) {
-//                    mRvCategory.smoothScrollToPosition(currentChapterNumber);
-//                    mRvCategory.scrollToPosition(currentChapterNumber);只滚动到显示出来，不置顶
-                    ((LinearLayoutManager) mRvCategory.getLayoutManager()).scrollToPositionWithOffset(currentChapterNumber, 0);
-                    mCategoryAdapter.notifyDataSetChanged();
-                } else {
-                    LogUtils.d(TAG, "cancel scrollToPosition: ");
-                }
+                LogUtils.d(TAG, "onDrawerOpened: ");
+                mCategoryAdapter.scrollToCurrentReading();
             }
 
             @Override
@@ -118,7 +110,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     }
 
     private void initData() {
-        mEditText.setText(SPUtils.getInt(SPUtils.KEY_LAST_READ, 1) + "");
+        NovelUtils.saveLastReadNovel(mNovelID);
         initRV();
 
         getPresenter().getCategory(mNovelID);
@@ -130,7 +122,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         mCategoryAdapter.setOnChapterClickListener(new CategoryAdapter.OnChapterClickListener() {
             @Override
             public void onclick(NovelChapterInfo chapter, int chapterNumber) {
-                getPresenter().read(mNovelID, chapter.getUrl(), true);
+                getPresenter().read(mNovelID, chapter.getChapterId(), true);
             }
         });
         mRvCategory.setAdapter(mCategoryAdapter);
@@ -178,9 +170,8 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                     if (readingItemViewHolder != null) {
                         int top = readingItemViewHolder.itemView.getTop();
                         if (top <= 0) {
-                            LogUtils.d(TAG, "onScrollChange readingItemPosition: " + mNovelContentAdapter.getItem(readingItemPosition).getChapterName() + ",top: " + top);
-                            onCurrentReadingChapterChange(mNovelContentAdapter.getItem(readingItemPosition).getChapterNumber(),
-                                    mNovelContentAdapter.getItem(readingItemPosition).getChapterName());
+                            LogUtils.d(TAG, "onCurrentReadingChapterChange currentReading: " + mNovelContentAdapter.getItem(readingItemPosition) + ",top: " + top);
+                            onCurrentReadingChapterChange(mNovelContentAdapter.getItem(readingItemPosition));
                             this.lastReadingItemPosition = readingItemPosition;
                         }
                     }
@@ -192,16 +183,13 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     /**
      * 当前阅读章节变化
      *
-     * @param currentReadingChapter 第几章
-     * @param chapterName 章节名字
      */
-    private void onCurrentReadingChapterChange(int currentReadingChapter,String chapterName) {
+    private void onCurrentReadingChapterChange(NovelChapterContent novelChapterContent) {
         //currentReadingChapter change!!
-
-        getPresenter().setCurrentReading(currentReadingChapter);
+        getPresenter().saveCurrentReading(novelChapterContent);
 
         TextView tvReading = findViewById(R.id.tv_current_reading_chapter);
-        tvReading.setText(chapterName);
+        tvReading.setText(novelChapterContent.getChapterName());
     }
 
     @Override
@@ -222,10 +210,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     public void updateCategory(List<NovelChapterInfo> novelCategory) {
         mCategoryAdapter.setNewInstance(novelCategory);
 //        LogUtils.e(TAG, "updateCategory: " + novelCategory);
-        if (firstInit) {//首次打开时自动打开上次观看章节
-            firstInit = false;
-            getPresenter().read(mNovelID, SPUtils.getInt(SPUtils.KEY_LAST_READ, 1));
-        }
+
     }
 
     @Override
@@ -234,10 +219,8 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         if (GlobalConstant.isFishMode()) {
         LongLogUtils.w(TAG, "displayContent: " + novelChapterContent + ",resetData: " + resetData);
         } else {
-            mEditText.setText(chapterNumber + "");
+            mEditText.setText(mCategoryAdapter.getChapterPosition(novelChapterContent.getChapterId()) + 1 + "");
 
-//        TextView textView = findViewById(R.id.tv_test);
-//        textView.setText(novelChapterInfo);
             if (resetData) {
                 //设置新数据,场景：左侧菜单目录中选择某一章
                 ArrayList<NovelChapterContent> newData = new ArrayList();
@@ -245,19 +228,22 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 mNovelContentAdapter.setNewInstance(newData);
                 //重新加载数据后，手动调用一次方法，确保滑动到顶部
                 ((LinearLayoutManager) mRvNovelContent.getLayoutManager()).scrollToPositionWithOffset(0, 0);
-                onCurrentReadingChapterChange(novelChapterContent.getChapterNumber(), novelChapterContent.getChapterName());
+                onCurrentReadingChapterChange(novelChapterContent);
             } else {
                 //添加到底部，适用场景：自动加载下一页
                 mNovelContentAdapter.addData(novelChapterContent);
             }
 
             if (mNovelContentAdapter.getLoadMoreModule().isLoading()) {
-                LogUtils.d(TAG, "load more complete: " + chapterNumber);
+                LogUtils.d(TAG, "load more complete: " + novelChapterContent.getChapterName());
                 mNovelContentAdapter.getLoadMoreModule().loadMoreComplete();
             }
         }
     }
 
+    public NovelChapterInfo getChapterInfoWithOffset(String chapterId, int offset) {
+        return mCategoryAdapter.getChapterInfoWithOffset(chapterId,offset);
+    }
 
     @Override
     public void onClick(View v) {
@@ -271,7 +257,12 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 }
                 break;
             case R.id.tv_next:
-                getPresenter().read(mNovelID, getPresenter().getCurrentReading() + 1, true);
+                NovelChapterInfo targetChapter = mCategoryAdapter.getChapterInfoWithOffset(NovelUtils.getLastReadChapter(),1);
+                if (targetChapter != null) {
+                    getPresenter().read(mNovelID, targetChapter.getChapterId(), true);
+                } else {
+                    showToast(R.string.no_more);
+                }
                 break;
         }
     }

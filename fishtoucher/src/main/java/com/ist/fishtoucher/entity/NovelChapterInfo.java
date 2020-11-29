@@ -10,12 +10,12 @@ package com.ist.fishtoucher.entity;
 public class NovelChapterInfo {
     private String novelID;
     private String name;
-    private String url;
+    private String chapterId;
 
     public NovelChapterInfo(String novelID, String name, String url) {
         this.novelID = novelID;
         this.name = name;
-        this.url = url;
+        this.chapterId = url;
     }
 
     public String getNovelID() {
@@ -34,12 +34,12 @@ public class NovelChapterInfo {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getChapterId() {
+        return chapterId;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setChapterId(String chapterId) {
+        this.chapterId = chapterId;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class NovelChapterInfo {
         return "NovelChapterInfo{" +
                 "novelID='" + novelID + '\'' +
                 ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
+                ", url='" + chapterId + '\'' +
                 '}';
     }
 }

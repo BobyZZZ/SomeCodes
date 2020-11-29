@@ -85,7 +85,7 @@ public class MainModel implements MainContract.IMainModel {
     }
 
     @Override
-    public void getChapter(String novelIndex, String chapterIndex, final BaseCallback baseCallback) {
+    public void getChapter(final String novelIndex, final String chapterIndex, final BaseCallback baseCallback) {
         mNovelServiceReal.getChapter(novelIndex, chapterIndex)
                 .compose(RxUtils.<ResponseBody>rxScheduers())
                 .subscribe(new Observer<ResponseBody>() {
@@ -98,7 +98,7 @@ public class MainModel implements MainContract.IMainModel {
                     public void onNext(ResponseBody responseBody) {
                         try {
                             String bodyStr = responseBody.string();
-                            NovelChapterContent novelChapterContent = new NovelChapterContent(bodyStr);
+                            NovelChapterContent novelChapterContent = new NovelChapterContent(novelIndex,chapterIndex,bodyStr);
                             baseCallback.onSuccess(novelChapterContent);
                         } catch (IOException e) {
                             e.printStackTrace();

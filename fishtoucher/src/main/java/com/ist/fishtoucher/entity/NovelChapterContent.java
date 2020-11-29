@@ -12,11 +12,16 @@ import org.jsoup.select.Elements;
  */
 public class NovelChapterContent {
     String TAG = "NovelChapterInfo";
+    private String novelId;
+    private String chapterId;
     private int chapterNumber = 1;
     private String chapterName;
     private String content;
 
-    public NovelChapterContent(String body) {
+    public NovelChapterContent(String novelId, String chapterId, String body) {
+        this.novelId = novelId;
+        this.chapterId = chapterId;
+
         Document doc = Jsoup.parse(body);
         content = doc.getElementById("content").text();
 
@@ -41,6 +46,22 @@ public class NovelChapterContent {
             chapterNumber = Integer.parseInt(result);
         }
 //        LogUtils.d(TAG, this.toString());
+    }
+
+    public String getNovelId() {
+        return novelId;
+    }
+
+    public void setNovelId(String novelId) {
+        this.novelId = novelId;
+    }
+
+    public String getChapterId() {
+        return chapterId;
+    }
+
+    public void setChapterId(String chapterId) {
+        this.chapterId = chapterId;
     }
 
     public String getChapterName() {
@@ -69,10 +90,12 @@ public class NovelChapterContent {
 
     @Override
     public String toString() {
-        return "NovelChapterInfo{" +
+        return "NovelChapterContent{" +
                 "TAG='" + TAG + '\'' +
+                ", novelId='" + novelId + '\'' +
+                ", chapterId='" + chapterId + '\'' +
                 ", chapterNumber=" + chapterNumber +
-                ", bookName='" + chapterName + '\'' +
+                ", chapterName='" + chapterName + '\'' +
                 ", content='" + content + '\'' +
                 '}';
     }

@@ -47,8 +47,8 @@ public class NovelCategory {
 
     private static List<NovelChapterInfo> filterUselessInfo(String novelId, List<String> originHrefs, List<String> originTitles) {
         List<NovelChapterInfo> mChapters = new ArrayList<>();
-        if (originHrefs != null && originTitles != null && !originTitles.isEmpty() && originHrefs.size() == originTitles.size()) {
-            List<String> titles = new ArrayList<String>(originTitles);
+        if (originHrefs != null && originTitles != null) {
+/*            List<String> titles = new ArrayList<String>(originTitles);
             List<String> hrefs = new ArrayList<String>(originHrefs);
 
             String regex = "\\d+\\W[\\u4e00-\\u9fa5]*";//44、只准吃两口
@@ -72,12 +72,13 @@ public class NovelCategory {
             Log.e(TAG, "filterUselessInfo after filter,the remain length is: " + mChapters.size());
             if (mChapters.isEmpty()) {
                 //如果过滤后没有数据，则使用过滤前的数据去填充
-                int maxLength = Math.min(originTitles.size(),originTitles.size());
+                */
+                int maxLength = Math.min(originTitles.size(),originHrefs.size());
                 for (int j = 0; j < maxLength; j++) {
                     mChapters.add(new NovelChapterInfo(novelId,originTitles.get(j),originHrefs.get(j)));
                 }
                 LogUtils.d(TAG, "filterUselessInfo without filter,size is: " + mChapters.size());
-            }
+//            }
         }
         return mChapters;
     }

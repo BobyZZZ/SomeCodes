@@ -4,12 +4,10 @@ import com.ist.fishtoucher.base.BasePresenter;
 import com.ist.fishtoucher.entity.NovelChapterInfo;
 import com.ist.fishtoucher.mvp.callback.BaseCallback;
 import com.ist.fishtoucher.mvp.contract.MainContract;
-import com.ist.fishtoucher.entity.NovelCategory;
 import com.ist.fishtoucher.entity.NovelChapterContent;
-import com.ist.fishtoucher.iApiService.NovelService;
 import com.ist.fishtoucher.mvp.modle.MainModel;
 import com.ist.fishtoucher.utils.LogUtils;
-import com.ist.fishtoucher.utils.SPUtils;
+import com.ist.fishtoucher.utils.NovelUtils;
 import com.ist.fishtoucher.mvp.view.MainActivity;
 
 import java.util.List;
@@ -19,9 +17,12 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
 
     private MainModel mModel;
     private String mNovelID;
-    private int mChapterNumberLoaded = 0;//当前以缓存到第几章
-    private int mCurrentReading = 0;//当前正在阅读的章节
+    /**
+     * 记录当前已加载到的章节
+     */
+    private String mChapterIdLoaded;
     private List<NovelChapterInfo> mChapters;
+    private boolean mFirstInit = true;//控制初次打开时自动加载
 
     public MainPresenter(String novelID) {
         this.mNovelID = novelID;
@@ -37,6 +38,11 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
                 List<NovelChapterInfo> novelCategory = (List<NovelChapterInfo>) data;
                 mChapters = novelCategory;
                 mView.updateCategory(novelCategory);
+
+                if (mFirstInit) {//首次打开时自动打开上次观看章节
+                    mFirstInit = false;
+                    read(mNovelID, NovelUtils.getLastReadChapter(mNovelID,novelCategory.get(0).getChapterId())/*SPUtils.getInt(SPUtils.KEY_LAST_READ_NOVEL, 1)*/);
+                }
             }
 
             @Override
@@ -75,7 +81,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
             public <T> void onSuccess(T data) {
                 NovelChapterContent novelChapterContent = (NovelChapterContent) data;
                 //已缓存章节
-                mChapterNumberLoaded = novelChapterContent.getChapterNumber();
+                mChapterIdLoaded = novelChapterContent.getChapterId();
                 mView.loadContentSuccessAndToDisplay(novelChapterContent, novelChapterContent.getChapterNumber(), resetData);
             }
 
@@ -88,33 +94,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
 
     @Override
     public void loadMore() {
-        LogUtils.d(TAG, "auto loadMore chapter: " + (getChapterNumberHaveLoaded() + 1) + "章");
-        read(mNovelID, getChapterNumberHaveLoaded() + 1);
-    }
-
-    private int findChapterNumber(String chapterIndex) {
-        if (mChapters != null && !mChapters.isEmpty()) {
-            for (int i = 0; i < mChapters.size(); i++) {
-                if (mChapters.get(i).getUrl().equals(chapterIndex)) {
-                    return i + 1;
-                }
-            }
-        }
-        return -1;
-    }
-
-    @Deprecated
-    private long getChapterUrl(String novelIndex, int chapter) {
-        long result = NovelService.DIYI_XULIE_FIRST_CHAPTER_INDEX + chapter - 1;
-        switch (novelIndex) {
-            case NovelService.DIYI_XULIE_NOVEL_INDEX:
-                result = NovelService.DIYI_XULIE_FIRST_CHAPTER_INDEX + (chapter - 1) * 2;
-                break;
-            case NovelService.SIYANG_HUMAN_NOVEL_INDEX:
-                result = NovelService.SIYANG_HUMAN_FIRST_CHAPTER_INDEX + chapter - 1;
-                break;
-        }
-        return result;
+        read(mNovelID, getNextLoadChapterId());
     }
 
     /**
@@ -125,22 +105,27 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
      */
     private String getChapterIndexFromCategory(int chapter) {
         if (mChapters != null && !mChapters.isEmpty() && chapter > 0 && chapter < mChapters.size()) {
-            return mChapters.get(chapter - 1).getUrl();
+            return mChapters.get(chapter - 1).getChapterId();
         }
         return null;
     }
 
-    public int getChapterNumberHaveLoaded() {
-        return mChapterNumberLoaded;
+    /**
+     * 获取下一章要加载的章节id
+     * @return  章节id
+     */
+    private String getNextLoadChapterId() {
+        String nextChapterId = null;
+        NovelChapterInfo nextLoadChapter = mView.getChapterInfoWithOffset(mChapterIdLoaded, 1);
+        if (nextLoadChapter != null) {
+            nextChapterId =  nextLoadChapter.getChapterId();
+        }
+        LogUtils.d(TAG, "auto loadMore chapter: " + nextChapterId);
+        return nextChapterId;
     }
 
-    public int getCurrentReading() {
-        return mCurrentReading;
-    }
-
-    public void setCurrentReading(int currentReading) {
-        this.mCurrentReading = currentReading;
-        SPUtils.putInt(SPUtils.KEY_LAST_READ, currentReading);
+    public void saveCurrentReading(NovelChapterContent novelChapterContent) {
+        NovelUtils.saveLastReadChapter(novelChapterContent.getNovelId(),novelChapterContent.getChapterId());
     }
 
     public void mytest2() {

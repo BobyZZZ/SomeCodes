@@ -53,7 +53,7 @@ public class BScrollerControl extends FrameLayout {
         mThumbHeight = (int) typedArray.getDimension(R.styleable.BScrollerControl_thumbHeight, 50);
         typedArray.recycle();
 
-        LogUtils.d(TAG, "parseAttrs mThumbWidth: " + mThumbWidth + ",mThumbHeight: " + mThumbHeight);
+//        LogUtils.d(TAG, "parseAttrs mThumbWidth: " + mThumbWidth + ",mThumbHeight: " + mThumbHeight);
     }
 
     private void addThumb() {
@@ -93,7 +93,7 @@ public class BScrollerControl extends FrameLayout {
             onScroll(translation, fraction);
             mLastFraction = fraction;
         } else {
-            LogUtils.e(TAG, "onScroll no need to scroll ,mLastFraction == fraction : " + mLastFraction);
+//            LogUtils.e(TAG, "onScroll no need to scroll ,mLastFraction == fraction : " + mLastFraction);
         }
         return true;
     }
@@ -118,7 +118,7 @@ public class BScrollerControl extends FrameLayout {
     }
 
     private void onScroll(float scrollY, float fraction) {
-        LogUtils.v(TAG, "onScroll: " + fraction);
+//        LogUtils.v(TAG, "onScroll: " + fraction);
         if (mOnScrollChange != null) {
             mOnScrollChange.onScrollBarScroll(scrollY, fraction);
         }
@@ -134,7 +134,7 @@ public class BScrollerControl extends FrameLayout {
             mThumb.setTranslationY(translation);
             mLastFraction = fraction;
         } else {
-            LogUtils.e(TAG, "setFraction(), mLastFraction == fraction : " + mLastFraction);
+//            LogUtils.e(TAG, "setFraction(), mLastFraction == fraction : " + mLastFraction);
         }
     }
 

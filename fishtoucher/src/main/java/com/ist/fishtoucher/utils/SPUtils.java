@@ -7,7 +7,8 @@ import com.ist.fishtoucher.base.FishApplication;
 
 public class SPUtils {
     private static final String PREF_NAME = "sp";
-    public static final String KEY_LAST_READ = "key_last_read";
+    public static final String KEY_LAST_READ_NOVEL = "key_last_read_novel";
+    public static final String KEY_LAST_READ_NOVEL_CHAPTER = "key_last_read_novel_chapter";
 
     public static void putString(String key, String value) {
         SharedPreferences preferences = FishApplication.mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
