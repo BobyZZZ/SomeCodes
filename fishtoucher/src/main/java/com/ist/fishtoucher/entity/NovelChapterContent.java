@@ -2,6 +2,8 @@ package com.ist.fishtoucher.entity;
 
 import android.text.TextUtils;
 
+import com.ist.fishtoucher.utils.JsoupUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,7 +25,8 @@ public class NovelChapterContent {
         this.chapterId = chapterId;
 
         Document doc = Jsoup.parse(body);
-        content = doc.getElementById("content").text();
+        Element contentElement = doc.getElementById("content");
+        this.content = JsoupUtils.parseContentToAndroidText(contentElement.html());
 
         //解析获取章节名
         Element booknameBody = Jsoup.parseBodyFragment(doc.getElementsByClass("bookname").html()).body();

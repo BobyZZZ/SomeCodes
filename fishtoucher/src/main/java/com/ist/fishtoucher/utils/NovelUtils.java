@@ -45,4 +45,8 @@ public class NovelUtils {
     public static String getLastReadNovel(String defaultValue) {
         return SPUtils.getString(SPUtils.KEY_LAST_READ_NOVEL, defaultValue);
     }
+
+    /**
+     * 将html格式的缩进、换行替换成
+     */
 }
