@@ -62,4 +62,6 @@ dependencies {
 
     //数据库
     implementation 'org.greenrobot:greendao:3.3.0' // add library
+    //调色器
+    implementation 'androidx.palette:palette:1.0.0'
 }

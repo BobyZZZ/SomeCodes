@@ -11,16 +11,23 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.ist.fishtoucher.utils.UIUtils;
+
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initStatusBar();
         setContentView(getLayoutId());
         initPresenter();
         initView();
         test();
+    }
+
+    protected void initStatusBar(){
+        UIUtils.ColorfulStatusBar(this);
     }
 
     protected abstract int getLayoutId();

@@ -27,11 +27,11 @@ public class JsoupUtils {
         if (filter) {
             originText = filterBlackWord(originText);
         }
-        LogUtils.e(TAG, "bobyDebug:\n" + originText + "\n");
+//        LogUtils.e(TAG, "bobyDebug:\n" + originText + "\n");
         originText = originText.replaceAll(HTML_BR, "");
         originText = originText.replaceAll(HTML_BLANK, ANDROID_BLANK);
         originText = originText.replaceAll("\n{2,}", ANDROID_BR);
-        LogUtils.w(TAG, "bobyDebug after:\n" + originText + "\n");
+//        LogUtils.w(TAG, "bobyDebug after:\n" + originText + "\n");
         return originText;
     }
 

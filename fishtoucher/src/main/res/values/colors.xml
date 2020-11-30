@@ -7,4 +7,5 @@
 
     <color name="tv_novel_title_color">@android:color/black</color>
     <color name="bg_scrollbar_color">#1333</color>
+    <color name="bg_novel_content">#1f00</color>
 </resources>
