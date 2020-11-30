@@ -211,12 +211,15 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         tvPageNumber.setText(getString(R.string.pageNumber,currentPage,totalPage));
     }
 
+    private void onCurrentReadingChapterChange(NovelChapterContent novelChapterContent) {
+        onCurrentReadingChapterChange(novelChapterContent,false);
+    }
     /**
      * 当前阅读章节变化
      */
-    private void onCurrentReadingChapterChange(NovelChapterContent novelChapterContent) {
+    private void onCurrentReadingChapterChange(NovelChapterContent novelChapterContent,boolean resetReadingPosition) {
         //currentReadingChapter change!!
-        getPresenter().saveCurrentReading(novelChapterContent);
+        getPresenter().saveCurrentReading(novelChapterContent,resetReadingPosition);
 
         TextView tvReading = findViewById(R.id.tv_current_reading_chapter);
         tvReading.setText(novelChapterContent.getChapterName());
@@ -257,8 +260,8 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 newData.add(novelChapterContent);
                 mNovelContentAdapter.setNewInstance(newData);
                 //重新加载数据后，手动调用一次方法，确保滑动到顶部
-                ((LinearLayoutManager) mRvNovelContent.getLayoutManager()).scrollToPositionWithOffset(0, 0);
-                onCurrentReadingChapterChange(novelChapterContent);
+                mRvNovelContent.getLayoutManager().scrollToPosition(0);
+                onCurrentReadingChapterChange(novelChapterContent,true);
             } else {
                 //添加到底部，适用场景：自动加载下一页
                 mNovelContentAdapter.addData(novelChapterContent);
@@ -278,7 +281,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
      */
     private void onLastReadingProgressChanged(NovelChapterContent item, int alreadyScrollY) {
         LogUtils.d(TAG, "saveLastReadingState: " + item.getNovelId() + "," + item.getChapterId() + ",offset: " + alreadyScrollY);
-        NovelUtils.saveLastReadingState(item.getNovelId(), alreadyScrollY);
+        NovelUtils.saveLastReadingPosition(item.getNovelId(), alreadyScrollY);
     }
 
     /**
@@ -296,10 +299,11 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 break;
             }
         }
-        int offset = NovelUtils.getLastReadingState(novelChapterContent.getNovelId());
+        //向上滚offset应该为负值，但保存时存的是绝对值
+        int offset = -NovelUtils.getLastReadingPosition(novelChapterContent.getNovelId());
         LogUtils.d(TAG, "recoverLastReadingState: "+ novelChapterContent.getNovelId() + "," + novelChapterContent.getChapterId() + ",position: " + position + "---offset: " + offset);
         if (position != -1) {
-            mLayoutManagerNovelContent.scrollToPositionWithOffset(position,-offset);
+            mLayoutManagerNovelContent.scrollToPositionWithOffset(position,offset);
         }
     }
 

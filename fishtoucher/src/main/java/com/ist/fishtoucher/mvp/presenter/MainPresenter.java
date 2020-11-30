@@ -128,7 +128,13 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
     }
 
     public void saveCurrentReading(NovelChapterContent novelChapterContent) {
+        saveCurrentReading(novelChapterContent,false);
+    }
+    public void saveCurrentReading(NovelChapterContent novelChapterContent,boolean resetReadingPosition) {
         NovelUtils.saveLastReadChapter(novelChapterContent.getNovelId(),novelChapterContent.getChapterId());
+        if (resetReadingPosition) {
+            NovelUtils.saveLastReadingPosition(novelChapterContent.getNovelId(),0);
+        }
     }
 
     public void mytest2() {

@@ -49,14 +49,14 @@ public class NovelUtils {
     /**
      * 记录上次阅读的位置
      */
-    public static void saveLastReadingState(String novelId, int alreadyScrollY) {
+    public static void saveLastReadingPosition(String novelId, int alreadyScrollY) {
         SPUtils.putInt(SPUtils.KEY_LAST_READ_NOVEL_CHAPTER_STATE + "_" + novelId, alreadyScrollY);
     }
 
     /**
      * 获取上次阅读的位置
      */
-    public static int getLastReadingState(String novelId) {
+    public static int getLastReadingPosition(String novelId) {
         return SPUtils.getInt(SPUtils.KEY_LAST_READ_NOVEL_CHAPTER_STATE + "_" + novelId, 0);
     }
 }
