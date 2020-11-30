@@ -27,7 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void initStatusBar(){
-        UIUtils.ColorfulStatusBar(this);
+        UIUtils.ColorfulStatusBar(this,true);
     }
 
     protected abstract int getLayoutId();
