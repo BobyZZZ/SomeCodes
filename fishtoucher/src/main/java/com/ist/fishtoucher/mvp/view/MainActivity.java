@@ -47,6 +47,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     private NovelContentAdapter mNovelContentAdapter;
     private BScrollerControl mScrollerControl;
     private LinearLayoutManager mLayoutManagerCategory;
+    private LinearLayoutManager mLayoutManagerNovelContent;
 
     @Override
     protected int getLayoutId() {
@@ -63,7 +64,6 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     @Override
     protected void initView() {
-        super.initView();
         findViewById(R.id.tv_confirm).setOnClickListener(this);
         findViewById(R.id.tv_next).setOnClickListener(this);
         mEditText = findViewById(R.id.et_which_chapter);
@@ -147,8 +147,8 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         //小说内容
         mNovelContentAdapter = new NovelContentAdapter(R.layout.item_novel_content, getPresenter());
         mRvNovelContent.setAdapter(mNovelContentAdapter);
-        final LinearLayoutManager novelContentLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mRvNovelContent.setLayoutManager(novelContentLayoutManager);
+        mLayoutManagerNovelContent = new LinearLayoutManager(getApplicationContext());
+        mRvNovelContent.setLayoutManager(mLayoutManagerNovelContent);
         mNovelContentAdapter.initAutoLoadMoreEvent();
         /**
          * 内容页面滚动，用于更新"当前正在阅读"
@@ -166,10 +166,10 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 int readingItemPosition = -1;
                 if (dy <= 0) {
                     //手指向下滑动
-                    readingItemPosition = novelContentLayoutManager.findFirstVisibleItemPosition();
+                    readingItemPosition = mLayoutManagerNovelContent.findFirstVisibleItemPosition();
                 } else {
                     //手指向上滑动
-                    readingItemPosition = novelContentLayoutManager.findLastVisibleItemPosition();
+                    readingItemPosition = mLayoutManagerNovelContent.findLastVisibleItemPosition();
                 }
 //                    LogUtils.d(TAG, "onScrollChange this---new: " + this.lastReadingItemPosition + "," + readingItemPosition);
                 if (mLastReadingItemPosition != readingItemPosition) {
@@ -184,14 +184,16 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                     }
                 }
 
-                //更新底部页码:1/7
-                View currentView = novelContentLayoutManager.findViewByPosition(mLastReadingItemPosition);
+                View currentView = mLayoutManagerNovelContent.findViewByPosition(mLastReadingItemPosition);
                 if (currentView != null) {
+                    //更新底部页码:1/7
                     int totalPage = (int) Math.ceil(1.0d * currentView.getHeight() / mRvNovelContent.getHeight());//总页数
                     int alreadyScrollY = Math.abs(currentView.getTop());
                     int currentPage = 1 + alreadyScrollY / mRvNovelContent.getHeight();//当前页码
 //                    LogUtils.d(TAG, currentPage + "/" + totalPage + "---alreadyScrollY: " + alreadyScrollY);
                     onPageNumberChanged(currentPage,totalPage);
+                    //更新阅读位置
+                    onLastReadingProgressChanged(mNovelContentAdapter.getItem(mLastReadingItemPosition),alreadyScrollY);
                 } else {
                     LogUtils.e(TAG, "currentView == null");
                 }
@@ -266,6 +268,38 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 LogUtils.d(TAG, "load more complete: " + novelChapterContent.getChapterName());
                 mNovelContentAdapter.getLoadMoreModule().loadMoreComplete();
             }
+        }
+    }
+
+    /**
+     * 阅读位置变化
+     * @param item
+     * @param alreadyScrollY
+     */
+    private void onLastReadingProgressChanged(NovelChapterContent item, int alreadyScrollY) {
+        LogUtils.d(TAG, "saveLastReadingState: " + item.getNovelId() + "," + item.getChapterId() + ",offset: " + alreadyScrollY);
+        NovelUtils.saveLastReadingState(item.getNovelId(), alreadyScrollY);
+    }
+
+    /**
+     * 恢复上次阅读状态（阅读位置）
+     * @param novelChapterContent
+     */
+    public void recoverLastReadingState(NovelChapterContent novelChapterContent) {
+        //获取当前阅读章节position
+        getChapterInfoWithOffset(novelChapterContent.getChapterId(),0);
+        int position = -1;
+        List<NovelChapterContent> datas = mNovelContentAdapter.getData();
+        for (int i = 0; i < mNovelContentAdapter.getItemCount(); i++) {
+            if (datas.get(i).getChapterId().equals(novelChapterContent.getChapterId())) {
+                position = i;
+                break;
+            }
+        }
+        int offset = NovelUtils.getLastReadingState(novelChapterContent.getNovelId());
+        LogUtils.d(TAG, "recoverLastReadingState: "+ novelChapterContent.getNovelId() + "," + novelChapterContent.getChapterId() + ",position: " + position + "---offset: " + offset);
+        if (position != -1) {
+            mLayoutManagerNovelContent.scrollToPositionWithOffset(position,-offset);
         }
     }
 

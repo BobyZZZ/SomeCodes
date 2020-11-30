@@ -40,8 +40,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
                 mView.updateCategory(novelCategory);
 
                 if (mFirstInit) {//首次打开时自动打开上次观看章节
-                    mFirstInit = false;
-                    read(mNovelID, NovelUtils.getLastReadChapter(mNovelID,novelCategory.get(0).getChapterId())/*SPUtils.getInt(SPUtils.KEY_LAST_READ_NOVEL, 1)*/);
+                    read(mNovelID, NovelUtils.getLastReadChapter(mNovelID,novelCategory.get(0).getChapterId()));
                 }
             }
 
@@ -83,6 +82,10 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
                 //已缓存章节
                 mChapterIdLoaded = novelChapterContent.getChapterId();
                 mView.loadContentSuccessAndToDisplay(novelChapterContent, novelChapterContent.getChapterNumber(), resetData);
+                if (mFirstInit) {//初次加载时，滚到上次阅读的位置
+                    mFirstInit = false;
+                    mView.recoverLastReadingState(novelChapterContent);
+                }
             }
 
             @Override
