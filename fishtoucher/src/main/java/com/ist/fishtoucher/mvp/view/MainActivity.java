@@ -36,7 +36,7 @@ import java.util.List;
 public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener, BScrollerControl.OnScrollChange {
     String TAG = "MainActivity";
     private final String KEY_NOVELID = "novelID";
-//    private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
+    //    private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
 //    private String mNovelID = NovelService.DIYI_XULIE_NOVEL_INDEX;
     private String mNovelID = NovelService.FKNGMN_NOVEL_INDEX;
 
@@ -135,8 +135,9 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         mRvCategory.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                //同步滚动条
                 int countInScreen = RecyclerViewUtils.calculateItemCountInScreen(mRvCategory);
-                LogUtils.i(TAG,"onScrolled: " + dy + "---countInScreen: " + countInScreen);
+                LogUtils.i(TAG, "onScrolled: " + dy + "---countInScreen: " + countInScreen);
                 int firstVisibleItemPosition = mLayoutManagerCategory.findFirstVisibleItemPosition();
                 float fraction = firstVisibleItemPosition * 1f / (mCategoryAdapter.getItemCount() - countInScreen);
                 mScrollerControl.setFraction(fraction);
@@ -153,9 +154,15 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
          * 内容页面滚动，用于更新"当前正在阅读"
          */
         mRvNovelContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            private int lastReadingItemPosition = -1;
+            String TAG = "mRvNovelContent$Listener";
+            /**
+             * 当前阅读所处position
+             */
+            private int mLastReadingItemPosition = -1;
+
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                //更新顶部标题
                 int readingItemPosition = -1;
                 if (dy <= 0) {
                     //手指向下滑动
@@ -165,24 +172,45 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                     readingItemPosition = novelContentLayoutManager.findLastVisibleItemPosition();
                 }
 //                    LogUtils.d(TAG, "onScrollChange this---new: " + this.lastReadingItemPosition + "," + readingItemPosition);
-                if (this.lastReadingItemPosition != readingItemPosition) {
+                if (mLastReadingItemPosition != readingItemPosition) {
                     RecyclerView.ViewHolder readingItemViewHolder = mRvNovelContent.findViewHolderForLayoutPosition(readingItemPosition);
                     if (readingItemViewHolder != null) {
                         int top = readingItemViewHolder.itemView.getTop();
                         if (top <= 0) {
-                            LogUtils.d(TAG, "onCurrentReadingChapterChange currentReading: " + mNovelContentAdapter.getItem(readingItemPosition) + ",top: " + top);
+//                            LogUtils.d(TAG, "onCurrentReadingChapterChange currentReading: " + mNovelContentAdapter.getItem(readingItemPosition) + ",top: " + top);
                             onCurrentReadingChapterChange(mNovelContentAdapter.getItem(readingItemPosition));
-                            this.lastReadingItemPosition = readingItemPosition;
+                            mLastReadingItemPosition = readingItemPosition;
                         }
                     }
+                }
+
+                //更新底部页码:1/7
+                View currentView = novelContentLayoutManager.findViewByPosition(mLastReadingItemPosition);
+                if (currentView != null) {
+                    int totalPage = (int) Math.ceil(1.0d * currentView.getHeight() / mRvNovelContent.getHeight());//总页数
+                    int alreadyScrollY = Math.abs(currentView.getTop());
+                    int currentPage = 1 + alreadyScrollY / mRvNovelContent.getHeight();//当前页码
+//                    LogUtils.d(TAG, currentPage + "/" + totalPage + "---alreadyScrollY: " + alreadyScrollY);
+                    onPageNumberChanged(currentPage,totalPage);
+                } else {
+                    LogUtils.e(TAG, "currentView == null");
                 }
             }
         });
     }
 
     /**
+     * 更新页码
+     * @param currentPage
+     * @param totalPage
+     */
+    private void onPageNumberChanged(int currentPage, int totalPage) {
+        TextView tvPageNumber = findViewById(R.id.tv_pageNumber);
+        tvPageNumber.setText(getString(R.string.pageNumber,currentPage,totalPage));
+    }
+
+    /**
      * 当前阅读章节变化
-     *
      */
     private void onCurrentReadingChapterChange(NovelChapterContent novelChapterContent) {
         //currentReadingChapter change!!
@@ -217,7 +245,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     public void loadContentSuccessAndToDisplay(NovelChapterContent novelChapterContent, int chapterNumber, boolean resetData) {
         closeCategoryMenu();
         if (GlobalConstant.isFishMode()) {
-        LongLogUtils.w(TAG, "displayContent: " + novelChapterContent + ",resetData: " + resetData);
+            LongLogUtils.w(TAG, "displayContent: " + novelChapterContent + ",resetData: " + resetData);
         } else {
             mEditText.setText(mCategoryAdapter.getChapterPosition(novelChapterContent.getChapterId()) + 1 + "");
 
@@ -242,7 +270,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     }
 
     public NovelChapterInfo getChapterInfoWithOffset(String chapterId, int offset) {
-        return mCategoryAdapter.getChapterInfoWithOffset(chapterId,offset);
+        return mCategoryAdapter.getChapterInfoWithOffset(chapterId, offset);
     }
 
     @Override
@@ -257,7 +285,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 }
                 break;
             case R.id.tv_next:
-                NovelChapterInfo targetChapter = mCategoryAdapter.getChapterInfoWithOffset(NovelUtils.getLastReadChapter(),1);
+                NovelChapterInfo targetChapter = mCategoryAdapter.getChapterInfoWithOffset(NovelUtils.getLastReadChapter(), 1);
                 if (targetChapter != null) {
                     getPresenter().read(mNovelID, targetChapter.getChapterId(), true);
                 } else {
