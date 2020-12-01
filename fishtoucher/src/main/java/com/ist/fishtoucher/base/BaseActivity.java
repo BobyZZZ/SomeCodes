@@ -1,7 +1,11 @@
 package com.ist.fishtoucher.base;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,9 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.ist.fishtoucher.utils.UIUtils;
+import com.ist.fishtoucher.view.CircleLoadingView;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    private Dialog mLoadingDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,8 +68,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         Toast.makeText(FishApplication.mContext, info, Toast.LENGTH_SHORT).show();
     }
 
-    public void showProgress() {
+    public void showLoading(DialogInterface.OnCancelListener onCancelListener) {
+        if (mLoadingDialog == null || !mLoadingDialog.isShowing()) {
+            mLoadingDialog = new Dialog(this);
+            mLoadingDialog.getWindow().setDimAmount(0);
+            mLoadingDialog.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
+            if (onCancelListener != null) {
+                mLoadingDialog.setOnCancelListener(onCancelListener);
+            }
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.width = (int) (getResources().getDisplayMetrics().density * 80);
+            lp.height = lp.width;
+            mLoadingDialog.setContentView(new CircleLoadingView(getApplicationContext()),lp);
+            mLoadingDialog.show();
+        }
+    }
 
+    public void hideLoading() {
+        if (mLoadingDialog != null) {
+            mLoadingDialog.dismiss();
+        }
     }
 
     /******************************************************** Permissions ************************************************************************/

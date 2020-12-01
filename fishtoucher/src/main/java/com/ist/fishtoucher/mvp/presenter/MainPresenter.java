@@ -32,6 +32,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
 
     @Override
     public void getCategory(String novelIndex) {
+        mView.loading();
         mModel.getCategory(novelIndex, new BaseCallback() {
             @Override
             public <T> void onSuccess(T data) {
@@ -73,11 +74,11 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
      * @param resetData 是否需要重新设置数据
      */
     public void read(final String novelID, final String chapterID, final boolean resetData) {
-        mView.loading();
         LogUtils.d(TAG, "read: " + chapterID);
         mModel.getChapter(novelID, chapterID, new BaseCallback() {
             @Override
             public <T> void onSuccess(T data) {
+                mView.hideLoading();
                 NovelChapterContent novelChapterContent = (NovelChapterContent) data;
                 //已缓存章节
                 mChapterIdLoaded = novelChapterContent.getChapterId();

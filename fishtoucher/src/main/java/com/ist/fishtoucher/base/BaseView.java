@@ -1,9 +1,13 @@
 package com.ist.fishtoucher.base;
 
+import android.content.DialogInterface;
+
 public interface BaseView {
     void showToast(String info);
 
-    void showProgress();
+    void showLoading(DialogInterface.OnCancelListener onCancelListener);
+
+    void hideLoading();
 
     void onError(Throwable throwable);
 }

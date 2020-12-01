@@ -1,5 +1,6 @@
 package com.ist.fishtoucher.mvp.view;
 
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -237,6 +238,12 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     @Override
     public void loading() {
 //        hideSoftInput();
+        showLoading(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                LogUtils.w(TAG,"onCancel");
+            }
+        });
     }
 
     @Override
