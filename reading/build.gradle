@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        applicationId "com.bb.reading"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+greendao {
+    schemaVersion 1//数据库版本号
+//    daoPackage 'com.ist.fishtoucher.db.greenDao'//设置DaoMaster、DaoSession、Dao包名
+//    targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
+//    targetGenDirTest = false//设置生成单元测试目录
+//    generateTests = true//设置自动生成单元测试用例
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0-alpha1'
+
+    //okhttp
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    // RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    // Retrofit和jxjava关联
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    // Retrofit使用Gson转换
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    // RxAndroid
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    //HTML的解析器
+//    implementation 'me.ghui:fruit-converter-retrofit:1.0.4'
+//    implementation 'me.ghui:global-retrofit-converter:1.0.1'
+
+//    implementation 'org.jsoup:jsoup:1.13.1'   //解析html
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'//BaseRecyclerViewAdapterHelper
+
+    //数据库
+    implementation 'org.greenrobot:greendao:3.3.0' // add library
+    //调色器
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation project(path: ':UILib')
+}

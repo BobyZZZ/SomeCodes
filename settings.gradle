@@ -1,4 +1,4 @@
-include ':fishtoucher'
+include ':reading'
 include ':UILib'
 include ':flyframeview'
 rootProject.name = "SomeCodes"

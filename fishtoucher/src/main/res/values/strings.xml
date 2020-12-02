@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">RehcuotHsif</string>
-    <string name="confirm">confirm</string>
-    <string name="next">next</string>
-    <string name="un_downloaded">未缓存</string>
-    <string name="no_more">已经是最后一节!!</string>
-    <string name="pageNumber">%d/%d</string>
-</resources>
