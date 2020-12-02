@@ -115,7 +115,7 @@
             app:fastScrollVerticalThumbDrawable="@drawable/scroller_drawable"
             app:fastScrollVerticalTrackDrawable="@drawable/shape_scroller_bg" />-->
 
-        <com.ist.fishtoucher.view.BScrollerControl
+        <com.bb.fishtoucher.view.BScrollerControl
             android:id="@+id/bsc_scroller"
             android:layout_width="18dp"
             android:layout_height="match_parent"

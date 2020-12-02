@@ -64,4 +64,5 @@ dependencies {
     implementation 'org.greenrobot:greendao:3.3.0' // add library
     //调色器
     implementation 'androidx.palette:palette:1.0.0'
+    implementation project(path: ':UILib')
 }

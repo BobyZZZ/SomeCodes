@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".test.activity.TestActivity">
+    tools:context="com.bb.fishtoucher.test.activity.TestActivity">
 
-    <com.ist.fishtoucher.view.BScrollerControl
+    <com.bb.fishtoucher.view.BScrollerControl
         android:id="@+id/bsc"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
