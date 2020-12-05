@@ -6,10 +6,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
-import androidx.appcompat.app.AlertDialog;
 
 import com.bb.uilib.loadingView.CircleLoadingView;
-import com.ist.uilib.R;
+import com.bb.uilib.R;
 import com.bb.uilib.dialog.CustomDialog;
 
 public class UITester {

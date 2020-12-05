@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.ist.uilib.R;
+import com.bb.uilib.R;
 
 /**
  * Created by Android Studio.

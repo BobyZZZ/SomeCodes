@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
-import com.ist.uilib.R;
+import com.bb.uilib.R;
 
 public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";

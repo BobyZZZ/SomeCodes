@@ -4,7 +4,7 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.ist.uilib.R;
+import com.bb.uilib.R;
 
 public class BottomSheetDialogStyle implements CustomDialog.CustomStyle {
     @Override

@@ -26,13 +26,17 @@ android {
 
 greendao {
     schemaVersion 1//数据库版本号
-//    daoPackage 'com.ist.fishtoucher.db.greenDao'//设置DaoMaster、DaoSession、Dao包名
+//    daoPackage 'com.bb.reading.db.greenDao'//设置DaoMaster、DaoSession、Dao包名
 //    targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
 //    targetGenDirTest = false//设置生成单元测试目录
 //    generateTests = true//设置自动生成单元测试用例
 }
 
 dependencies {
+    //依赖ui、网络module
+    implementation project(path: ':UILib')
+    implementation project(path: ':network')
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -64,5 +68,4 @@ dependencies {
     implementation 'org.greenrobot:greendao:3.3.0' // add library
     //调色器
     implementation 'androidx.palette:palette:1.0.0'
-    implementation project(path: ':UILib')
 }
