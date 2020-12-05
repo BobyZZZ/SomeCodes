@@ -138,7 +138,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 //同步滚动条
                 int countInScreen = RecyclerViewUtils.calculateItemCountInScreen(mRvCategory);
-                LogUtils.i(TAG, "onScrolled: " + dy + "---countInScreen: " + countInScreen);
+                LogUtils.v(TAG, "onScrolled: " + dy + "---countInScreen: " + countInScreen);
                 int firstVisibleItemPosition = mLayoutManagerCategory.findFirstVisibleItemPosition();
                 float fraction = firstVisibleItemPosition * 1f / (mCategoryAdapter.getItemCount() - countInScreen);
                 mScrollerControl.setFraction(fraction);
@@ -228,9 +228,9 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     @Override
     public void onError(Throwable throwable) {
+        LogUtils.e(TAG, "onError: " + throwable);
         BaseLoadMoreModule loadMoreModule = mNovelContentAdapter.getLoadMoreModule();
         if (loadMoreModule.isLoading()) {
-            LogUtils.d(TAG, "onError: loadMoreFail");
             loadMoreModule.loadMoreFail();
         }
     }
@@ -287,7 +287,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
      * @param alreadyScrollY
      */
     private void onLastReadingProgressChanged(NovelChapterContent item, int alreadyScrollY) {
-        LogUtils.d(TAG, "saveLastReadingState: " + item.getNovelId() + "," + item.getChapterId() + ",offset: " + alreadyScrollY);
+//        LogUtils.v(TAG, "saveLastReadingState: " + item.getNovelId() + "," + item.getChapterId() + ",offset: " + alreadyScrollY);
         NovelUtils.saveLastReadingPosition(item.getNovelId(), alreadyScrollY);
     }
 

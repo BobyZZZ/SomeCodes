@@ -6,6 +6,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -36,7 +37,12 @@ public class NovelCategory {
 
     public static List<NovelChapterInfo> parse(String novelId,String body) {
         Document doc = Jsoup.parse(body);
-        Elements mATagList = doc.getElementById("list").getElementsByTag(ATTR_A);
+        Element list = doc.getElementById("list");
+        LogUtils.d(TAG,"body: " + body + "\n" + list);
+        if (list == null) {
+            return null;
+        }
+        Elements mATagList = list.getElementsByTag(ATTR_A);
         List<String> hrefs = mATagList.eachAttr(ATTR_HREF);
         List<String> titles = mATagList.eachText();
         return filterUselessInfo(novelId,hrefs,titles);

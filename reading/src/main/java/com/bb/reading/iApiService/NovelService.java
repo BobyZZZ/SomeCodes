@@ -7,6 +7,7 @@ import retrofit2.http.Path;
 
 public interface NovelService {
     public static String NORVEL_BASE_URL = "http://www.biquge.info/";
+//    public static String NORVEL_BASE_URL = "http://m.biquge.info/";
 
     public static String DIYI_XULIE_NOVEL_INDEX = "12_12696";//http://www.biquge.info/12_12696/5621986.html
     public static long DIYI_XULIE_FIRST_CHAPTER_INDEX = 5621986;//http://www.biquge.info/12_12696/5621986.html

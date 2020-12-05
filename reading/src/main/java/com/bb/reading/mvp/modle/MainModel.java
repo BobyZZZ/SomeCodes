@@ -63,6 +63,10 @@ public class MainModel implements MainContract.IMainModel {
                             String body = responseBody.string();
                             List<NovelChapterInfo> novelCategory = NovelCategory.parse(novelIndex, body);
                             LogUtils.e(TAG, "getCategory: " + novelCategory);
+                            if (novelCategory == null || novelCategory.isEmpty()) {
+                                onError(new Exception("novelCategory is null"));
+                                return;
+                            }
                             baseCallback.onSuccess(novelCategory);
                             if (!TextUtils.isEmpty(type)) {
                                 mNovelDBManager.saveCategory(new NovelCategory(novelIndex, body));
@@ -74,7 +78,7 @@ public class MainModel implements MainContract.IMainModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        baseCallback.onError(e);
                     }
 
                     @Override
