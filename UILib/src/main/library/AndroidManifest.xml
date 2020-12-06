@@ -3,7 +3,7 @@
     package="com.bb.uilib">
 
     <application>
-        <activity android:name="com.bb.uilib.MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
