@@ -79,8 +79,6 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         mRvNovelContent = findViewById(R.id.rv_novel_content);
 
         mDrawerLayout.addDrawerListener(getDrawerLayoutListener());
-
-        initData();
     }
 
     private DrawerLayout.DrawerListener getDrawerLayoutListener() {
@@ -110,11 +108,11 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
         return drawerListener;
     }
 
-    private void initData() {
-        NovelUtils.saveLastReadNovel(mNovelID);
+    @Override
+    protected void proceed() {
         initRV();
 
-        getPresenter().getCategory(mNovelID);
+        getPresenter().getCategory(mNovelID,true);
     }
 
     private void initRV() {
@@ -236,7 +234,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     }
 
     @Override
-    public void loading() {
+    public void loadingStart() {
 //        hideSoftInput();
         showLoading(new DialogInterface.OnCancelListener() {
             @Override
@@ -244,6 +242,11 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
                 LogUtils.w(TAG,"onCancel");
             }
         });
+    }
+
+    @Override
+    public void loadingStop() {
+        hideLoading();
     }
 
     @Override

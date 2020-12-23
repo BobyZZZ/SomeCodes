@@ -30,6 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         initPresenter();
         initView();
+        proceed();
         test();
     }
 
@@ -42,6 +43,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void initView() {
 
     }
+
+    protected abstract void proceed();
 
     protected abstract void initPresenter();
 

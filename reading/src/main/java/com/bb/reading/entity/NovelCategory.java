@@ -12,40 +12,26 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.greenrobot.greendao.annotation.Generated;
 
-@Entity
 public class NovelCategory {
     static String TAG = "NovelCategory";
 
-    @Id
-    private String mNovelId;
-    private String responseBody;
-
     private static final String ATTR_HREF = "href";
     private static final String ATTR_A = "a";
-
-    @Generated(hash = 444063137)
-    public NovelCategory(String mNovelId, String responseBody) {
-        this.mNovelId = mNovelId;
-        this.responseBody = responseBody;
-    }
-
-    @Generated(hash = 531682760)
-    public NovelCategory() {
-    }
 
     public static List<NovelChapterInfo> parse(String novelId,String body) {
         Document doc = Jsoup.parse(body);
         Element list = doc.getElementById("list");
         LogUtils.d(TAG,"body: " + body + "\n" + list);
-        if (list == null) {
+        if (list != null) {
+            Elements mATagList = list.getElementsByTag(ATTR_A);
+            List<String> hrefs = mATagList.eachAttr(ATTR_HREF);
+            List<String> titles = mATagList.eachText();
+            return filterUselessInfo(novelId, hrefs, titles);
+        } else {
+            LogUtils.e(TAG,novelId + "'s chapter list is null");
             return null;
         }
-        Elements mATagList = list.getElementsByTag(ATTR_A);
-        List<String> hrefs = mATagList.eachAttr(ATTR_HREF);
-        List<String> titles = mATagList.eachText();
-        return filterUselessInfo(novelId,hrefs,titles);
     }
 
     private static List<NovelChapterInfo> filterUselessInfo(String novelId, List<String> originHrefs, List<String> originTitles) {
@@ -78,72 +64,11 @@ public class NovelCategory {
                 */
                 int maxLength = Math.min(originTitles.size(),originHrefs.size());
                 for (int j = 0; j < maxLength; j++) {
-                    mChapters.add(new NovelChapterInfo(novelId,originTitles.get(j),originHrefs.get(j)));
+                    mChapters.add(new NovelChapterInfo(j,novelId,originTitles.get(j),originHrefs.get(j)));
                 }
                 LogUtils.d(TAG, "filterUselessInfo without filter,size is: " + mChapters.size());
 //            }
         }
         return mChapters;
-    }
-/*
-    @Entity
-    public static class Chapter {
-        @Id
-        private String novelID;
-        private String name;
-        private String url;
-
-        public Chapter(String chapterName, String url) {
-            this.name = chapterName;
-            this.url = url;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        @Override
-        public String toString() {
-            return "Chapter{" +
-                    "name='" + name + '\'' +
-                    ", url='" + url + '\'' +
-                    '}';
-        }
-    }*/
-
-    public String getMNovelId() {
-        return this.mNovelId;
-    }
-
-    public void setMNovelId(String mNovelId) {
-        this.mNovelId = mNovelId;
-    }
-
-    public String getResponseBody() {
-        return this.responseBody;
-    }
-
-    public void setResponseBody(String responseBody) {
-        this.responseBody = responseBody;
-    }
-
-    @Override
-    public String toString() {
-        return "NovelCategory{" +
-                "mNovelId='" + mNovelId + '\'' +
-                ", responseBody='" + responseBody + '\'' +
-                '}';
     }
 }

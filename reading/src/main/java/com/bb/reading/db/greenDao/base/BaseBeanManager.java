@@ -1,6 +1,7 @@
 package com.bb.reading.db.greenDao.base;
 
 import org.greenrobot.greendao.AbstractDao;
+import org.greenrobot.greendao.query.WhereCondition;
 
 import java.util.List;
 
@@ -23,12 +24,16 @@ public class BaseBeanManager<T, K> {
         return mDao.insert(t);
     }
 
+    public void insert(List<T> tList) {
+        mDao.insertInTx(tList);
+    }
+
     public long insertOrReplace(T t) {
         return mDao.insertOrReplace(t);
     }
 
-    public void insert(List<T> tList) {
-        mDao.insertInTx(tList);
+    public void insertOrReplace(List<T> t) {
+        mDao.insertOrReplaceInTx(t);
     }
 
     /************************************************delete****************************************************/
@@ -50,6 +55,10 @@ public class BaseBeanManager<T, K> {
     }
 
     /************************************************query****************************************************/
+    public List<T> query(WhereCondition whereCondition,WhereCondition... more) {
+        return mDao.queryBuilder().where(whereCondition,more).build().list();
+    }
+
     public T load(K key) {
         T data = mDao.load(key);
         return data;

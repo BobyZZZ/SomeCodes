@@ -1,16 +1,12 @@
 package com.bb.reading.db.greenDao.beanManager;
 
 import com.bb.reading.entity.DaoSession;
-import com.bb.reading.entity.NovelCategory;
-import com.bb.reading.iApiService.NovelService;
-import com.bb.reading.utils.LogUtils;
+import com.bb.reading.entity.NovelChapterInfo;
+import com.bb.reading.entity.NovelChapterInfoDao;
+import com.bb.reading.utils.LongLogUtils;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
+import java.util.List;
+
 
 /**
  * Created by Android Studio.
@@ -18,14 +14,15 @@ import okhttp3.ResponseBody;
  * Date: 2020/11/8
  * Time: 0:20
  */
-public class NovelDBManager implements NovelService {
+public class NovelDBManager {
     String TAG = "NovelDBManager";
 
     private static NovelDBManager sInstance;
-    public final NovelCategoryDBManager mNovelCategoryDBManager;
+    public CategoryDB mCategoryDB;
 
     private NovelDBManager(DaoSession dao) {
-        mNovelCategoryDBManager = new NovelCategoryDBManager(dao.getNovelCategoryDao());
+        NovelChapterInfoDao novelChapterInfoDao = dao.getNovelChapterInfoDao();
+        mCategoryDB = new CategoryDB(novelChapterInfoDao);
     }
 
     public static NovelDBManager getInstance(DaoSession dao) {
@@ -37,54 +34,28 @@ public class NovelDBManager implements NovelService {
         return sInstance;
     }
 
-    @Override
-    public Observable<ResponseBody> getChapter(String novel_index, String chapter_href) {
-        return Observable.empty()
-                .observeOn(Schedulers.io())
-                .map(new Function<Object, ResponseBody>() {
-                    @Override
-                    public ResponseBody apply(Object o) throws Exception {
-                        LogUtils.d(TAG, "getChapter in thread: " + Thread.currentThread().getName());
-                        return null;
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread());
+    public List<NovelChapterInfo> getCategory(String novelIndex) {
+        List<NovelChapterInfo> cache = mCategoryDB.query(NovelChapterInfoDao.Properties.NovelID.eq(novelIndex));
+        LongLogUtils.i(TAG, "get " + novelIndex + "'s Category in thread: " + Thread.currentThread().getName()
+                + ", have cache: " + cache);
+        return cache;
     }
 
-    @Override
-    public Observable<ResponseBody> getCategory(String novelIndex) {
-/*        return Observable.just(novelIndex)
-                .observeOn(Schedulers.io())
-                .map(new Function<String, ResponseBody>() {
-                    @Override
-                    public ResponseBody apply(String string) throws Exception {
-                        NovelCategory cache = mNovelCategoryDao.load(string);
-                        LogUtils.d(TAG,"get " + string + "'s Category in thread: " + Thread.currentThread().getName()
-                        + "\n cache: " + cache);
-                        if (cache != null) {
-                            ResponseBody responseBodyString = ResponseBody.create(MediaType.parse("text"), cache.getResponseBody());
-                            return responseBodyString;
-                        }
-                        return null;
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread());*/
-
-        NovelCategory cache = mNovelCategoryDBManager.load(novelIndex);
-        LogUtils.d(TAG, "get " + novelIndex + "'s Category in thread: " + Thread.currentThread().getName()
-                + ", have cache: " + (cache != null));
-        if (cache != null) {
-            ResponseBody responseBodyString = ResponseBody.create(MediaType.parse("from_db"), cache.getResponseBody());
-            Observable<ResponseBody> bodyObservable = Observable.just(responseBodyString);
-            return bodyObservable;
+    public boolean saveCategory(List<NovelChapterInfo> novelCategory) {
+        if (novelCategory == null || novelCategory.isEmpty()) {
+            return false;
         }
-        return null;
-    }
+        //先删除
+        List<NovelChapterInfo> cache = getCategory(novelCategory.get(0).getNovelID());
+        if (!cache.isEmpty()) {
+            for (NovelChapterInfo t : cache) {
+                mCategoryDB.delete(t);
+            }
+        }
 
-    public void saveCategory(NovelCategory novelCategory) {
-        LogUtils.d(TAG, "save cache: novelCategory");
-        mNovelCategoryDBManager.insertOrReplace(novelCategory);
-        LogUtils.w(TAG, "after saveCategory: " + mNovelCategoryDBManager.loadAll());
-
+        //再保存
+        LongLogUtils.i(TAG, "save cache: " + novelCategory);
+        mCategoryDB.insertOrReplace(novelCategory);
+        return true;
     }
 }

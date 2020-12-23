@@ -27,6 +27,7 @@ public class UIUtils {
     /**
      * 修改状态栏颜色，跟随内容布局颜色
      * @param activity
+     * @param darkTextColor 状态栏黑色字体
      */
     public static void ColorfulStatusBar(Activity activity,boolean darkTextColor) {
         final Window window = activity.getWindow();
@@ -72,7 +73,7 @@ public class UIUtils {
      * @param context
      * @return
      */
-    private static int getStatusBarHeight(Context context) {
+    public static int getStatusBarHeight(Context context) {
         Resources resources = context.getResources();
         int id = resources.getIdentifier("status_bar_height", "dimen", "android");
         return resources.getDimensionPixelSize(id);

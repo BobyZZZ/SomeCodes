@@ -31,12 +31,11 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
     }
 
     @Override
-    public void getCategory(String novelIndex) {
-        mView.loading();
-        mModel.getCategory(novelIndex, new BaseCallback() {
+    public void getCategory(String novelIndex, boolean readCache) {
+        mView.loadingStart();
+        mModel.getCategory(novelIndex,readCache, new BaseCallback<List<NovelChapterInfo>>() {
             @Override
-            public <T> void onSuccess(T data) {
-                List<NovelChapterInfo> novelCategory = (List<NovelChapterInfo>) data;
+            public void onSuccess(List<NovelChapterInfo> novelCategory, boolean... fromCache) {
                 mChapters = novelCategory;
                 mView.updateCategory(novelCategory);
 
@@ -52,10 +51,6 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         });
     }
 
-    public void read(String novelID, final int chapterNumber, boolean resetData) {
-        read(novelID, getChapterIndexFromCategory(chapterNumber), resetData);
-    }
-
     public void read(String novelID, final int chapterNumber) {
         read(novelID, getChapterIndexFromCategory(chapterNumber), false);
     }
@@ -64,6 +59,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
      * @param novelID   哪本小说
      * @param chapterID 该章节的href
      */
+    @Override
     public void read(String novelID, String chapterID) {
         read(novelID, chapterID, false);
     }
@@ -75,11 +71,10 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
      */
     public void read(final String novelID, final String chapterID, final boolean resetData) {
         LogUtils.d(TAG, "read: " + chapterID);
-        mModel.getChapter(novelID, chapterID, new BaseCallback() {
+        mModel.getChapter(novelID, chapterID, new BaseCallback<NovelChapterContent>() {
             @Override
-            public <T> void onSuccess(T data) {
-                mView.hideLoading();
-                NovelChapterContent novelChapterContent = (NovelChapterContent) data;
+            public void onSuccess(NovelChapterContent novelChapterContent, boolean... fromCache) {
+                mView.loadingStop();
                 //已缓存章节
                 mChapterIdLoaded = novelChapterContent.getChapterId();
                 mView.loadContentSuccessAndToDisplay(novelChapterContent, novelChapterContent.getChapterNumber(), resetData);
@@ -87,6 +82,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
                     mFirstInit = false;
                     mView.recoverLastReadingState(novelChapterContent);
                 }
+                NovelUtils.saveLastReadNovel(mNovelID);//记录最后阅读哪本小说
             }
 
             @Override
@@ -142,7 +138,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         String text = "";
         BaseCallback baseCallback = new BaseCallback() {
             @Override
-            public <T> void onSuccess(T data) {
+            public void onSuccess(Object data, boolean... fromCache) {
                 List<NovelChapterInfo> changeData = (List<NovelChapterInfo>) data;
                 for (NovelChapterInfo chapter : changeData) {
                 }
