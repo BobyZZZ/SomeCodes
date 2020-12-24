@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bb.network.exceptionHandler.ExceptionHandler;
 import com.bb.reading.base.BaseMvpActivity;
 import com.bb.reading.mvp.contract.MainContract;
 import com.bb.reading.mvp.presenter.MainPresenter;
@@ -37,9 +38,9 @@ import java.util.List;
 public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener, BScrollerControl.OnScrollChange {
     String TAG = "MainActivity";
     private final String KEY_NOVELID = "novelID";
-    //    private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
+        private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
 //    private String mNovelID = NovelService.DIYI_XULIE_NOVEL_INDEX;
-    private String mNovelID = NovelService.FKNGMN_NOVEL_INDEX;
+//    private String mNovelID = NovelService.FKNGMN_NOVEL_INDEX;
 
     private EditText mEditText;
     private DrawerLayout mDrawerLayout;
@@ -227,6 +228,18 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     @Override
     public void onError(Throwable throwable) {
         LogUtils.e(TAG, "onError: " + throwable);
+        if (throwable instanceof ExceptionHandler.ResponseThrowable) {
+            ExceptionHandler.ResponseThrowable error = (ExceptionHandler.ResponseThrowable) throwable;
+            switch (error.code) {
+                case ExceptionHandler.Error.LOCAL_CACHE_ERROR:
+                    break;
+                default:
+                    showToast(R.string.error_server);
+                    hideLoading();
+                    break;
+            }
+        }
+
         BaseLoadMoreModule loadMoreModule = mNovelContentAdapter.getLoadMoreModule();
         if (loadMoreModule.isLoading()) {
             loadMoreModule.loadMoreFail();
@@ -241,7 +254,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
             public void onCancel(DialogInterface dialog) {
                 LogUtils.w(TAG,"onCancel");
             }
-        });
+        },false);
     }
 
     @Override
@@ -252,8 +265,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     @Override
     public void updateCategory(List<NovelChapterInfo> novelCategory) {
         mCategoryAdapter.setNewInstance(novelCategory);
-//        LogUtils.e(TAG, "updateCategory: " + novelCategory);
-
+        LogUtils.w(TAG, "updateCategory: " + novelCategory);
     }
 
     @Override

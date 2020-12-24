@@ -149,7 +149,7 @@ public abstract class NetworkApiServer implements INetworkEnvironment {
             @Override
             public T apply(T t) throws Exception {
                 if (t instanceof BaseResponse && ((BaseResponse) t).getCode() != BaseResponse.RESPONSE_OK) {
-                    throw new ExceptionHandler.ResponseThrowable(ExceptionHandler.Error.UNKNOWN, "服务器数据请求失败"
+                    throw ExceptionHandler.ResponseThrowable.create(ExceptionHandler.Error.UNKNOWN, "服务器数据请求失败"
                             , new IllegalArgumentException());
                 }
                 return t;

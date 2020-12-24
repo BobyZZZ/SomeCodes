@@ -72,6 +72,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showLoading(DialogInterface.OnCancelListener onCancelListener) {
+        showLoading(onCancelListener,true);
+    }
+
+    public void showLoading(DialogInterface.OnCancelListener onCancelListener, Boolean... canCancel) {
         if (mLoadingDialog == null || !mLoadingDialog.isShowing()) {
             CircleLoadingView circleLoadingView = new CircleLoadingView(getApplicationContext());
             mLoadingDialog = CustomDialog.create(this)
@@ -80,6 +84,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     .setHeight((int) (getResources().getDisplayMetrics().density * 80))
                     .setDimAmount(0)
                     .setBackgroundColor(Color.TRANSPARENT)
+                    .setCanceledOnTouchOutside(canCancel.length > 0 ? canCancel[0] : true)
                     .build();
             mLoadingDialog.show();
         }

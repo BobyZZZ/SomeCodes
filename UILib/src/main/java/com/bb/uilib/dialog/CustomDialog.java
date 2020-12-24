@@ -22,6 +22,7 @@ public class CustomDialog extends Dialog {
     private boolean mFullScreen;
     private float mDimAmount;
     private int mBackgroundColor;
+    private boolean mCanceledOnTouchOutside;
 
     public static Builder create(Context context) {
         return new Builder(context);
@@ -48,6 +49,7 @@ public class CustomDialog extends Dialog {
         this.mFullScreen = builder.fullScreen;
         this.mDimAmount = builder.dimAmount;
         this.mBackgroundColor = builder.backgroundColor;
+        this.mCanceledOnTouchOutside = builder.canceledOnTouchOutside;
 
         if (mLayoutID != 0 && mContentView != null) {
             throw new Exception("can't not set layoutId and contentView at same time");
@@ -79,6 +81,8 @@ public class CustomDialog extends Dialog {
         if (mDimAmount != -1) {
             window.setDimAmount(mDimAmount);
         }
+
+        setCanceledOnTouchOutside(mCanceledOnTouchOutside);
     }
 
     @Override
@@ -112,6 +116,7 @@ public class CustomDialog extends Dialog {
         boolean fullScreen;
         float dimAmount = -1;
         int backgroundColor = Color.WHITE;
+        boolean canceledOnTouchOutside = true;
 
         private Builder(@Nullable Context context) {
             this.context = context;
@@ -168,6 +173,10 @@ public class CustomDialog extends Dialog {
 
         public Builder setBackgroundColor(int backgroundColor) {
             this.backgroundColor = backgroundColor;
+            return this;
+        }
+        public Builder setCanceledOnTouchOutside(boolean canceledOnTouchOutside) {
+            this.canceledOnTouchOutside = canceledOnTouchOutside;
             return this;
         }
     }

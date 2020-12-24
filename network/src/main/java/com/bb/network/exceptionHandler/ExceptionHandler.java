@@ -82,14 +82,28 @@ public class ExceptionHandler {
         public static final int NETWORK_ERROR = 1002;//网络错误
         public static final int SSL_ERROR = 1003;//证书错误
         public static final int TIMEOUT_ERROR = 1004;//连接超时
-        public static final int UNKNOWN = 1005;//未知错误
+        public static final int LOCAL_CACHE_ERROR = 1005;//本地缓存错误
+        public static final int UNKNOWN = 1006;//未知错误
     }
 
     public static class ResponseThrowable extends Exception {
         public int code;
-        public ResponseThrowable(int code,String message,Throwable throwable) {
+
+        public static ResponseThrowable create(int code,String message,Throwable throwable){
+            return new ResponseThrowable(code,message,throwable);
+        }
+
+        private ResponseThrowable(int code,String message,Throwable throwable) {
             super(message,throwable);
             this.code = code;
+        }
+
+        @Override
+        public String toString() {
+            return "ResponseThrowable{" +
+                    "code=" + code +
+                    " " + super.toString() +
+                    '}';
         }
     }
 }

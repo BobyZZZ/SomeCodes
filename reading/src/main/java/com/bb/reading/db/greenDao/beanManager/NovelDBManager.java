@@ -36,8 +36,8 @@ public class NovelDBManager {
 
     public List<NovelChapterInfo> getCategory(String novelIndex) {
         List<NovelChapterInfo> cache = mCategoryDB.query(NovelChapterInfoDao.Properties.NovelID.eq(novelIndex));
-        LongLogUtils.i(TAG, "get " + novelIndex + "'s Category in thread: " + Thread.currentThread().getName()
-                + ", have cache: " + cache);
+/*        LongLogUtils.i(TAG, "get " + novelIndex + "'s Category cache in thread: " + Thread.currentThread().getName()
+                + ", have cache: " + cache);*/
         return cache;
     }
 
@@ -54,7 +54,7 @@ public class NovelDBManager {
         }
 
         //再保存
-        LongLogUtils.i(TAG, "save cache: " + novelCategory);
+//        LongLogUtils.i(TAG, "save cache: " + novelCategory);
         mCategoryDB.insertOrReplace(novelCategory);
         return true;
     }

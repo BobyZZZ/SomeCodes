@@ -12,7 +12,9 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 目录解析类
+ */
 public class NovelCategory {
     static String TAG = "NovelCategory";
 
@@ -23,15 +25,16 @@ public class NovelCategory {
         Document doc = Jsoup.parse(body);
         Element list = doc.getElementById("list");
         LogUtils.d(TAG,"body: " + body + "\n" + list);
+        List<NovelChapterInfo> mChapters = new ArrayList<>();
         if (list != null) {
             Elements mATagList = list.getElementsByTag(ATTR_A);
             List<String> hrefs = mATagList.eachAttr(ATTR_HREF);
             List<String> titles = mATagList.eachText();
-            return filterUselessInfo(novelId, hrefs, titles);
+            mChapters = filterUselessInfo(novelId, hrefs, titles);
         } else {
             LogUtils.e(TAG,novelId + "'s chapter list is null");
-            return null;
         }
+        return mChapters;
     }
 
     private static List<NovelChapterInfo> filterUselessInfo(String novelId, List<String> originHrefs, List<String> originTitles) {
