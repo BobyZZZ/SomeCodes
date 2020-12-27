@@ -1,0 +1,7 @@
+已div标签为例：
+id      div#$id
+class   div.$class
+
+获取标签内的标签使用">",例如span > a
+获取a标签的href         @Pick(value = "span.s3 > a", attr = Attrs.HREF)
+获取a标签的文字         @Pick(value = "span.s3 > a", attr = Attrs.TEXT)

@@ -4,6 +4,7 @@ import com.bb.reading.iApiService.NovelService;
 
 import java.util.concurrent.TimeUnit;
 
+import me.ghui.fruit.converter.retrofit.FruitConverterFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -38,7 +39,8 @@ public class RetrofitManager {
                 .client(okHttpClient)
                 .baseUrl(NovelService.NORVEL_BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(FruitConverterFactory.create())
                 .build();
     }
 
