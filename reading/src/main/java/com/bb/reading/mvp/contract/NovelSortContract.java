@@ -14,6 +14,6 @@ import okhttp3.ResponseBody;
  */
 public interface NovelSortContract {
     interface INovelSortModel {
-        void getNovelBySort(String sort, BaseCallback<NovelsSort> callback);
+        void getNovelBySort(int sort, BaseCallback<NovelsSort> callback);
     }
 }
