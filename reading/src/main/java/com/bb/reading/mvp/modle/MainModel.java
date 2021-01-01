@@ -5,7 +5,6 @@ import com.bb.network.exceptionHandler.ResponseErrorHandler;
 import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
 import com.bb.reading.mvp.callback.BaseCallback;
 import com.bb.reading.mvp.contract.MainContract;
-import com.bb.reading.mvp.modle.proxy.DynamicProxyInstance;
 import com.bb.reading.utils.LogUtils;
 import com.bb.reading.utils.RetrofitManager;
 import com.bb.reading.utils.RxUtils;
@@ -33,14 +32,10 @@ public class MainModel implements MainContract.IMainModel<NovelChapterContent,Li
     String TAG = "MainModel";
     private NovelService mNovelServiceReal;
     private final NovelDBManager mNovelDBManager;
-    private DynamicProxyInstance mProxyInstance;
 
     public MainModel() {
-        mNovelServiceReal = RetrofitManager.getInstance().createRs(NovelService.class);
         mNovelDBManager = DaoHelper.getInstance().getNovelDBManager();
-
-        mProxyInstance = new DynamicProxyInstance();
-//        mProxyInstance.setDBManager(mNovelDBManager);//是否保存数据
+        mNovelServiceReal = RetrofitManager.getInstance().createRs(NovelService.class);
     }
 
     @Override

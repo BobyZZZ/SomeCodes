@@ -1,6 +1,8 @@
 package com.bb.reading.mvp.presenter;
 
 import com.bb.reading.base.BasePresenter;
+import com.bb.reading.mvp.modle.proxy.DynamicProxyInstance;
+import com.bb.reading.mvp.modle.proxy.cacheImpl.NovelServiceCacheImpl;
 import com.bb.reading.utils.LogUtils;
 import com.bb.reading.utils.NovelUtils;
 import com.bb.reading.entity.NovelChapterInfo;
@@ -28,6 +30,7 @@ public class MainPresenter extends BasePresenter<MainActivity> implements MainCo
         this.mNovelID = novelID;
         LogUtils.d(TAG, "MainPresenter mNovelID: " + mNovelID);
         mModel = new MainModel();
+//        mModel = new DynamicProxyInstance<MainContract.IMainModel>().create(MainContract.IMainModel.class,new NovelServiceCacheImpl(),new MainModel());
     }
 
     @Override
