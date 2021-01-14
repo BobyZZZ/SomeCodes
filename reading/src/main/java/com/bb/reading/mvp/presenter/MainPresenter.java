@@ -1,8 +1,6 @@
 package com.bb.reading.mvp.presenter;
 
 import com.bb.reading.base.BasePresenter;
-import com.bb.reading.mvp.modle.proxy.DynamicProxyInstance;
-import com.bb.reading.mvp.modle.proxy.cacheImpl.NovelServiceCacheImpl;
 import com.bb.reading.utils.LogUtils;
 import com.bb.reading.utils.NovelUtils;
 import com.bb.reading.entity.NovelChapterInfo;
@@ -10,11 +8,11 @@ import com.bb.reading.mvp.callback.BaseCallback;
 import com.bb.reading.mvp.contract.MainContract;
 import com.bb.reading.entity.NovelChapterContent;
 import com.bb.reading.mvp.modle.MainModel;
-import com.bb.reading.mvp.view.MainActivity;
+import com.bb.reading.mvp.view.ReadingActivity;
 
 import java.util.List;
 
-public class MainPresenter extends BasePresenter<MainActivity> implements MainContract.IMainPresenter {
+public class MainPresenter extends BasePresenter<ReadingActivity> implements MainContract.IMainPresenter {
     String TAG = getClass().getSimpleName();
 
     private MainModel mModel;

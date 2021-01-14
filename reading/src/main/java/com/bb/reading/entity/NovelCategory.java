@@ -24,7 +24,7 @@ public class NovelCategory {
     public static List<NovelChapterInfo> parse(String novelId,String body) {
         Document doc = Jsoup.parse(body);
         Element list = doc.getElementById("list");
-        LogUtils.d(TAG,"body: " + body + "\n" + list);
+//        LogUtils.d(TAG,"body: " + body + "\n" + list);
         List<NovelChapterInfo> mChapters = new ArrayList<>();
         if (list != null) {
             Elements mATagList = list.getElementsByTag(ATTR_A);

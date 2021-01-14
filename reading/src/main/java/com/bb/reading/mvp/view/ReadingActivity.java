@@ -35,12 +35,13 @@ import com.bb.reading.adapter.NovelContentAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener, BScrollerControl.OnScrollChange {
+/**
+ * 小说阅读Activity
+ */
+public class ReadingActivity extends BaseMvpActivity<ReadingActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener, BScrollerControl.OnScrollChange {
     String TAG = "MainActivity";
     private final String KEY_NOVELID = "novelID";
         private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
-//    private String mNovelID = NovelService.DIYI_XULIE_NOVEL_INDEX;
-//    private String mNovelID = NovelService.FKNGMN_NOVEL_INDEX;
 
     private EditText mEditText;
     private DrawerLayout mDrawerLayout;
@@ -53,7 +54,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.activity_reading;
     }
 
     @Override
@@ -137,7 +138,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 //同步滚动条
                 int countInScreen = RecyclerViewUtils.calculateItemCountInScreen(mRvCategory);
-                LogUtils.v(TAG, "onScrolled: " + dy + "---countInScreen: " + countInScreen);
+//                LogUtils.v(TAG, "onScrolled: " + dy + "---countInScreen: " + countInScreen);
                 int firstVisibleItemPosition = mLayoutManagerCategory.findFirstVisibleItemPosition();
                 float fraction = firstVisibleItemPosition * 1f / (mCategoryAdapter.getItemCount() - countInScreen);
                 mScrollerControl.setFraction(fraction);
@@ -265,7 +266,7 @@ public class MainActivity extends BaseMvpActivity<MainActivity, MainPresenter> i
     @Override
     public void updateCategory(List<NovelChapterInfo> novelCategory) {
         mCategoryAdapter.setNewInstance(novelCategory);
-        LogUtils.w(TAG, "updateCategory: " + novelCategory);
+//        LogUtils.w(TAG, "updateCategory: " + novelCategory);
     }
 
     @Override

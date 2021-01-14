@@ -35,7 +35,7 @@ public class NovelSortModel implements NovelSortContract.INovelSortModel {
     public void getNovelBySort(int sort, final BaseCallback<NovelsSort> callback) {
         Observable<NovelsSort> novelBySort = mNovelService.getNovelBySort(NovelService.NovelType.TYPE_XUANHUAN,1);
         novelBySort
-//                .compose(RxUtils.<ResponseBody>rxScheduers())
+                .compose(RxUtils.rxScheduers())
                 .subscribe(new BaseObserver<NovelsSort>() {
                     @Override
                     protected void onSuccess(NovelsSort novelsSort) {

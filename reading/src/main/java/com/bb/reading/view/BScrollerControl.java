@@ -40,15 +40,10 @@ public class BScrollerControl extends FrameLayout {
         addThumb();
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-    }
-
     private void parseAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BScrollerControl);
         mThumbId = typedArray.getResourceId(R.styleable.BScrollerControl_thumbRes, R.drawable.scroller_drawable);
-        mThumbWidth = (int) typedArray.getDimension(R.styleable.BScrollerControl_thumbWidth, -1);
+        mThumbWidth = (int) typedArray.getDimension(R.styleable.BScrollerControl_thumbWidth, LayoutParams.MATCH_PARENT);
         mThumbHeight = (int) typedArray.getDimension(R.styleable.BScrollerControl_thumbHeight, 50);
         typedArray.recycle();
 
@@ -58,11 +53,7 @@ public class BScrollerControl extends FrameLayout {
     private void addThumb() {
         mThumb = new View(mContext);
         mThumb.setBackgroundResource(mThumbId);
-        int thumbWidth = mThumbWidth;
-        if (thumbWidth == -1) {
-            thumbWidth = LayoutParams.MATCH_PARENT;
-        }
-        LayoutParams lp = new FrameLayout.LayoutParams(thumbWidth, mThumbHeight);
+        LayoutParams lp = new FrameLayout.LayoutParams(mThumbWidth, mThumbHeight);
         addView(mThumb, lp);
     }
 
