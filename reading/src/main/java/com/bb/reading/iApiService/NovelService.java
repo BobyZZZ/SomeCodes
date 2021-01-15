@@ -1,6 +1,6 @@
 package com.bb.reading.iApiService;
 
-import com.bb.reading.entity.NovelsSort;
+import com.bb.reading.entity.PageData;
 
 import io.reactivex.Observable;
 import me.ghui.retrofit.converter.annotations.Html;
@@ -32,7 +32,11 @@ public interface NovelService {
 
     @GET("list/{type}_{page}.html")
     @Html
-    Observable<NovelsSort> getNovelBySort(@Path("type")int type,@Path("page")int page);
+    Observable<PageData> getNovelBySort(@Path("type")int type, @Path("page")int page);
+
+    @Html
+    @GET("/")
+    Observable<PageData> getHomeData();
 
     public class NovelType {
         /**

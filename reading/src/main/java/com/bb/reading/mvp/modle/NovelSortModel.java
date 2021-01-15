@@ -1,9 +1,7 @@
 package com.bb.reading.mvp.modle;
 
-import android.util.Log;
-
 import com.bb.network.observer.BaseObserver;
-import com.bb.reading.entity.NovelsSort;
+import com.bb.reading.entity.PageData;
 import com.bb.reading.iApiService.NovelService;
 import com.bb.reading.mvp.callback.BaseCallback;
 import com.bb.reading.mvp.contract.NovelSortContract;
@@ -11,10 +9,7 @@ import com.bb.reading.utils.LogUtils;
 import com.bb.reading.utils.RetrofitManager;
 import com.bb.reading.utils.RxUtils;
 
-import java.io.IOException;
-
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 
 /**
  * Created by Android Studio.
@@ -32,15 +27,15 @@ public class NovelSortModel implements NovelSortContract.INovelSortModel {
     }
 
     @Override
-    public void getNovelBySort(int sort, final BaseCallback<NovelsSort> callback) {
-        Observable<NovelsSort> novelBySort = mNovelService.getNovelBySort(NovelService.NovelType.TYPE_XUANHUAN,1);
+    public void getNovelBySort(int sort, final BaseCallback<PageData> callback) {
+        Observable<PageData> novelBySort = mNovelService.getNovelBySort(NovelService.NovelType.TYPE_XUANHUAN,1);
         novelBySort
                 .compose(RxUtils.rxScheduers())
-                .subscribe(new BaseObserver<NovelsSort>() {
+                .subscribe(new BaseObserver<PageData>() {
                     @Override
-                    protected void onSuccess(NovelsSort novelsSort) {
-                        LogUtils.d(TAG, "getNovelBySort success: " + novelsSort);
-                        callback.onSuccess(novelsSort);
+                    protected void onSuccess(PageData pageData) {
+                        LogUtils.d(TAG, "getNovelBySort success: " + pageData);
+                        callback.onSuccess(pageData);
                     }
 
                     @Override

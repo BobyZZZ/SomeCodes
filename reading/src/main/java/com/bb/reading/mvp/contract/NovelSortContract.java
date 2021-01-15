@@ -1,10 +1,7 @@
 package com.bb.reading.mvp.contract;
 
-import com.bb.reading.entity.NovelsSort;
+import com.bb.reading.entity.PageData;
 import com.bb.reading.mvp.callback.BaseCallback;
-
-import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 
 /**
  * Created by Android Studio.
@@ -14,6 +11,6 @@ import okhttp3.ResponseBody;
  */
 public interface NovelSortContract {
     interface INovelSortModel {
-        void getNovelBySort(int sort, BaseCallback<NovelsSort> callback);
+        void getNovelBySort(int sort, BaseCallback<PageData> callback);
     }
 }

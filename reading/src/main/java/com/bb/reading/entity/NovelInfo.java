@@ -17,7 +17,7 @@ import me.ghui.fruit.annotations.Pick;
  * 目录章节bean
  */
 @Entity
-public class NovelChapterInfo2 {
+public class NovelInfo {
     @Id(autoincrement = true)
     Long id;
     int index;
@@ -32,20 +32,20 @@ public class NovelChapterInfo2 {
     @Pick("span.s4")
     String author;
     @Pick("span.s5")
-    String data;
+    String lastUpdate;
 
     @Keep
-    public NovelChapterInfo2(int index, String novelID, String name, String chapterId) {
+    public NovelInfo(int index, String novelID, String name, String chapterId) {
         this.index = index;
         this.novelID = novelID;
         this.name = name;
         this.chapterId = chapterId;
     }
 
-
-    @Generated(hash = 1621107053)
-    public NovelChapterInfo2(Long id, int index, String novelID, String name,
-            String chapterId, String chapterName, String author, String data) {
+    @Generated(hash = 2124311906)
+    public NovelInfo(Long id, int index, String novelID, String name,
+            String chapterId, String chapterName, String author,
+            String lastUpdate) {
         this.id = id;
         this.index = index;
         this.novelID = novelID;
@@ -53,14 +53,12 @@ public class NovelChapterInfo2 {
         this.chapterId = chapterId;
         this.chapterName = chapterName;
         this.author = author;
-        this.data = data;
+        this.lastUpdate = lastUpdate;
     }
 
-
-    @Generated(hash = 1056903652)
-    public NovelChapterInfo2() {
+    @Generated(hash = 1099636337)
+    public NovelInfo() {
     }
-
 
     public String getNovelID() {
         return novelID;
@@ -118,12 +116,12 @@ public class NovelChapterInfo2 {
         this.author = author;
     }
 
-    public String getData() {
-        return data;
+    public String getLastUpdate() {
+        return lastUpdate;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     @Override
@@ -136,7 +134,7 @@ public class NovelChapterInfo2 {
                 ", chapterId='" + chapterId + '\'' +
                 ", chapterName='" + chapterName + '\'' +
                 ", author='" + author + '\'' +
-                ", data='" + data + '\'' +
+                ", lastUpdate='" + lastUpdate + '\'' +
                 '}';
     }
 }

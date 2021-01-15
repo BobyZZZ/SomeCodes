@@ -12,17 +12,17 @@ import me.ghui.fruit.annotations.Pick;
  * Time: 0:29
  */
 @Pick("div#wrapper")
-public class NovelsSort {
+public class PageData {
     @Pick("div.l > ul > li")
-    private List<NovelChapterInfo2> mChapters;
+    private List<NovelInfo> mChapters;
     @Pick("div.item")
     private List<TopNovel> mTopNovels;
 
-    public List<NovelChapterInfo2> getChapters() {
+    public List<NovelInfo> getChapters() {
         return mChapters;
     }
 
-    public void setChapters(List<NovelChapterInfo2> mChapters) {
+    public void setChapters(List<NovelInfo> mChapters) {
         this.mChapters = mChapters;
     }
 
@@ -42,7 +42,6 @@ public class NovelsSort {
                 '}';
     }
 
-//    @Pick("div.l")
     public static class TopNovel {
         @Pick(value = "div.image > a",attr = Attrs.HREF)
         private String mNovelDetailUrl;
