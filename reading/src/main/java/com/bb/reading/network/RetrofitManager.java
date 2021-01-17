@@ -1,6 +1,7 @@
-package com.bb.reading.utils;
+package com.bb.reading.network;
 
-import com.bb.reading.iApiService.NovelService;
+import com.bb.reading.network.interceptor.ChangeUrlInterceptor;
+import com.bb.reading.utils.log.LogUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,7 +10,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitManager {
     private Retrofit mRetrofit;
@@ -18,22 +18,14 @@ public class RetrofitManager {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
-                LogUtils.v("loggingInterceptor",message);
+                LogUtils.v("loggingInterceptor", message);
             }
         });
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()/*.addNetworkInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
-                LogUtils.v("LogInterceptor", "request:" + request);
-                LogUtils.v("LogInterceptor", "System.nanoTime():" + System.nanoTime());
-                Response response = chain.proceed(request);
-                LogUtils.v("LogInterceptor", "request:" + request);
-                LogUtils.v("LogInterceptor", "System.nanoTime():" + System.nanoTime());
-                return response;
-            }
-        })*/.addNetworkInterceptor(loggingInterceptor).connectTimeout(15, TimeUnit.SECONDS)
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addNetworkInterceptor(new ChangeUrlInterceptor())
+                .addNetworkInterceptor(loggingInterceptor)
+                .connectTimeout(15, TimeUnit.SECONDS)
                 .build();
         mRetrofit = new Retrofit.Builder()
                 .client(okHttpClient)

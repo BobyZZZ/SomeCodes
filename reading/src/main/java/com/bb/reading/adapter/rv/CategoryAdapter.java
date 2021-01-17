@@ -1,12 +1,11 @@
-package com.bb.reading.adapter;
+package com.bb.reading.adapter.rv;
 
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.bb.reading.mvp.presenter.MainPresenter;
-import com.bb.reading.utils.LogUtils;
-import com.bb.reading.utils.NovelUtils;
+import com.bb.reading.utils.log.LogUtils;
+import com.bb.reading.utils.NovelSpUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.bb.reading.R;
@@ -21,16 +20,13 @@ import java.util.List;
 public class CategoryAdapter extends BaseQuickAdapter<NovelChapterInfo, BaseViewHolder> {
     String TAG = "CategoryAdapter";
 
-    private final MainPresenter mPresenter;
-
-    public CategoryAdapter(int layoutResId, MainPresenter presenter) {
+    public CategoryAdapter(int layoutResId) {
         super(layoutResId);
-        this.mPresenter = presenter;
     }
 
     @Override
     protected void convert(@NotNull final BaseViewHolder viewHolder, final NovelChapterInfo chapter) {
-        viewHolder.itemView.setSelected(chapter.getChapterId().equals(NovelUtils.getLastReadChapter()) ? true : false);
+        viewHolder.itemView.setSelected(chapter.getChapterId().equals(NovelSpUtils.getLastReadChapter()) ? true : false);
         viewHolder.setText(R.id.tv_chapter_name, chapter.getName());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +44,7 @@ public class CategoryAdapter extends BaseQuickAdapter<NovelChapterInfo, BaseView
     public void scrollToCurrentReading() {
         int currentChapterNumber = -1;
         List<NovelChapterInfo> datas = getData();
-        String lastReadChapter = NovelUtils.getLastReadChapter();
+        String lastReadChapter = NovelSpUtils.getLastReadChapter();
         LogUtils.d(TAG,"scrollToCurrentReading: " + lastReadChapter);
         for (int i = 0; i < datas.size(); i++) {
             if (datas.get(i).getChapterId().equals(lastReadChapter)) {

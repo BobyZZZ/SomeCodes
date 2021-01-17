@@ -2,11 +2,11 @@ package com.bb.reading.mvp.modle;
 
 import com.bb.network.observer.BaseObserver;
 import com.bb.reading.entity.PageData;
-import com.bb.reading.iApiService.NovelService;
+import com.bb.reading.network.NovelService;
 import com.bb.reading.mvp.callback.BaseCallback;
 import com.bb.reading.mvp.contract.NovelSortContract;
-import com.bb.reading.utils.LogUtils;
-import com.bb.reading.utils.RetrofitManager;
+import com.bb.reading.utils.log.LogUtils;
+import com.bb.reading.network.RetrofitManager;
 import com.bb.reading.utils.RxUtils;
 
 import io.reactivex.Observable;

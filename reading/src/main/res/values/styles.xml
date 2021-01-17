@@ -25,4 +25,11 @@
         <item name="android:textColor">@color/tv_novel_title_color</item>
         <item name="android:lineSpacingMultiplier">1.3</item>
     </style>
+
+    <!--分割线-->
+    <style name="divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorAccent_light</item>
+    </style>
 </resources>

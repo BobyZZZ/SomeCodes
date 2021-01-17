@@ -1,14 +1,14 @@
 package com.bb.reading.mvp.presenter;
 
 import com.bb.reading.base.BasePresenter;
-import com.bb.reading.utils.LogUtils;
-import com.bb.reading.utils.NovelUtils;
+import com.bb.reading.utils.log.LogUtils;
+import com.bb.reading.utils.NovelSpUtils;
 import com.bb.reading.entity.NovelChapterInfo;
 import com.bb.reading.mvp.callback.BaseCallback;
 import com.bb.reading.mvp.contract.MainContract;
 import com.bb.reading.entity.NovelChapterContent;
 import com.bb.reading.mvp.modle.MainModel;
-import com.bb.reading.mvp.view.ReadingActivity;
+import com.bb.reading.mvp.view.activity.ReadingActivity;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class MainPresenter extends BasePresenter<ReadingActivity> implements Mai
                 mView.updateCategory(novelCategory);
 
                 if (mFirstInit) {//首次打开时自动打开上次观看章节
-                    read(mNovelID, NovelUtils.getLastReadChapter(mNovelID,novelCategory.get(0).getChapterId()));
+                    read(mNovelID, NovelSpUtils.getLastReadChapter(mNovelID,novelCategory.get(0).getChapterId()));
                 }
             }
 
@@ -83,7 +83,7 @@ public class MainPresenter extends BasePresenter<ReadingActivity> implements Mai
                     mFirstInit = false;
                     mView.recoverLastReadingState(novelChapterContent);
                 }
-                NovelUtils.saveLastReadNovel(mNovelID);//记录最后阅读哪本小说
+                NovelSpUtils.saveLastReadNovel(mNovelID);//记录最后阅读哪本小说
             }
 
             @Override
@@ -129,9 +129,9 @@ public class MainPresenter extends BasePresenter<ReadingActivity> implements Mai
         saveCurrentReading(novelChapterContent,false);
     }
     public void saveCurrentReading(NovelChapterContent novelChapterContent,boolean resetReadingPosition) {
-        NovelUtils.saveLastReadChapter(novelChapterContent.getNovelId(),novelChapterContent.getChapterId());
+        NovelSpUtils.saveLastReadChapter(novelChapterContent.getNovelId(),novelChapterContent.getChapterId());
         if (resetReadingPosition) {
-            NovelUtils.saveLastReadingPosition(novelChapterContent.getNovelId(),0);
+            NovelSpUtils.saveLastReadingPosition(novelChapterContent.getNovelId(),0);
         }
     }
 

@@ -7,4 +7,5 @@
     <string name="pageNumber">%d/%d</string>
 
     <string name="error_server">访问服务器失败</string>
+    <string name="introduction">简介</string>
 </resources>

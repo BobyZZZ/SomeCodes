@@ -1,6 +1,6 @@
 package com.bb.reading.mvp.modle.proxy;
 
-import com.bb.reading.utils.LogUtils;
+import com.bb.reading.utils.log.LogUtils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.SeekBar;
 
-import com.bb.reading.test.annotation.BindView;
-import com.bb.reading.test.annotation.impl.MyBufferKnife;
+import com.bb.reading.annotation.BindView;
+import com.bb.reading.annotation.impl.MyBufferKnife;
 import com.bb.reading.view.BScrollerControl;
 import com.bb.reading.R;
 

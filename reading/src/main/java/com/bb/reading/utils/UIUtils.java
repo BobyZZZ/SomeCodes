@@ -14,6 +14,8 @@ import android.view.Window;
 
 import androidx.palette.graphics.Palette;
 
+import com.bb.reading.utils.log.LogUtils;
+
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;

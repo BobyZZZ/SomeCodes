@@ -36,12 +36,15 @@ public class PageData {
 
     @Override
     public String toString() {
-        return "NovelsSort{" +
+        return "PageData{" +
                 "mChapters=" + mChapters +
                 ", mTopNovels=" + mTopNovels +
                 '}';
     }
 
+    /**
+     * banner
+     */
     public static class TopNovel {
         @Pick(value = "div.image > a",attr = Attrs.HREF)
         private String mNovelDetailUrl;

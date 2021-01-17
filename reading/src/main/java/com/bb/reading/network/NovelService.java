@@ -1,11 +1,15 @@
-package com.bb.reading.iApiService;
+package com.bb.reading.network;
 
+import com.bb.reading.entity.HomePageBean;
+import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.entity.PageData;
 
 import io.reactivex.Observable;
 import me.ghui.retrofit.converter.annotations.Html;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Path;
 
 public interface NovelService {
@@ -25,18 +29,27 @@ public interface NovelService {
     public static String FKNGMN_NOVEL_INDEX = "24_24159";
 
     @GET("{novel_index}/{chapter_href}")
-    Observable<ResponseBody> getChapter(@Path("novel_index")String novel_index, @Path("chapter_href")String chapter_href);
+    Observable<ResponseBody> getChapter(@Path("novel_index") String novel_index, @Path("chapter_href") String chapter_href);
 
     @GET("{novel_index}/")
-    Observable<ResponseBody> getCategory(@Path("novel_index")String novelIndex);
+    Observable<ResponseBody> getCategory(@Path("novel_index") String novelIndex);
 
     @GET("list/{type}_{page}.html")
     @Html
-    Observable<PageData> getNovelBySort(@Path("type")int type, @Path("page")int page);
+    Observable<PageData> getNovelBySort(@Path("type") int type, @Path("page") int page);
 
     @Html
     @GET("/")
-    Observable<PageData> getHomeData();
+    Observable<HomePageBean> getHomeData();
+
+    @Html
+    @GET("{novel_index}")
+    @Headers("needFilter:true")
+    Observable<NovelDetails> getNovelDetails(@Path("novel_index") String novelIndex);
+
+    @GET("/")
+    Observable<ResponseBody> getHomeDataTest();
+
 
     public class NovelType {
         /**

@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.view;
+package com.bb.reading.mvp.view.activity;
 
 import android.content.DialogInterface;
 import android.text.TextUtils;
@@ -17,9 +17,9 @@ import com.bb.network.exceptionHandler.ExceptionHandler;
 import com.bb.reading.base.BaseMvpActivity;
 import com.bb.reading.mvp.contract.MainContract;
 import com.bb.reading.mvp.presenter.MainPresenter;
-import com.bb.reading.utils.LogUtils;
-import com.bb.reading.utils.LongLogUtils;
-import com.bb.reading.utils.NovelUtils;
+import com.bb.reading.utils.log.LogUtils;
+import com.bb.reading.utils.log.LongLogUtils;
+import com.bb.reading.utils.NovelSpUtils;
 import com.bb.reading.utils.RecyclerViewUtils;
 import com.bb.reading.utils.SoftInputUtils;
 import com.bb.reading.view.BScrollerControl;
@@ -28,9 +28,9 @@ import com.bb.reading.R;
 import com.bb.reading.constant.GlobalConstant;
 import com.bb.reading.entity.NovelChapterInfo;
 import com.bb.reading.entity.NovelChapterContent;
-import com.bb.reading.iApiService.NovelService;
-import com.bb.reading.adapter.CategoryAdapter;
-import com.bb.reading.adapter.NovelContentAdapter;
+import com.bb.reading.network.NovelService;
+import com.bb.reading.adapter.rv.CategoryAdapter;
+import com.bb.reading.adapter.rv.NovelContentAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +38,10 @@ import java.util.List;
 /**
  * 小说阅读Activity
  */
-public class ReadingActivity extends BaseMvpActivity<ReadingActivity, MainPresenter> implements MainContract.IMainView, View.OnClickListener, BScrollerControl.OnScrollChange {
+public class ReadingActivity extends BaseMvpActivity<MainPresenter> implements MainContract.IMainView, View.OnClickListener, BScrollerControl.OnScrollChange {
     String TAG = "MainActivity";
-    private final String KEY_NOVELID = "novelID";
-        private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
+    private final String KEY_CHAPTER_ID = "chapterID";
+    private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
 
     private EditText mEditText;
     private DrawerLayout mDrawerLayout;
@@ -58,9 +58,9 @@ public class ReadingActivity extends BaseMvpActivity<ReadingActivity, MainPresen
     }
 
     @Override
-    protected MainPresenter createPresenter() {
-        if (getIntent().hasExtra(KEY_NOVELID)) {
-            mNovelID = getIntent().getStringExtra("novelID");
+    public MainPresenter createPresenter() {
+        if (getIntent().hasExtra(KEY_CHAPTER_ID)) {
+            mNovelID = getIntent().getStringExtra(KEY_CHAPTER_ID);
         }
         return new MainPresenter(mNovelID);
     }
@@ -111,7 +111,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingActivity, MainPresen
     }
 
     @Override
-    protected void proceed() {
+    protected void process() {
         initRV();
 
         getPresenter().getCategory(mNovelID,true);
@@ -119,7 +119,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingActivity, MainPresen
 
     private void initRV() {
         //左侧菜单-目录
-        mCategoryAdapter = new CategoryAdapter(R.layout.item_category, getPresenter());
+        mCategoryAdapter = new CategoryAdapter(R.layout.item_category);
         mCategoryAdapter.setOnChapterClickListener(new CategoryAdapter.OnChapterClickListener() {
             @Override
             public void onclick(NovelChapterInfo chapter, int chapterNumber) {
@@ -304,7 +304,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingActivity, MainPresen
      */
     private void onLastReadingProgressChanged(NovelChapterContent item, int alreadyScrollY) {
 //        LogUtils.v(TAG, "saveLastReadingState: " + item.getNovelId() + "," + item.getChapterId() + ",offset: " + alreadyScrollY);
-        NovelUtils.saveLastReadingPosition(item.getNovelId(), alreadyScrollY);
+        NovelSpUtils.saveLastReadingPosition(item.getNovelId(), alreadyScrollY);
     }
 
     /**
@@ -323,7 +323,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingActivity, MainPresen
             }
         }
         //向上滚offset应该为负值，但保存时存的是绝对值
-        int offset = -NovelUtils.getLastReadingPosition(novelChapterContent.getNovelId());
+        int offset = -NovelSpUtils.getLastReadingPosition(novelChapterContent.getNovelId());
         LogUtils.d(TAG, "recoverLastReadingState: "+ novelChapterContent.getNovelId() + "," + novelChapterContent.getChapterId() + ",position: " + position + "---offset: " + offset);
         if (position != -1) {
             mLayoutManagerNovelContent.scrollToPositionWithOffset(position,offset);
@@ -346,7 +346,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingActivity, MainPresen
                 }
                 break;
             case R.id.tv_next:
-                NovelChapterInfo targetChapter = mCategoryAdapter.getChapterInfoWithOffset(NovelUtils.getLastReadChapter(), 1);
+                NovelChapterInfo targetChapter = mCategoryAdapter.getChapterInfoWithOffset(NovelSpUtils.getLastReadChapter(), 1);
                 if (targetChapter != null) {
                     getPresenter().read(mNovelID, targetChapter.getChapterId(), true);
                 } else {

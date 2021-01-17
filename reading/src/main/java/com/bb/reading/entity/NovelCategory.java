@@ -1,9 +1,7 @@
 package com.bb.reading.entity;
 
-import com.bb.reading.utils.LogUtils;
+import com.bb.reading.utils.log.LogUtils;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

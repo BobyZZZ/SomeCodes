@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bb.reading.annotation.impl.MyBufferKnife;
 import com.bb.reading.utils.UIUtils;
 import com.bb.uilib.dialog.CustomDialog;
 import com.bb.uilib.loadingView.CircleLoadingView;
@@ -28,9 +29,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initStatusBar();
         setContentView(getLayoutId());
-        initPresenter();
+        MyBufferKnife.bind(this);
         initView();
-        proceed();
+        initOthers();
+        process();
         test();
     }
 
@@ -40,13 +42,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract int getLayoutId();
 
-    protected void initView() {
+    protected abstract void initView();
 
-    }
+    protected abstract void initOthers();
 
-    protected abstract void proceed();
-
-    protected abstract void initPresenter();
+    protected abstract void process();
 
     protected void test() {
     }

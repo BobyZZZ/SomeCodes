@@ -1,17 +1,15 @@
 package com.bb.reading.base;
 
-public abstract class BaseMvpActivity<V extends BaseView,P extends BasePresenter> extends BaseActivity implements BaseView{
-    private P mPresenter;
+public abstract class BaseMvpActivity<P extends BasePresenter> extends BaseActivity implements BaseView<P>{
+    protected P mPresenter;
 
     @Override
-    protected void initPresenter() {
+    protected void initOthers() {
         mPresenter = createPresenter();
         if (mPresenter != null) {
-            mPresenter.attachView((V) this);
+            mPresenter.attachView(this);
         }
     }
-
-    protected abstract P createPresenter();
 
     public P getPresenter() {
         return mPresenter;

@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
 import com.bb.reading.db.greenDao.beanManager.TestGreenDaoDBManager;
-import com.bb.reading.utils.LogUtils;
+import com.bb.reading.utils.log.LogUtils;
 import com.bb.reading.entity.DaoMaster;
 import com.bb.reading.entity.DaoSession;
 import com.bb.reading.entity.TestGreenDaoEntity;

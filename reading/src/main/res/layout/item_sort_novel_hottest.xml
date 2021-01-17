@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_item_bg_category">
+
+    <ImageView
+        android:id="@+id/iv_novel_cover"
+        android:layout_width="70dp"
+        android:layout_height="85dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/cover_place_holder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_novel_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@id/iv_novel_cover"
+        app:layout_constraintTop_toTopOf="@id/iv_novel_cover"
+        tools:text="元尊" />
+
+    <TextView
+        android:id="@+id/tv_novel_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tv_novel_name"
+        app:layout_constraintTop_toTopOf="@id/tv_novel_name"
+        tools:text="/ 著：天蚕土豆" />
+
+    <TextView
+        android:id="@+id/tv_novel_introduction"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        app:layout_constraintBottom_toBottomOf="@id/iv_novel_cover"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_novel_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_novel_name"
+        tools:text="这个世界，有儒；有道；有佛；有妖；有术士。 警校毕业的许七安幽幽醒来，发现自己身处牢狱之中，三日后流放边" />
+</androidx.constraintlayout.widget.ConstraintLayout>

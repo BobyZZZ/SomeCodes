@@ -3,7 +3,6 @@ package com.bb.reading.db.greenDao.beanManager;
 import com.bb.reading.entity.DaoSession;
 import com.bb.reading.entity.NovelChapterInfo;
 import com.bb.reading.entity.NovelChapterInfoDao;
-import com.bb.reading.utils.LongLogUtils;
 
 import java.util.List;
 

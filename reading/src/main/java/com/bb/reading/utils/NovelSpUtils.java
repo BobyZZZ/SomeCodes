@@ -6,7 +6,7 @@ package com.bb.reading.utils;
  * Date: 2020/11/29
  * Time: 14:09
  */
-public class NovelUtils {
+public class NovelSpUtils {
     /**
      * 保存该小说的最后阅读章节
      * @param novelId   小说id

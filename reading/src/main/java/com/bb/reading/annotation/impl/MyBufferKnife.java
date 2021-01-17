@@ -1,9 +1,12 @@
-package com.bb.reading.test.annotation.impl;
+package com.bb.reading.annotation.impl;
 
 import android.app.Activity;
-import android.util.Log;
+import android.view.View;
 
-import com.bb.reading.test.annotation.BindView;
+import androidx.viewpager.widget.ViewPager;
+
+import com.bb.reading.annotation.BindView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.lang.reflect.Field;
 
@@ -23,7 +26,14 @@ public class MyBufferKnife {
             if (field.isAnnotationPresent(BindView.class)) {
                 try {
                     field.setAccessible(true);
-                    field.set(activity, activity.findViewById(field.getAnnotation(BindView.class).value()));
+                    View view = activity.findViewById(field.getAnnotation(BindView.class).value());
+                    if (view instanceof TabLayout) {
+                        field.set(activity, (TabLayout)view);
+                    } else if (view instanceof ViewPager) {
+                        field.set(activity, (ViewPager)view);
+                    } else {
+                        field.set(activity, view);
+                    }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

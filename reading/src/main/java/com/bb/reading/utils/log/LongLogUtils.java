@@ -1,6 +1,4 @@
-package com.bb.reading.utils;
-
-import android.util.Log;
+package com.bb.reading.utils.log;
 
 /**
  * 打印超长日志的工具类

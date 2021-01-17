@@ -1,4 +1,4 @@
-package com.bb.reading.utils;
+package com.bb.reading.utils.log;
 
 import android.util.Log;
 

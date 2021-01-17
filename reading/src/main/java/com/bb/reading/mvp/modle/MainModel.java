@@ -5,14 +5,14 @@ import com.bb.network.exceptionHandler.ResponseErrorHandler;
 import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
 import com.bb.reading.mvp.callback.BaseCallback;
 import com.bb.reading.mvp.contract.MainContract;
-import com.bb.reading.utils.LogUtils;
-import com.bb.reading.utils.RetrofitManager;
+import com.bb.reading.utils.log.LogUtils;
+import com.bb.reading.network.RetrofitManager;
 import com.bb.reading.utils.RxUtils;
 import com.bb.reading.db.DaoHelper;
 import com.bb.reading.entity.NovelCategory;
 import com.bb.reading.entity.NovelChapterContent;
 import com.bb.reading.entity.NovelChapterInfo;
-import com.bb.reading.iApiService.NovelService;
+import com.bb.reading.network.NovelService;
 
 
 import java.io.IOException;

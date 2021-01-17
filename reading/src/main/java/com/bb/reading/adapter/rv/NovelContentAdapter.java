@@ -1,9 +1,9 @@
-package com.bb.reading.adapter;
+package com.bb.reading.adapter.rv;
 
 import android.view.View;
 
 import com.bb.reading.mvp.presenter.MainPresenter;
-import com.bb.reading.utils.LogUtils;
+import com.bb.reading.utils.log.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.chad.library.adapter.base.module.BaseLoadMoreModule;
