@@ -9,6 +9,7 @@ package com.bb.reading.utils;
 public class NovelSpUtils {
     /**
      * 保存该小说的最后阅读章节
+     *
      * @param novelId   小说id
      * @param chapterId 章节id
      */
@@ -16,22 +17,22 @@ public class NovelSpUtils {
         SPUtils.putString(SPUtils.KEY_LAST_READ_NOVEL_CHAPTER + "_" + novelId, chapterId);
     }
 
-    public static String getLastReadChapter() {
-        return getLastReadChapter(getLastReadNovel(null),null);
-    }
     /**
      * 获取小说最后阅读章节
-     * @param novelId   小说id
-     * @param defaultValue  默认值
-     * @return  小说最后阅读章节
+     *
+     * @param novelId      小说id
+     * @param defaultValue 默认值
+     * @return 小说最后阅读章节
      */
-    public static String getLastReadChapter(String novelId, String defaultValue) {
-        return SPUtils.getString(SPUtils.KEY_LAST_READ_NOVEL_CHAPTER + "_" + novelId, defaultValue);
+    public static String getLastReadChapter(String novelId, String... defaultValue) {
+        String def = defaultValue.length > 0 ? defaultValue[0] : "";
+        return SPUtils.getString(SPUtils.KEY_LAST_READ_NOVEL_CHAPTER + "_" + novelId, def);
     }
 
 
     /**
      * 保存最后阅读哪本小说
+     *
      * @param novelId
      */
     public static void saveLastReadNovel(String novelId) {
@@ -40,7 +41,6 @@ public class NovelSpUtils {
 
     /**
      * 获取最后阅读哪本小说
-     *
      */
     public static String getLastReadNovel(String defaultValue) {
         return SPUtils.getString(SPUtils.KEY_LAST_READ_NOVEL, defaultValue);

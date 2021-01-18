@@ -1,22 +1,24 @@
 package com.bb.reading.mvp.presenter;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.bb.reading.base.BasePresenter;
 import com.bb.reading.utils.log.LogUtils;
 import com.bb.reading.utils.NovelSpUtils;
 import com.bb.reading.entity.NovelChapterInfo;
 import com.bb.reading.mvp.callback.BaseCallback;
-import com.bb.reading.mvp.contract.MainContract;
+import com.bb.reading.mvp.contract.ReadingActivityContract;
 import com.bb.reading.entity.NovelChapterContent;
-import com.bb.reading.mvp.modle.MainModel;
+import com.bb.reading.mvp.modle.ReadingModel;
 import com.bb.reading.mvp.view.activity.ReadingActivity;
 
 import java.util.List;
 
-public class MainPresenter extends BasePresenter<ReadingActivity> implements MainContract.IMainPresenter {
-    String TAG = getClass().getSimpleName();
+public class ReadingPresenter extends BasePresenter<ReadingActivity> implements ReadingActivityContract.IMainPresenter {
+    String TAG = "ReadingPresenter";
 
-    private MainModel mModel;
-    private String mNovelID;
+    private ReadingModel mModel;
     /**
      * 记录当前已加载到的章节
      */
@@ -24,24 +26,23 @@ public class MainPresenter extends BasePresenter<ReadingActivity> implements Mai
     private List<NovelChapterInfo> mChapters;
     private boolean mFirstInit = true;//控制初次打开时自动加载
 
-    public MainPresenter(String novelID) {
-        this.mNovelID = novelID;
-        LogUtils.d(TAG, "MainPresenter mNovelID: " + mNovelID);
-        mModel = new MainModel();
+    public ReadingPresenter() {
+        mModel = new ReadingModel();
 //        mModel = new DynamicProxyInstance<MainContract.IMainModel>().create(MainContract.IMainModel.class,new NovelServiceCacheImpl(),new MainModel());
     }
 
     @Override
     public void getCategory(String novelIndex, boolean readCache) {
         mView.loadingStart();
-        mModel.getCategory(novelIndex,readCache, new BaseCallback<List<NovelChapterInfo>>() {
+        mModel.getCategory(novelIndex, readCache, new BaseCallback<List<NovelChapterInfo>>() {
             @Override
             public void onSuccess(List<NovelChapterInfo> novelCategory, boolean... fromCache) {
+                Log.d(TAG, "getCategory onSuccess() called with: fromCache = [" + fromCache[0] + "]");
                 mChapters = novelCategory;
                 mView.updateCategory(novelCategory);
 
                 if (mFirstInit) {//首次打开时自动打开上次观看章节
-                    read(mNovelID, NovelSpUtils.getLastReadChapter(mNovelID,novelCategory.get(0).getChapterId()));
+                    read(novelIndex, mView.getChapterID());
                 }
             }
 
@@ -50,10 +51,6 @@ public class MainPresenter extends BasePresenter<ReadingActivity> implements Mai
                 mView.onError(e);
             }
         });
-    }
-
-    public void read(String novelID, final int chapterNumber) {
-        read(novelID, getChapterIndexFromCategory(chapterNumber), false);
     }
 
     /**
@@ -81,9 +78,12 @@ public class MainPresenter extends BasePresenter<ReadingActivity> implements Mai
                 mView.loadContentSuccessAndToDisplay(novelChapterContent, novelChapterContent.getChapterNumber(), resetData);
                 if (mFirstInit) {//初次加载时，滚到上次阅读的位置
                     mFirstInit = false;
+                }
+                //和最后阅读的章节相同时才恢复到上次阅读的位置
+                if (TextUtils.equals(NovelSpUtils.getLastReadChapter(novelID), chapterID)) {
                     mView.recoverLastReadingState(novelChapterContent);
                 }
-                NovelSpUtils.saveLastReadNovel(mNovelID);//记录最后阅读哪本小说
+                NovelSpUtils.saveLastReadNovel(novelID);//记录最后阅读哪本小说
             }
 
             @Override
@@ -95,7 +95,7 @@ public class MainPresenter extends BasePresenter<ReadingActivity> implements Mai
 
     @Override
     public void loadMore() {
-        read(mNovelID, getNextLoadChapterId());
+        read(mView.getNovelID(), getNextLoadChapterId());
     }
 
     /**
@@ -113,25 +113,27 @@ public class MainPresenter extends BasePresenter<ReadingActivity> implements Mai
 
     /**
      * 获取下一章要加载的章节id
-     * @return  章节id
+     *
+     * @return 章节id
      */
     private String getNextLoadChapterId() {
         String nextChapterId = null;
         NovelChapterInfo nextLoadChapter = mView.getChapterInfoWithOffset(mChapterIdLoaded, 1);
         if (nextLoadChapter != null) {
-            nextChapterId =  nextLoadChapter.getChapterId();
+            nextChapterId = nextLoadChapter.getChapterId();
         }
         LogUtils.d(TAG, "auto loadMore chapter: " + nextChapterId);
         return nextChapterId;
     }
 
     public void saveCurrentReading(NovelChapterContent novelChapterContent) {
-        saveCurrentReading(novelChapterContent,false);
+        saveCurrentReading(novelChapterContent, false);
     }
-    public void saveCurrentReading(NovelChapterContent novelChapterContent,boolean resetReadingPosition) {
-        NovelSpUtils.saveLastReadChapter(novelChapterContent.getNovelId(),novelChapterContent.getChapterId());
+
+    public void saveCurrentReading(NovelChapterContent novelChapterContent, boolean resetReadingPosition) {
+        NovelSpUtils.saveLastReadChapter(novelChapterContent.getNovelId(), novelChapterContent.getChapterId());
         if (resetReadingPosition) {
-            NovelSpUtils.saveLastReadingPosition(novelChapterContent.getNovelId(),0);
+            NovelSpUtils.saveLastReadingPosition(novelChapterContent.getNovelId(), 0);
         }
     }
 
@@ -150,5 +152,9 @@ public class MainPresenter extends BasePresenter<ReadingActivity> implements Mai
         mModel.test2(baseCallback);
     }
 
-
+    @Override
+    public void detachView() {
+        mModel.onDestroy();
+        super.detachView();
+    }
 }

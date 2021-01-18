@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
  * Created by Boby on 2019/6/17.
  */
 
-public abstract class BaseMvpFragment<P extends BasePresenter> extends BaseFragment {
+public abstract class BaseMvpFragment<P extends BasePresenter> extends BaseFragment implements BaseView{
     protected P mPresenter;
 
     @Override
@@ -20,6 +20,7 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends BaseFragm
         }
     }
 
+    @Override
     public abstract P createPresenter();
 
     @Override

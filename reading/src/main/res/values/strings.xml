@@ -8,4 +8,5 @@
 
     <string name="error_server">访问服务器失败</string>
     <string name="introduction">简介</string>
+    <string name="last_read">最后阅读</string>
 </resources>

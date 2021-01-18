@@ -26,7 +26,7 @@ public class CategoryAdapter extends BaseQuickAdapter<NovelChapterInfo, BaseView
 
     @Override
     protected void convert(@NotNull final BaseViewHolder viewHolder, final NovelChapterInfo chapter) {
-        viewHolder.itemView.setSelected(chapter.getChapterId().equals(NovelSpUtils.getLastReadChapter()) ? true : false);
+        viewHolder.itemView.setSelected(chapter.getChapterId().equals(NovelSpUtils.getLastReadChapter(chapter.getNovelID(),chapter.getChapterId())) ? true : false);
         viewHolder.setText(R.id.tv_chapter_name, chapter.getName());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,8 +44,11 @@ public class CategoryAdapter extends BaseQuickAdapter<NovelChapterInfo, BaseView
     public void scrollToCurrentReading() {
         int currentChapterNumber = -1;
         List<NovelChapterInfo> datas = getData();
-        String lastReadChapter = NovelSpUtils.getLastReadChapter();
-        LogUtils.d(TAG,"scrollToCurrentReading: " + lastReadChapter);
+        if (datas.isEmpty()) {
+            return;
+        }
+        String lastReadChapter = NovelSpUtils.getLastReadChapter(datas.get(0).getNovelID(),datas.get(0).getChapterId());
+        LogUtils.d(TAG, "scrollToCurrentReading: " + lastReadChapter);
         for (int i = 0; i < datas.size(); i++) {
             if (datas.get(i).getChapterId().equals(lastReadChapter)) {
                 currentChapterNumber = i;
@@ -64,8 +67,9 @@ public class CategoryAdapter extends BaseQuickAdapter<NovelChapterInfo, BaseView
 
     /**
      * 根据章节id获取章节bean
+     *
      * @param chapterId 章节id
-     * @param offset 偏移量，如前一章或后一章
+     * @param offset    偏移量，如前一章或后一章
      * @return 章节bean
      */
     public NovelChapterInfo getChapterInfoWithOffset(String chapterId, int offset) {
@@ -84,8 +88,9 @@ public class CategoryAdapter extends BaseQuickAdapter<NovelChapterInfo, BaseView
 
     /**
      * 根据章节id获取章节所处position
+     *
      * @param chapterId 章节id
-     * @return  position
+     * @return position
      */
     public int getChapterPosition(String chapterId) {
         List<NovelChapterInfo> datas = getData();

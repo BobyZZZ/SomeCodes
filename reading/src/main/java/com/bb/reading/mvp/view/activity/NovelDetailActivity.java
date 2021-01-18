@@ -15,6 +15,7 @@ import com.bb.reading.R;
 import com.bb.reading.adapter.base.BaseRvAdapter;
 import com.bb.reading.adapter.rv.NovelChapterAdapter;
 import com.bb.reading.base.BaseMvpActivity;
+import com.bb.reading.constant.NovelConstant;
 import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.mvp.contract.NovelDetailActivityContract;
 import com.bb.reading.mvp.presenter.NovelDetailActivityPresenter;
@@ -27,8 +28,8 @@ import com.bb.reading.utils.GlideUtils;
  * Time: 0:01
  */
 public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPresenter> implements NovelDetailActivityContract.IView {
+    String TAG = "NovelDetailActivity";
 
-    public static final String KEY_NOVEL_ID = "novel_id";
     private String mNovelId;
     private TextView mTvNovelAuthor;
     private TextView mTvNovelType;
@@ -41,14 +42,14 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
 
     public static Intent createIntent(Context context, String novelId) {
         Intent intent = new Intent(context, NovelDetailActivity.class);
-        intent.putExtra(KEY_NOVEL_ID, novelId);
+        intent.putExtra(NovelConstant.KEY_NOVEL_ID, novelId);
         return intent;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        if (getIntent().hasExtra(KEY_NOVEL_ID)) {
-            mNovelId = getIntent().getStringExtra(KEY_NOVEL_ID);
+        if (getIntent().hasExtra(NovelConstant.KEY_NOVEL_ID)) {
+            mNovelId = getIntent().getStringExtra(NovelConstant.KEY_NOVEL_ID);
         }
         super.onCreate(savedInstanceState);
     }
@@ -77,7 +78,9 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         mNovelChapterAdapter.setOnItemClickListener(new BaseRvAdapter.OnItemClickListener<NovelDetails.Chapter>() {
             @Override
             public void onItemClick(NovelDetails.Chapter data, int position) {
-
+                Log.d(TAG, "onItemClick() called with: data = [" + data + "], position = [" + position + "]");
+                Intent intent = ReadingActivity.createIntent(NovelDetailActivity.this, getNovelId(), data.chapterUrl);
+                startActivity(intent);
             }
         });
         mRvNovel.setLayoutManager(new LinearLayoutManager(this));
@@ -106,6 +109,7 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
 
     public void updateChapterList(NovelDetails novelDetails) {
         mNovelChapterAdapter.setNewData(novelDetails.chapterList);
+//        mNovelChapterAdapter.setLastRead(getNovelId());
     }
 
     @Override

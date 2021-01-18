@@ -2,7 +2,7 @@ package com.bb.reading.adapter.rv;
 
 import android.view.View;
 
-import com.bb.reading.mvp.presenter.MainPresenter;
+import com.bb.reading.mvp.presenter.ReadingPresenter;
 import com.bb.reading.utils.log.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
@@ -18,36 +18,26 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 
-public class NovelContentAdapter extends BaseQuickAdapter<NovelChapterContent, BaseViewHolder> implements LoadMoreModule, OnLoadMoreListener {
+public class NovelContentAdapter extends BaseQuickAdapter<NovelChapterContent, BaseViewHolder> implements LoadMoreModule {
     String TAG = "NovelContentAdapter";
 
-    private final MainPresenter mPresenter;
-
-    public NovelContentAdapter(int layoutResId, MainPresenter presenter) {
+    public NovelContentAdapter(int layoutResId) {
         super(layoutResId);
-        this.mPresenter = presenter;
     }
 
-    public NovelContentAdapter(int layoutResId, List<NovelChapterContent> data, MainPresenter presenter) {
+    public NovelContentAdapter(int layoutResId, List<NovelChapterContent> data) {
         super(layoutResId, data);
-        this.mPresenter = presenter;
     }
 
     @Override
     protected void convert(@NotNull final BaseViewHolder viewHolder, final NovelChapterContent novelChapterContent) {
         String text = novelChapterContent.getContent();
-        LogUtils.d(TAG, "convert getBookName: " + novelChapterContent.getChapterName());
-        LogUtils.d(TAG, "convert getChapterNumber: " + novelChapterContent.getChapterNumber());
+//        LogUtils.d(TAG, "convert getBookName: " + novelChapterContent.getChapterName());
+//        LogUtils.d(TAG, "convert getChapterNumber: " + novelChapterContent.getChapterNumber());
         viewHolder.setText(R.id.tv_novel_title, novelChapterContent.getChapterName());
         viewHolder.setText(R.id.tv_novel_content, text);
     }
 
-    class VH extends BaseViewHolder {
-
-        public VH(@NotNull View view) {
-            super(view);
-        }
-    }
     private OnChapterClickListener mOnChapterClickListener;
 
     public void setOnChapterClickListener(OnChapterClickListener mOnChapterClickListener) {
@@ -55,16 +45,15 @@ public class NovelContentAdapter extends BaseQuickAdapter<NovelChapterContent, B
     }
 
     public interface OnChapterClickListener {
-
         void onclick(NovelChapterInfo chapter, int chapterNumber);
     }
-    public void initAutoLoadMoreEvent() {
-        BaseLoadMoreModule loadMoreModule = getLoadMoreModule();
-        loadMoreModule.setOnLoadMoreListener(this);
-    }
 
-    @Override
-    public void onLoadMore() {
-        mPresenter.loadMore();
+    /**
+     * 加载更多
+     * @param onLoadMoreListener
+     */
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        BaseLoadMoreModule loadMoreModule = getLoadMoreModule();
+        loadMoreModule.setOnLoadMoreListener(onLoadMoreListener);
     }
 }

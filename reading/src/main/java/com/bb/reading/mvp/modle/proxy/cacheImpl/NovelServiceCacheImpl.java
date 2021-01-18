@@ -7,7 +7,7 @@ import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
 import com.bb.reading.entity.NovelChapterContent;
 import com.bb.reading.entity.NovelChapterInfo;
 import com.bb.reading.mvp.callback.BaseCallback;
-import com.bb.reading.mvp.contract.MainContract;
+import com.bb.reading.mvp.contract.ReadingActivityContract;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * Date: 2021/1/1
  * Time: 22:45
  */
-public class NovelServiceCacheImpl implements MainContract.IMainModel<NovelChapterContent, List<NovelChapterInfo>> {
+public class NovelServiceCacheImpl implements ReadingActivityContract.IMainModel<NovelChapterContent, List<NovelChapterInfo>> {
     String TAG = "NovelServiceCacheImpl";
     private NovelDBManager mNovelDBManager;
 

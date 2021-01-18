@@ -29,9 +29,11 @@ public interface NovelService {
     public static String FKNGMN_NOVEL_INDEX = "24_24159";
 
     @GET("{novel_index}/{chapter_href}")
+    @Headers("needFilter:true")
     Observable<ResponseBody> getChapter(@Path("novel_index") String novel_index, @Path("chapter_href") String chapter_href);
 
     @GET("{novel_index}/")
+    @Headers("needFilter:true")
     Observable<ResponseBody> getCategory(@Path("novel_index") String novelIndex);
 
     @GET("list/{type}_{page}.html")

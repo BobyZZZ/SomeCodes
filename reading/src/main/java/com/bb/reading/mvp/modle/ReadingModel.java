@@ -1,10 +1,12 @@
 package com.bb.reading.mvp.modle;
 
+import android.util.Log;
+
 import com.bb.network.exceptionHandler.ExceptionHandler;
 import com.bb.network.exceptionHandler.ResponseErrorHandler;
 import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
 import com.bb.reading.mvp.callback.BaseCallback;
-import com.bb.reading.mvp.contract.MainContract;
+import com.bb.reading.mvp.contract.ReadingActivityContract;
 import com.bb.reading.utils.log.LogUtils;
 import com.bb.reading.network.RetrofitManager;
 import com.bb.reading.utils.RxUtils;
@@ -16,7 +18,10 @@ import com.bb.reading.network.NovelService;
 
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -28,14 +33,25 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class MainModel implements MainContract.IMainModel<NovelChapterContent,List<NovelChapterInfo>> {
+public class ReadingModel implements ReadingActivityContract.IMainModel<NovelChapterContent,List<NovelChapterInfo>> {
     String TAG = "MainModel";
     private NovelService mNovelServiceReal;
     private final NovelDBManager mNovelDBManager;
+    private Map<Observable,Disposable> mDisposableList = new HashMap<>();
 
-    public MainModel() {
+    public ReadingModel() {
         mNovelDBManager = DaoHelper.getInstance().getNovelDBManager();
         mNovelServiceReal = RetrofitManager.getInstance().createRs(NovelService.class);
+    }
+
+    public void onDestroy() {
+        Log.d(TAG, "zhouyc onDestroy() called: " + mDisposableList.size());
+        Iterator<Disposable> iterator = mDisposableList.values().iterator();
+        while (iterator.hasNext()) {
+            Disposable next = iterator.next();
+            next.dispose();
+            iterator.remove();
+        }
     }
 
     @Override
@@ -146,12 +162,13 @@ public class MainModel implements MainContract.IMainModel<NovelChapterContent,Li
                 .subscribe(new Observer<List<NovelChapterInfo>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        mDisposableList.put(listObservable,d);
+                        Log.d(TAG, "zhouyc onSubscribe: " + mDisposableList.size());
                     }
 
                     @Override
                     public void onNext(List<NovelChapterInfo> novelCategory) {
-                        LogUtils.e(TAG, "onNext in thread: " + Thread.currentThread().getName() + "---" + novelCategory);
+                        LogUtils.e(TAG, "onNext in thread: " + Thread.currentThread().getName() + "getCategory's size : " + novelCategory.size());
                         if (novelCategory == null || novelCategory.isEmpty()) {
                             onError(ExceptionHandler.ResponseThrowable.create(ExceptionHandler.Error.NETWORK_ERROR,
                                     "novelCategory is null", null));
@@ -168,6 +185,8 @@ public class MainModel implements MainContract.IMainModel<NovelChapterContent,Li
                     @Override
                     public void onComplete() {
                         LogUtils.d(TAG,"getCategory onComplete");
+                        mDisposableList.remove(listObservable);
+                        Log.d(TAG, "zhouyc onComplete: " + mDisposableList.size());
                     }
                 });
     }

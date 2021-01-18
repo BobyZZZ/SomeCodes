@@ -120,4 +120,9 @@ public class HomeFragment extends BaseMvpFragment<HomeFragmentPresenter> impleme
             mSortNovelListContainer.addView(sortNovelListView);
         }
     }
+
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
 }

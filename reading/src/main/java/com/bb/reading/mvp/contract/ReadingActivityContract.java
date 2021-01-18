@@ -6,7 +6,7 @@ import com.bb.reading.mvp.callback.BaseCallback;
 
 import java.util.List;
 
-public interface MainContract {
+public interface ReadingActivityContract {
     interface IMainModel<Chapter,Category> {
         void getChapter(String novelIndex, String chapterIndex, BaseCallback<Chapter> baseCallback);
         void getCategory(String novelIndex, boolean readFromCache, BaseCallback<Category> baseCallback);
@@ -20,6 +20,9 @@ public interface MainContract {
         void loadingStop();
         void updateCategory(List<NovelChapterInfo> novelCategory);
         void loadContentSuccessAndToDisplay(NovelChapterContent content, int chapterIndex, boolean resetData);
+
+        String getNovelID();
+        String getChapterID();
     }
 
     interface IMainPresenter {
