@@ -1,8 +1,12 @@
 package com.bb.reading.db.greenDao.beanManager;
 
+import android.util.Log;
+
 import com.bb.reading.entity.DaoSession;
 import com.bb.reading.entity.NovelChapterInfo;
 import com.bb.reading.entity.NovelChapterInfoDao;
+import com.bb.reading.entity.NovelDetails;
+import com.bb.reading.utils.log.LogUtils;
 
 import java.util.List;
 
@@ -18,10 +22,11 @@ public class NovelDBManager {
 
     private static NovelDBManager sInstance;
     public CategoryDB mCategoryDB;
+    public LikedNovelDB mLikedNovelDB;
 
     private NovelDBManager(DaoSession dao) {
-        NovelChapterInfoDao novelChapterInfoDao = dao.getNovelChapterInfoDao();
-        mCategoryDB = new CategoryDB(novelChapterInfoDao);
+        mCategoryDB = new CategoryDB(dao.getNovelChapterInfoDao());
+        mLikedNovelDB = new LikedNovelDB(dao.getNovelDetailsDao());
     }
 
     public static NovelDBManager getInstance(DaoSession dao) {
@@ -33,6 +38,11 @@ public class NovelDBManager {
         return sInstance;
     }
 
+    /**
+     * 根据小说id获取目录
+     * @param novelIndex    某小说
+     * @return
+     */
     public List<NovelChapterInfo> getCategory(String novelIndex) {
         List<NovelChapterInfo> cache = mCategoryDB.query(NovelChapterInfoDao.Properties.NovelID.eq(novelIndex));
 /*        LongLogUtils.i(TAG, "get " + novelIndex + "'s Category cache in thread: " + Thread.currentThread().getName()
@@ -40,6 +50,11 @@ public class NovelDBManager {
         return cache;
     }
 
+    /**
+     * 保存小说目录
+     * @param novelCategory
+     * @return
+     */
     public boolean saveCategory(List<NovelChapterInfo> novelCategory) {
         if (novelCategory == null || novelCategory.isEmpty()) {
             return false;
@@ -56,5 +71,23 @@ public class NovelDBManager {
 //        LongLogUtils.i(TAG, "save cache: " + novelCategory);
         mCategoryDB.insertOrReplace(novelCategory);
         return true;
+    }
+
+    /**
+     * 获取所有本地收藏小说
+     */
+    public List<NovelDetails> getAllLikedNovel() {
+        List<NovelDetails> novelDetails = mLikedNovelDB.loadAll();
+        LogUtils.d(TAG, "getAllLikedNovel() called");
+        return novelDetails;
+    }
+
+    /**
+     * 获取所有本地收藏小说
+     */
+    public long saveLikedNovel(NovelDetails novelDetails) {
+        long insertOrReplace = mLikedNovelDB.insertOrReplace(novelDetails);
+        LogUtils.d(TAG, "saveLikedNovel() called : " + insertOrReplace);
+        return insertOrReplace;
     }
 }

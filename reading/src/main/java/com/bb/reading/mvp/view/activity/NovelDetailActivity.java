@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -85,6 +86,13 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         });
         mRvNovel.setLayoutManager(new LinearLayoutManager(this));
         mRvNovel.setAdapter(mNovelChapterAdapter);
+
+        mTvNovelName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.addLikedNovelToDB();
+            }
+        });
     }
 
     @Override
