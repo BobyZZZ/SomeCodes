@@ -20,6 +20,7 @@ import com.bb.reading.base.BaseMvpActivity;
 import com.bb.reading.constant.NovelConstant;
 import com.bb.reading.mvp.contract.ReadingActivityContract;
 import com.bb.reading.mvp.presenter.ReadingPresenter;
+import com.bb.reading.mvp.view.listener.NovelContentOnScrollListener;
 import com.bb.reading.utils.log.LogUtils;
 import com.bb.reading.utils.log.LongLogUtils;
 import com.bb.reading.utils.NovelSpUtils;
@@ -41,7 +42,8 @@ import java.util.List;
 /**
  * 小说阅读Activity
  */
-public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implements ReadingActivityContract.IMainView, View.OnClickListener, BScrollerControl.OnScrollChange {
+public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implements ReadingActivityContract.IMainView,
+        View.OnClickListener, BScrollerControl.OnScrollChange, NovelContentOnScrollListener.ReadingChangeListener {
     String TAG = "MainActivity";
     private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
     private String mChapterID = NovelService.JIAN_LAI_NOVEL_INDEX;
@@ -176,52 +178,8 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
         /**
          * 内容页面滚动，用于更新"当前正在阅读"
          */
-        mRvNovelContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            String TAG = "mRvNovelContent$Listener";
-            /**
-             * 当前阅读所处position
-             */
-            private int mLastReadingItemPosition = -1;
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                //更新顶部标题
-                int readingItemPosition = -1;
-                if (dy <= 0) {
-                    //手指向下滑动
-                    readingItemPosition = mLayoutManagerNovelContent.findFirstVisibleItemPosition();
-                } else {
-                    //手指向上滑动
-                    readingItemPosition = mLayoutManagerNovelContent.findLastVisibleItemPosition();
-                }
-//                    LogUtils.d(TAG, "onScrollChange this---new: " + this.lastReadingItemPosition + "," + readingItemPosition);
-                if (mLastReadingItemPosition != readingItemPosition) {
-                    RecyclerView.ViewHolder readingItemViewHolder = mRvNovelContent.findViewHolderForLayoutPosition(readingItemPosition);
-                    if (readingItemViewHolder != null) {
-                        int top = readingItemViewHolder.itemView.getTop();
-                        if (top <= 0) {
-//                            LogUtils.d(TAG, "onCurrentReadingChapterChange currentReading: " + mNovelContentAdapter.getItem(readingItemPosition) + ",top: " + top);
-                            onCurrentReadingChapterChange(mNovelContentAdapter.getItem(readingItemPosition));
-                            mLastReadingItemPosition = readingItemPosition;
-                        }
-                    }
-                }
-
-                View currentView = mLayoutManagerNovelContent.findViewByPosition(mLastReadingItemPosition);
-                if (currentView != null) {
-                    //更新底部页码:1/7
-                    int totalPage = (int) Math.ceil(1.0d * currentView.getHeight() / mRvNovelContent.getHeight());//总页数
-                    int alreadyScrollY = Math.abs(currentView.getTop());
-                    int currentPage = 1 + alreadyScrollY / mRvNovelContent.getHeight();//当前页码
-//                    LogUtils.d(TAG, currentPage + "/" + totalPage + "---alreadyScrollY: " + alreadyScrollY);
-                    onPageNumberChanged(currentPage, totalPage);
-                    //更新阅读位置
-                    onLastReadingProgressChanged(mNovelContentAdapter.getItem(mLastReadingItemPosition), alreadyScrollY);
-                } else {
-                    LogUtils.e(TAG, "currentView == null");
-                }
-            }
-        });
+        mRvNovelContent.addOnScrollListener(new NovelContentOnScrollListener(mLayoutManagerNovelContent,
+                mRvNovelContent,this));
     }
 
     @Override
@@ -229,30 +187,14 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
         mPresenter.getCategory(mNovelID, true);
     }
 
-    /**
-     * 更新页码
-     *
-     * @param currentPage
-     * @param totalPage
-     */
-    private void onPageNumberChanged(int currentPage, int totalPage) {
-        TextView tvPageNumber = findViewById(R.id.tv_pageNumber);
-        tvPageNumber.setText(getString(R.string.pageNumber, currentPage, totalPage));
-    }
-
-    private void onCurrentReadingChapterChange(NovelChapterContent novelChapterContent) {
-        onCurrentReadingChapterChange(novelChapterContent, false);
-    }
-
-    /**
-     * 当前阅读章节变化
-     */
-    private void onCurrentReadingChapterChange(NovelChapterContent novelChapterContent, boolean resetReadingPosition) {
-        //currentReadingChapter change!!
-        mPresenter.saveCurrentReading(novelChapterContent, resetReadingPosition);
-
-        TextView tvReading = findViewById(R.id.tv_current_reading_chapter);
-        tvReading.setText(novelChapterContent.getChapterName());
+    @Override
+    public void loadingStart() {
+        showLoading(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                LogUtils.w(TAG, "onCancel");
+            }
+        }, false);
     }
 
     @Override
@@ -274,16 +216,6 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
         if (loadMoreModule.isLoading()) {
             loadMoreModule.loadMoreFail();
         }
-    }
-
-    @Override
-    public void loadingStart() {
-        showLoading(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                LogUtils.w(TAG, "onCancel");
-            }
-        }, false);
     }
 
     @Override
@@ -324,17 +256,6 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
     }
 
     /**
-     * 阅读位置变化
-     *
-     * @param item
-     * @param alreadyScrollY
-     */
-    private void onLastReadingProgressChanged(NovelChapterContent item, int alreadyScrollY) {
-//        LogUtils.v(TAG, "saveLastReadingState: " + item.getNovelId() + "," + item.getChapterId() + ",offset: " + alreadyScrollY);
-        NovelSpUtils.saveLastReadingPosition(item.getNovelId(), alreadyScrollY);
-    }
-
-    /**
      * 恢复上次阅读状态（阅读位置）
      *
      * @param novelChapterContent
@@ -360,6 +281,17 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
 
     public NovelChapterInfo getChapterInfoWithOffset(String chapterId, int offset) {
         return mCategoryAdapter.getChapterInfoWithOffset(chapterId, offset);
+    }
+
+    /**
+     * 当前阅读章节变化
+     */
+    private void onCurrentReadingChapterChange(NovelChapterContent novelChapterContent, boolean resetReadingPosition) {
+        //currentReadingChapter change!!
+        mPresenter.saveCurrentReading(novelChapterContent, resetReadingPosition);
+
+        TextView tvReading = findViewById(R.id.tv_current_reading_chapter);
+        tvReading.setText(novelChapterContent.getChapterName());
     }
 
     @Override
@@ -406,5 +338,38 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
         int itemCountInScreen = RecyclerViewUtils.calculateItemCountInScreen(mRvCategory);
         int position = (int) (fraction * (mCategoryAdapter.getItemCount() - itemCountInScreen));
         mLayoutManagerCategory.scrollToPositionWithOffset(position, 0);
+    }
+
+
+    /**
+     * 更新页码
+     *
+     * @param currentPage
+     * @param totalPage
+     */
+    @Override
+    public void onPageNumberChanged(int currentPage, int totalPage) {
+        TextView tvPageNumber = findViewById(R.id.tv_pageNumber);
+        tvPageNumber.setText(getString(R.string.pageNumber, currentPage, totalPage));
+    }
+
+    /**
+     * 更新当前阅读章节
+     * @param currentReadingItemPosition
+     */
+    @Override
+    public void onCurrentReadingChapterChange(int currentReadingItemPosition) {
+        onCurrentReadingChapterChange(mNovelContentAdapter.getItem(currentReadingItemPosition), false);
+    }
+
+    /**
+     * 阅读位置变化
+     * @param currentReadingItemPosition    当前阅读章节
+     * @param alreadyScrollY
+     */
+    @Override
+    public void onLastReadingProgressChanged(int currentReadingItemPosition, int alreadyScrollY) {
+        NovelChapterContent item = mNovelContentAdapter.getItem(currentReadingItemPosition);
+        NovelSpUtils.saveLastReadingPosition(item.getNovelId(), alreadyScrollY);
     }
 }
