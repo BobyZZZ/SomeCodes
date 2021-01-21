@@ -20,6 +20,10 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends BaseFragm
         }
     }
 
+    /**
+     * 在onCreate()后调用
+     * @return
+     */
     @Override
     public abstract P createPresenter();
 

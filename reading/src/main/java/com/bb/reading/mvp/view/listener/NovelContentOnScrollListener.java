@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bb.reading.adapter.rv.NovelContentAdapter;
 import com.bb.reading.utils.log.LogUtils;
 
 /**
@@ -42,13 +43,13 @@ public class NovelContentOnScrollListener extends RecyclerView.OnScrollListener 
             //手指向上滑动
             readingItemPosition = mLayoutManagerNovelContent.findLastVisibleItemPosition();
         }
-//                    LogUtils.d(TAG, "onScrollChange this---new: " + this.lastReadingItemPosition + "," + readingItemPosition);
+//        LogUtils.d(TAG, "onScrollChange this---new: " + this.mLastReadingItemPosition + "," + readingItemPosition);
         if (mLastReadingItemPosition != readingItemPosition) {
             RecyclerView.ViewHolder readingItemViewHolder = mRvNovelContent.findViewHolderForLayoutPosition(readingItemPosition);
             if (readingItemViewHolder != null) {
                 int top = readingItemViewHolder.itemView.getTop();
                 if (top <= 0) {
-//                            LogUtils.d(TAG, "onCurrentReadingChapterChange currentReading: " + mNovelContentAdapter.getItem(readingItemPosition) + ",top: " + top);
+//                    LogUtils.d(TAG, "onCurrentReadingChapterChange currentReading: " + ((NovelContentAdapter)mRvNovelContent.getAdapter()).getItem(readingItemPosition).getChapterName() + ",top: " + top);
                     onCurrentReadingChapterChange(readingItemPosition);
                     mLastReadingItemPosition = readingItemPosition;
                 }
@@ -61,7 +62,7 @@ public class NovelContentOnScrollListener extends RecyclerView.OnScrollListener 
             int totalPage = (int) Math.ceil(1.0d * currentView.getHeight() / mRvNovelContent.getHeight());//总页数
             int alreadyScrollY = Math.abs(currentView.getTop());
             int currentPage = 1 + alreadyScrollY / mRvNovelContent.getHeight();//当前页码
-//                    LogUtils.d(TAG, currentPage + "/" + totalPage + "---alreadyScrollY: " + alreadyScrollY);
+//            LogUtils.d(TAG, currentPage + "/" + totalPage + "---alreadyScrollY: " + alreadyScrollY);
             onPageNumberChanged(currentPage, totalPage);
             //更新阅读位置
             onLastReadingProgressChanged(mLastReadingItemPosition, alreadyScrollY);

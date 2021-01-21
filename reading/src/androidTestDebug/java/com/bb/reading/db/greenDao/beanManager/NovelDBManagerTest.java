@@ -49,10 +49,13 @@ public class NovelDBManagerTest {
     @Test
     public void saveLikedNovel() {
         ArrayList<String> infos = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            infos.add("info" + i);
-        }
-        NovelDetails novel = new NovelDetails("boby", "bobo", "bobo", infos, "introduction");
+            infos.add("作    者:烽火戏诸侯");
+            infos.add("类    别:玄幻小说");
+            infos.add("最后更新  :2021-01-18 23:59:43");
+            infos.add("最    新:第八百五十二章 大概");
+        NovelDetails novel = new NovelDetails("http://www.biquge.info/1_1245/", "http://www.biquge.info/files/article/image/1/1245/1245s.jpg", "剑来", infos, "大千世界，无奇不有。我陈平安，唯有一剑，可搬山，倒海，降妖，镇魔，敕神，摘星，断江，摧城，开天！\n" +
+                "\n" +
+                "本站提示：各位书友要是觉得《剑来》还不错的话请不要忘记向您QQ群和微博里的朋友推荐哦！");
         long l = mNovelDBManager.saveLikedNovel(novel);
         Log.d(TAG, "saveLikedNovel() called: " + l);
     }

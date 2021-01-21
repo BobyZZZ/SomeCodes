@@ -6,7 +6,7 @@ import com.bb.reading.R;
 import com.bb.reading.base.BasePresenter;
 import com.bb.reading.mvp.contract.MainActivityContract;
 import com.bb.reading.mvp.view.activity.MainActivity;
-import com.bb.reading.mvp.view.fragment.HomeFragment;
+import com.bb.reading.mvp.view.fragment.LikedNovelFragment;
 import com.bb.reading.mvp.view.fragment.MainTabFragment;
 import com.bb.reading.mvp.view.fragment.TabViewPagerFragment;
 import com.bb.reading.utils.ResUtils;
@@ -29,7 +29,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivity> implement
         for (int i = 0; i < mTitles.length; i++) {
             switch (i) {
                 case 0:
-                    mFragments.add(MainTabFragment.newInstance(MainTabFragment.TAB_SHUJIA));
+                    mFragments.add(LikedNovelFragment.newInstance());
                     break;
                 case 1:
                     mFragments.add(TabViewPagerFragment.newInstance("书城"));

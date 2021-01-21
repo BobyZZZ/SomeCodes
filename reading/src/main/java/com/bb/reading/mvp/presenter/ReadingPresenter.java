@@ -1,7 +1,6 @@
 package com.bb.reading.mvp.presenter;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.bb.reading.base.BasePresenter;
 import com.bb.reading.utils.log.LogUtils;
@@ -23,7 +22,7 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
      * 记录当前已加载到的章节
      */
     private String mChapterIdLoaded;
-    private List<NovelChapterInfo> mChapters;
+    private List<NovelChapterInfo> mNovelCategory;
     private boolean mFirstInit = true;//控制初次打开时自动加载
 
     public ReadingPresenter() {
@@ -37,11 +36,12 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
         mModel.getCategory(novelIndex, readCache, new BaseCallback<List<NovelChapterInfo>>() {
             @Override
             public void onSuccess(List<NovelChapterInfo> novelCategory, boolean... fromCache) {
-                Log.d(TAG, "getCategory onSuccess() called with: fromCache = [" + fromCache[0] + "]");
-                mChapters = novelCategory;
+                LogUtils.d(TAG, "getCategory onSuccess() called with: fromCache = [" + fromCache[0] + "]");
+                mNovelCategory = novelCategory;
                 mView.updateCategory(novelCategory);
 
-                if (mFirstInit) {//首次打开时自动打开上次观看章节
+                if (mFirstInit) {
+                    //首次打开时自动打开加载
                     read(novelIndex, mView.getChapterID());
                 }
             }
@@ -67,9 +67,16 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
      * @param chapterID 该章节的href
      * @param resetData 是否需要重新设置数据
      */
-    public void read(final String novelID, final String chapterID, final boolean resetData) {
-        LogUtils.d(TAG, "read: " + chapterID);
-        mModel.getChapter(novelID, chapterID, new BaseCallback<NovelChapterContent>() {
+    public void read(final String novelID, String chapterID, final boolean resetData) {
+        String id = chapterID;
+        if (TextUtils.isEmpty(id) && mNovelCategory!= null && !mNovelCategory.isEmpty()) {
+            id = NovelSpUtils.getLastReadChapter(mView.getNovelID(),mNovelCategory.get(0).getChapterId());
+            LogUtils.d(TAG, "打开最后一次阅读的章节或第一章");
+        }
+
+        String finalId = id;
+        LogUtils.d(TAG, "read target chapterId: " + finalId);
+        mModel.getChapter(novelID, finalId, new BaseCallback<NovelChapterContent>() {
             @Override
             public void onSuccess(NovelChapterContent novelChapterContent, boolean... fromCache) {
                 mView.loadingStop();
@@ -80,7 +87,7 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
                     mFirstInit = false;
                 }
                 //和最后阅读的章节相同时才恢复到上次阅读的位置
-                if (TextUtils.equals(NovelSpUtils.getLastReadChapter(novelID), chapterID)) {
+                if (TextUtils.equals(NovelSpUtils.getLastReadChapter(novelID), finalId)) {
                     mView.recoverLastReadingState(novelChapterContent);
                 }
                 NovelSpUtils.saveLastReadNovel(novelID);//记录最后阅读哪本小说
@@ -99,19 +106,6 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
     }
 
     /**
-     * 先获取目录，然后从目录中获取准确的地址进行访问
-     *
-     * @param chapter
-     * @return
-     */
-    private String getChapterIndexFromCategory(int chapter) {
-        if (mChapters != null && !mChapters.isEmpty() && chapter > 0 && chapter < mChapters.size()) {
-            return mChapters.get(chapter - 1).getChapterId();
-        }
-        return null;
-    }
-
-    /**
      * 获取下一章要加载的章节id
      *
      * @return 章节id
@@ -124,10 +118,6 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
         }
         LogUtils.d(TAG, "auto loadMore chapter: " + nextChapterId);
         return nextChapterId;
-    }
-
-    public void saveCurrentReading(NovelChapterContent novelChapterContent) {
-        saveCurrentReading(novelChapterContent, false);
     }
 
     public void saveCurrentReading(NovelChapterContent novelChapterContent, boolean resetReadingPosition) {
