@@ -34,6 +34,9 @@
         <activity android:name=".mvp.view.activity.NovelDetailActivity">
 
         </activity>
+        <activity android:name=".mvp.view.activity.SearchActivity">
+
+        </activity>
     </application>
 
 </manifest>

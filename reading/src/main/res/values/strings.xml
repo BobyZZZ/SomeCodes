@@ -11,4 +11,6 @@
     <string name="last_read">最后阅读</string>
     <string name="add_like_success">收藏成功</string>
     <string name="add_like_fail">收藏失败</string>
+    <string name="search_text">请输入作品或作者，例如‘背影’</string>
+    <string name="search_key_could_not_empty">搜索内容不能为空</string>
 </resources>

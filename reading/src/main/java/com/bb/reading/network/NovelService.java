@@ -3,14 +3,15 @@ package com.bb.reading.network;
 import com.bb.reading.entity.HomePageBean;
 import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.entity.PageData;
+import com.bb.reading.entity.SearchResult;
 
 import io.reactivex.Observable;
 import me.ghui.retrofit.converter.annotations.Html;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface NovelService {
     public static String NORVEL_BASE_URL = "http://www.biquge.info/";
@@ -36,21 +37,44 @@ public interface NovelService {
     @Headers("needFilter:true")
     Observable<ResponseBody> getCategory(@Path("novel_index") String novelIndex);
 
+    /**
+     * 根据分类获取小说
+     * @param type
+     * @param page
+     * @return
+     */
     @GET("list/{type}_{page}.html")
     @Html
     Observable<PageData> getNovelBySort(@Path("type") int type, @Path("page") int page);
 
+    /**
+     * 获取主页数据
+     * @return
+     */
     @Html
     @GET("/")
     Observable<HomePageBean> getHomeData();
 
+    /**
+     * 小说详情页面
+     * @param novelIndex
+     * @return
+     */
     @Html
     @GET("{novel_index}")
     @Headers("needFilter:true")
     Observable<NovelDetails> getNovelDetails(@Path("novel_index") String novelIndex);
 
+    /**
+     * 获取主页数据
+     * @return
+     */
     @GET("/")
     Observable<ResponseBody> getHomeDataTest();
+
+    @GET("modules/article/search.php")
+    @Html
+    Observable<SearchResult> searchNovel(@Query("searchkey")String searchKey);
 
 
     public class NovelType {

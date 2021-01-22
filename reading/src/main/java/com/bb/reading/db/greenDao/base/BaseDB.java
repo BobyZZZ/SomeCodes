@@ -11,11 +11,11 @@ import java.util.List;
  * Date: 2020/11/8
  * Time: 0:09
  */
-public class BaseBeanManager<T, K> {
+public class BaseDB<T, K> {
 
     private final AbstractDao<T, K> mDao;
 
-    public BaseBeanManager(AbstractDao<T, K> dao) {
+    public BaseDB(AbstractDao<T, K> dao) {
         mDao = dao;
     }
 

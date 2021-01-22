@@ -14,6 +14,7 @@ import android.view.Window;
 
 import androidx.palette.graphics.Palette;
 
+import com.bb.reading.base.FishApplication;
 import com.bb.reading.utils.log.LogUtils;
 
 import io.reactivex.Observable;
@@ -22,6 +23,7 @@ import io.reactivex.functions.Function;
 
 public class UIUtils {
     static String TAG = "UIUtils";
+    private static Context mContext = FishApplication.mContext;
 
     public static void ColorfulStatusBar(Activity activity) {
         ColorfulStatusBar(activity,false);
@@ -72,12 +74,16 @@ public class UIUtils {
 
     /**
      * 获取状态栏高度
-     * @param context
      * @return
      */
-    public static int getStatusBarHeight(Context context) {
-        Resources resources = context.getResources();
+    public static int getStatusBarHeight() {
+        Resources resources = mContext.getResources();
         int id = resources.getIdentifier("status_bar_height", "dimen", "android");
         return resources.getDimensionPixelSize(id);
+    }
+
+    public static int dp2Px(int dp) {
+        float density = mContext.getResources().getDisplayMetrics().density;
+        return (int) (dp * density + 0.5f);
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
+import com.bb.reading.db.greenDao.beanManager.SearchHistoryDB;
 import com.bb.reading.db.greenDao.beanManager.TestGreenDaoDBManager;
 import com.bb.reading.utils.log.LogUtils;
 import com.bb.reading.entity.DaoMaster;
@@ -52,6 +53,10 @@ public class DaoHelper {
 
     private DaoSession getDaoSession() {
         return mDaoSession;
+    }
+
+    public SearchHistoryDB getSearchHistoryDB() {
+        return new SearchHistoryDB(mDaoSession.getSearchHistoryDao());
     }
 
     /********************************************NovelDBManager**************************************************/

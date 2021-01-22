@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/selector_et_search"
+        android:gravity="center"
+        android:hint="@string/search_text"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="10dp"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/shape_et_cursor"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/search"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="#ccc"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_trip"
+        app:layout_constraintLeft_toLeftOf="@+id/et_search"
+        app:layout_constraintTop_toTopOf="@+id/tv_trip" />
+
+    <TextView
+        android:id="@+id/tv_trip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="搜索示例"
+        app:layout_constraintLeft_toRightOf="@+id/search"
+        app:layout_constraintTop_toBottomOf="@+id/et_search" />
+
+    <LinearLayout
+        android:id="@+id/ll_contain"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="@+id/et_search"
+        app:layout_constraintRight_toRightOf="@+id/et_search"
+        app:layout_constraintTop_toBottomOf="@id/tv_trip">
+
+        <com.bb.reading.view.FlowLayout
+            android:id="@+id/ll_trip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/history"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="#ccc"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_history"
+        app:layout_constraintLeft_toLeftOf="@+id/search"
+        app:layout_constraintTop_toTopOf="@+id/tv_history" />
+
+    <TextView
+        android:id="@+id/tv_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="搜索记录"
+        app:layout_constraintLeft_toRightOf="@+id/history"
+        app:layout_constraintTop_toBottomOf="@+id/ll_contain" />
+
+    <TextView
+        android:id="@+id/tv_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:text="清除记录"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_history" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="@+id/et_search"
+        app:layout_constraintRight_toRightOf="@+id/et_search"
+        app:layout_constraintTop_toBottomOf="@+id/tv_history">
+
+        <com.bb.reading.view.FlowLayout
+            android:id="@+id/ll_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

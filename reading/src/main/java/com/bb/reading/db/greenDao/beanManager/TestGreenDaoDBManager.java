@@ -1,6 +1,6 @@
 package com.bb.reading.db.greenDao.beanManager;
 
-import com.bb.reading.db.greenDao.base.BaseBeanManager;
+import com.bb.reading.db.greenDao.base.BaseDB;
 import com.bb.reading.entity.TestGreenDaoEntity;
 
 import org.greenrobot.greendao.AbstractDao;
@@ -11,7 +11,7 @@ import org.greenrobot.greendao.AbstractDao;
  * Date: 2020/11/8
  * Time: 0:20
  */
-public class TestGreenDaoDBManager extends BaseBeanManager<TestGreenDaoEntity,String> {
+public class TestGreenDaoDBManager extends BaseDB<TestGreenDaoEntity,String> {
     public TestGreenDaoDBManager(AbstractDao<TestGreenDaoEntity, String> dao) {
         super(dao);
     }
