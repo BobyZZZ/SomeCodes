@@ -39,6 +39,11 @@ android {
                 }
             }else {
                 manifest.srcFile 'src/main/AndroidManifest.xml'
+                res.srcDirs = [
+                        'src/main/res/layout_bbtest',
+                        'src/main/res/layout',
+                        'src/main/res'
+                ]
             }
         }
     }

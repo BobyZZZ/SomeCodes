@@ -1,5 +1,6 @@
-package com.bb.uilib;
+package com.bb.uilib.test;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -40,5 +41,9 @@ public class UITester {
                 .setBackgroundColor(Color.TRANSPARENT)
                 .build();
         dialog.show();
+    }
+
+    public static void setContentView(Activity activity, int layoutId) {
+        activity.setContentView(layoutId);
     }
 }

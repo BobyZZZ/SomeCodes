@@ -1,4 +1,4 @@
-package com.bb.uilib;
+package com.bb.uilib.test;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,13 +18,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        UITester.test(this);
+/*        UITester.test(this);
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UITester.test(MainActivity.this);
             }
-        });
+        });*/
+        UITester.setContentView(this,R.layout.test_flash_text_logo);
     }
 
 }
