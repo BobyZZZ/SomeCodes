@@ -19,7 +19,7 @@ public interface ReadingActivityContract {
         void loadingStart();
         void loadingStop();
         void updateCategory(List<NovelChapterInfo> novelCategory);
-        void loadContentSuccessAndToDisplay(NovelChapterContent content, int chapterIndex, boolean resetData);
+        void loadContentSuccessAndToDisplay(NovelChapterContent content, boolean hasMore, boolean resetData);
 
         String getNovelID();
         String getChapterID();

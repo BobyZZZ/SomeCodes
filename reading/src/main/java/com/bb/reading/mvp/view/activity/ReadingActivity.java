@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -230,7 +231,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
     }
 
     @Override
-    public void loadContentSuccessAndToDisplay(NovelChapterContent novelChapterContent, int chapterNumber, boolean resetData) {
+    public void loadContentSuccessAndToDisplay(NovelChapterContent novelChapterContent, boolean hasMore, boolean resetData) {
         closeCategoryMenu();
         if (GlobalConstant.isFishMode()) {
             LongLogUtils.w(TAG, "displayContent: " + novelChapterContent + ",resetData: " + resetData);
@@ -251,6 +252,11 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
             if (mNovelContentAdapter.getLoadMoreModule().isLoading()) {
                 LogUtils.d(TAG, "load more complete: " + novelChapterContent.getChapterName());
                 mNovelContentAdapter.getLoadMoreModule().loadMoreComplete();
+            }
+
+            mNovelContentAdapter.getLoadMoreModule().setEnableLoadMore(hasMore);
+            if (!hasMore) {
+                showToast(R.string.no_more);
             }
         }
     }

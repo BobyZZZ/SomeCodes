@@ -42,7 +42,12 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
 
                 if (mFirstInit) {
                     //首次打开时自动打开加载
-                    read(novelIndex, mView.getChapterID());
+                    String id = mView.getChapterID();
+                    if (TextUtils.isEmpty(id) && mNovelCategory!= null && !mNovelCategory.isEmpty()) {
+                        id = NovelSpUtils.getLastReadChapter(mView.getNovelID(),mNovelCategory.get(0).getChapterId());
+                        LogUtils.d(TAG, "打开最后一次阅读的章节或第一章");
+                    }
+                    read(novelIndex, id);
                 }
             }
 
@@ -68,26 +73,19 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
      * @param resetData 是否需要重新设置数据
      */
     public void read(final String novelID, String chapterID, final boolean resetData) {
-        String id = chapterID;
-        if (TextUtils.isEmpty(id) && mNovelCategory!= null && !mNovelCategory.isEmpty()) {
-            id = NovelSpUtils.getLastReadChapter(mView.getNovelID(),mNovelCategory.get(0).getChapterId());
-            LogUtils.d(TAG, "打开最后一次阅读的章节或第一章");
-        }
-
-        String finalId = id;
-        LogUtils.d(TAG, "read target chapterId: " + finalId);
-        mModel.getChapter(novelID, finalId, new BaseCallback<NovelChapterContent>() {
+        LogUtils.d(TAG, "read target chapterId: " + chapterID);
+        mModel.getChapter(novelID, chapterID, new BaseCallback<NovelChapterContent>() {
             @Override
             public void onSuccess(NovelChapterContent novelChapterContent, boolean... fromCache) {
                 mView.loadingStop();
                 //已缓存章节
                 mChapterIdLoaded = novelChapterContent.getChapterId();
-                mView.loadContentSuccessAndToDisplay(novelChapterContent, novelChapterContent.getChapterNumber(), resetData);
+                mView.loadContentSuccessAndToDisplay(novelChapterContent, !isLastChapter(novelChapterContent.getChapterId()), resetData);
                 if (mFirstInit) {//初次加载时，滚到上次阅读的位置
                     mFirstInit = false;
                 }
                 //和最后阅读的章节相同时才恢复到上次阅读的位置
-                if (TextUtils.equals(NovelSpUtils.getLastReadChapter(novelID), finalId)) {
+                if (TextUtils.equals(NovelSpUtils.getLastReadChapter(novelID), chapterID)) {
                     mView.recoverLastReadingState(novelChapterContent);
                 }
                 NovelSpUtils.saveLastReadNovel(novelID);//记录最后阅读哪本小说
@@ -118,6 +116,14 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
         }
         LogUtils.d(TAG, "auto loadMore chapter: " + nextChapterId);
         return nextChapterId;
+    }
+
+    private boolean isLastChapter(String chapterId) {
+        if (mNovelCategory == null || mNovelCategory.isEmpty()) {
+            return true;
+        }
+        String lastChapter = mNovelCategory.get(mNovelCategory.size() - 1).getChapterId();
+        return TextUtils.equals(lastChapter,chapterId);
     }
 
     public void saveCurrentReading(NovelChapterContent novelChapterContent, boolean resetReadingPosition) {

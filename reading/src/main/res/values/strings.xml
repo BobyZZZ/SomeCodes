@@ -3,7 +3,7 @@
     <string name="confirm">confirm</string>
     <string name="next">next</string>
     <string name="un_downloaded">未缓存</string>
-    <string name="no_more">已经是最后一节!!</string>
+    <string name="no_more">已经到底了!!</string>
     <string name="pageNumber">%d/%d</string>
 
     <string name="error_server">访问服务器失败</string>
