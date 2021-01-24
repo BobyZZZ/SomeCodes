@@ -34,7 +34,6 @@ public class NovelDetailActivityModel implements NovelDetailActivityContract.IMo
                 .subscribe(new BaseObserver<NovelDetails>() {
                     @Override
                     protected void onSuccess(NovelDetails novelDetails) {
-                        Log.d(TAG, "onSuccess() called with: novelDetails = [" + novelDetails + "]");
                         mPresenter.onDetailDataSuccess(novelDetails);
                     }
 

@@ -1,15 +1,16 @@
 package com.bb.reading.adapter.rv;
 
-import android.os.Bundle;
-import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bb.reading.R;
-import com.bb.reading.adapter.base.BaseRvAdapter;
 import com.bb.reading.adapter.base.BaseVH;
 import com.bb.reading.entity.NovelDetails;
-import com.bb.reading.utils.NovelSpUtils;
+import com.bb.reading.utils.GlideUtils;
 
 import java.util.List;
 
@@ -19,51 +20,84 @@ import java.util.List;
  * Date: 2021/1/18
  * Time: 1:01
  */
-public class NovelChapterAdapter extends BaseRvAdapter<NovelDetails.Chapter> {
-    private final String PAYLOAD_LAST_READ = "payload_last_read";
+public class NovelChapterAdapter extends RecyclerView.Adapter<BaseVH> {
+    String TAG = "NovelChapterAdapter";
+    private final int TYPE_HEADER = 0;
+    private final int TYPE_NORMAL = 1;
+    private NovelDetails mNovelDetails;
 
-    public NovelChapterAdapter(int layoutId) {
-        super(layoutId);
+    public void setData(NovelDetails novelDetails) {
+        mNovelDetails = novelDetails;
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public BaseVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return BaseVH.create(parent, viewType == TYPE_HEADER ? R.layout.item_header_novel_detail_info : R.layout.item_category);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseVH holder, int position, @NonNull List<Object> payloads) {
-        if (payloads.isEmpty()) {
-            super.onBindViewHolder(holder, position, payloads);
+    public void onBindViewHolder(@NonNull BaseVH holder, int position) {
+        int itemViewType = getItemViewType(position);
+        if (itemViewType == TYPE_HEADER) {
+            onBindHeader(holder, position);
         } else {
-            Bundle bundle = (Bundle) payloads.get(0);
-            String lastRead = bundle.getString(PAYLOAD_LAST_READ);
-            if (!TextUtils.isEmpty(lastRead)) {
-                holder.setText(R.id.tv_cached, R.string.last_read);
-            }
+            NovelDetails.Chapter chapter = mNovelDetails.chapterList.get(position - 1);
+            onBindNormal(holder, chapter);
         }
+    }
+
+    private void onBindHeader(BaseVH holder, int position) {
+        holder.setText(R.id.tv_novel_author, mNovelDetails.getAuthor());
+        holder.setText(R.id.tv_novel_introduction, mNovelDetails.introduction);
+        holder.setText(R.id.tv_novel_last_update, mNovelDetails.getLastUpdateTime());
+        holder.setText(R.id.tv_novel_type, mNovelDetails.getType());
+        holder.setText(R.id.tv_novel_name, mNovelDetails.name);
+
+        ImageView ivCover = holder.getView(R.id.iv_novel_cover, ImageView.class);
+        GlideUtils.load(mNovelDetails.getCoverUrl(), ivCover);
+    }
+
+    private void onBindNormal(BaseVH holder, NovelDetails.Chapter chapter) {
+        holder.setText(R.id.tv_chapter_name, chapter.name);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(chapter);
+                }
+            }
+        });
     }
 
     @Override
-    protected void convert(BaseVH holder, NovelDetails.Chapter data) {
-        holder.setText(R.id.tv_chapter_name, data.name);
+    public int getItemCount() {
+        if (mNovelDetails == null) {
+            return 0;
+        }
+        List<NovelDetails.Chapter> chapterList = mNovelDetails.chapterList;
+        int count = 1 + (chapterList == null ? 0 : chapterList.size());
+        return count;
     }
 
-    private int mLastReadPosition = -1;
-
-    public void setLastRead(String novelId) {
-        String lastReadChapter = NovelSpUtils.getLastReadChapter(novelId);
-        if (TextUtils.isEmpty(lastReadChapter)) {
-            return;
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return TYPE_HEADER;
+        } else {
+            return TYPE_NORMAL;
         }
-        Bundle bundle = new Bundle();
-        for (int i = 0; i < mDatas.size(); i++) {
-            if (getItemData(i).chapterUrl.equals(lastReadChapter)) {
-                if (mLastReadPosition > -1 && mLastReadPosition < mDatas.size()) {
-                    notifyItemChanged(mLastReadPosition, bundle);//清除上次
-                }
+    }
 
-                mLastReadPosition = i;
-                bundle.putString(PAYLOAD_LAST_READ, lastReadChapter);//更新最后阅读
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
 
-                notifyItemChanged(i, bundle);
-                break;
-            }
-        }
+    private OnItemClickListener mOnItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(NovelDetails.Chapter data);
     }
 }

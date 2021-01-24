@@ -32,7 +32,7 @@ public class HomeFragmentModel implements HomeFragmentContract.IModel {
                 .subscribe(new BaseObserver<HomePageBean>() {
                     @Override
                     protected void onSuccess(HomePageBean homePageBean) {
-                        Log.d(TAG, "onSuccess() called with: homePageBean = [" + homePageBean + "]");
+//                        Log.d(TAG, "onSuccess() called with: homePageBean = [" + homePageBean + "]");
                         mPresenter.onHomeData(homePageBean);
                     }
 

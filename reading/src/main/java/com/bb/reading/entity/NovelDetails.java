@@ -140,17 +140,12 @@ public class NovelDetails {
             Gson gson = new Gson();
             List<String> infos = gson.fromJson(databaseValue, new TypeToken<List<String>>() {
             }.getType());
-            for (String info : infos) {
-                Log.d(TAG, "convertToEntityProperty: " + info);
-            }
-            Log.d(TAG, "convertToEntityProperty: finish========");
             return infos;
         }
 
         @Override
         public String convertToDatabaseValue(List<String> entityProperty) {
             String json = new Gson().toJson(entityProperty);
-            Log.d(TAG, "convertToDatabaseValue: " + json);
             return json;
         }
     }

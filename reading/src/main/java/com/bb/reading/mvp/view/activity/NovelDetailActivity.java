@@ -32,12 +32,6 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
     String TAG = "NovelDetailActivity";
 
     private String mNovelId;
-    private TextView mTvNovelAuthor;
-    private TextView mTvNovelType;
-    private TextView mTvNovelLastUpdate;
-    private TextView mTvNovelIntroduction;
-    private TextView mTvNovelName;
-    private ImageView mIvNovelCover;
     private RecyclerView mRvNovel;
     private NovelChapterAdapter mNovelChapterAdapter;
 
@@ -66,20 +60,14 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
 
     @Override
     protected void initView() {
-        mTvNovelAuthor = findViewById(R.id.tv_novel_author);
-        mTvNovelType = findViewById(R.id.tv_novel_type);
-        mTvNovelLastUpdate = findViewById(R.id.tv_novel_last_update);
-        mTvNovelIntroduction = findViewById(R.id.tv_novel_introduction);
-        mTvNovelName = findViewById(R.id.tv_novel_name);
-        mIvNovelCover = findViewById(R.id.iv_novel_cover);
         mRvNovel = findViewById(R.id.rv_novel_list);
 
         //目录
-        mNovelChapterAdapter = new NovelChapterAdapter(R.layout.item_category);
-        mNovelChapterAdapter.setOnItemClickListener(new BaseRvAdapter.OnItemClickListener<NovelDetails.Chapter>() {
+        mNovelChapterAdapter = new NovelChapterAdapter();
+        mNovelChapterAdapter.setOnItemClickListener(new NovelChapterAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(NovelDetails.Chapter data, int position) {
-                Log.d(TAG, "onItemClick() called with: data = [" + data + "], position = [" + position + "]");
+            public void onItemClick(NovelDetails.Chapter data) {
+                Log.d(TAG, "onItemClick() called with: data = [" + data + "]");
                 Intent intent = ReadingActivity.createIntent(NovelDetailActivity.this, getNovelId(), data.chapterUrl);
                 startActivity(intent);
             }
@@ -87,12 +75,12 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         mRvNovel.setLayoutManager(new LinearLayoutManager(this));
         mRvNovel.setAdapter(mNovelChapterAdapter);
 
-        mTvNovelName.setOnClickListener(new View.OnClickListener() {
+/*        mTvNovelName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.addLikedNovelToDB();
             }
-        });
+        });*/
     }
 
     @Override
@@ -105,19 +93,8 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         return new NovelDetailActivityPresenter();
     }
 
-    public void updateNovelInfo(NovelDetails novelDetails) {
-        GlideUtils.load(novelDetails.coverUrl, mIvNovelCover);
-
-        mTvNovelAuthor.setText(novelDetails.getAuthor());
-        mTvNovelIntroduction.setText(novelDetails.introduction);
-        mTvNovelLastUpdate.setText(novelDetails.getLastUpdateTime());
-        mTvNovelName.setText(novelDetails.name);
-        mTvNovelType.setText(novelDetails.getType());
-    }
-
-    public void updateChapterList(NovelDetails novelDetails) {
-        mNovelChapterAdapter.setNewData(novelDetails.chapterList);
-//        mNovelChapterAdapter.setLastRead(getNovelId());
+    public void updateNovelDetail(NovelDetails novelDetails) {
+        mNovelChapterAdapter.setData(novelDetails);
     }
 
     @Override

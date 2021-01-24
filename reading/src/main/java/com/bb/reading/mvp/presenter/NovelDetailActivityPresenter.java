@@ -1,5 +1,7 @@
 package com.bb.reading.mvp.presenter;
 
+import android.util.Log;
+
 import com.bb.reading.R;
 import com.bb.reading.base.BasePresenter;
 import com.bb.reading.db.DaoHelper;
@@ -16,6 +18,7 @@ import com.bb.reading.mvp.view.activity.NovelDetailActivity;
  * Time: 0:01
  */
 public class NovelDetailActivityPresenter extends BasePresenter<NovelDetailActivity> implements NovelDetailActivityContract.IPresenter {
+    String TAG = "NovelDetailActivityPresenter";
 
     private final NovelDetailActivityModel mNovelDetailActivityModel;
     private NovelDetails mNovelDetails;
@@ -32,11 +35,13 @@ public class NovelDetailActivityPresenter extends BasePresenter<NovelDetailActiv
 
     @Override
     public void onDetailDataSuccess(NovelDetails novelDetails) {
-        mNovelDetails = novelDetails;
-        mNovelDetails.setNovelId(mView.getNovelId());
+        Log.d(TAG, "onDetailDataSuccess() called with: mView = [" + mView + "]");
+        if (mView != null) {
+            mNovelDetails = novelDetails;
+            mNovelDetails.setNovelId(mView.getNovelId());
 
-        mView.updateNovelInfo(novelDetails);
-        mView.updateChapterList(novelDetails);
+            mView.updateNovelDetail(novelDetails);
+        }
     }
 
     public void addLikedNovelToDB() {
