@@ -6,6 +6,7 @@ import com.bb.reading.entity.DaoSession;
 import com.bb.reading.entity.NovelChapterInfo;
 import com.bb.reading.entity.NovelChapterInfoDao;
 import com.bb.reading.entity.NovelDetails;
+import com.bb.reading.entity.SearchResult;
 import com.bb.reading.utils.log.LogUtils;
 
 import java.util.List;
@@ -40,7 +41,8 @@ public class NovelDBManager {
 
     /**
      * 根据小说id获取目录
-     * @param novelIndex    某小说
+     *
+     * @param novelIndex 某小说
      * @return
      */
     public List<NovelChapterInfo> getCategory(String novelIndex) {
@@ -52,6 +54,7 @@ public class NovelDBManager {
 
     /**
      * 保存小说目录
+     *
      * @param novelCategory
      * @return
      */
@@ -83,11 +86,40 @@ public class NovelDBManager {
     }
 
     /**
-     * 获取所有本地收藏小说
+     * 收藏小说
      */
     public long saveLikedNovel(NovelDetails novelDetails) {
         long insertOrReplace = mLikedNovelDB.insertOrReplace(novelDetails);
         LogUtils.d(TAG, "saveLikedNovel() called : " + insertOrReplace);
         return insertOrReplace;
+    }
+
+    /**
+     * 收藏小说
+     */
+    public boolean saveLikedNovel(SearchResult.Item item) {
+        NovelDetails novelDetails = new NovelDetails();
+        novelDetails.setNovelId(item.novelId);
+        novelDetails.setName(item.getName());
+        long insertOrReplace = mLikedNovelDB.insertOrReplace(novelDetails);
+        LogUtils.d(TAG, "saveLikedNovel() called : " + insertOrReplace);
+        return insertOrReplace > 0;
+    }
+
+    /**
+     * 取消收藏小说
+     */
+    public boolean deleteLikedNovel(SearchResult.Item item) {
+        NovelDetails load = mLikedNovelDB.load(item.novelId);
+        if (load == null) {
+            return false;
+        }
+        mLikedNovelDB.delete(load);
+        return true;
+    }
+
+    public boolean isAlreadyLiked(String novelId) {
+        NovelDetails load = mLikedNovelDB.load(novelId);
+        return load != null;
     }
 }

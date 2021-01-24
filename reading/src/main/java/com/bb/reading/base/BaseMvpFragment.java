@@ -8,8 +8,19 @@ import androidx.annotation.Nullable;
  * Created by Boby on 2019/6/17.
  */
 
-public abstract class BaseMvpFragment<P extends BasePresenter> extends BaseFragment implements BaseView{
+public abstract class BaseMvpFragment<P extends BasePresenter> extends BaseFragment implements BaseView {
+    String TAG = "BaseMvpFragment";
     protected P mPresenter;
+
+    /**
+     * 在onCreate()后调用
+     */
+    @Override
+    public abstract P createPresenter();
+
+    public P getPresenter() {
+        return mPresenter;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -19,13 +30,6 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends BaseFragm
             mPresenter.attachView(this);
         }
     }
-
-    /**
-     * 在onCreate()后调用
-     * @return
-     */
-    @Override
-    public abstract P createPresenter();
 
     @Override
     public void onDestroy() {

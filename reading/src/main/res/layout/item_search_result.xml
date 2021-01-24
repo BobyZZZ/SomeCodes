@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_item_bg_category"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/iv_novel_cover"
+        style="@style/IvNovelCover"
+        android:src="@mipmap/cover_place_holder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_novel_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/iv_novel_cover"
+        app:layout_constraintTop_toTopOf="@id/iv_novel_cover"
+        tools:text="元尊" />
+
+    <TextView
+        android:id="@+id/tv_novel_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tv_novel_name"
+        app:layout_constraintTop_toTopOf="@id/tv_novel_name"
+        tools:text="/ 著：天蚕土豆" />
+
+    <TextView
+        android:id="@+id/tv_novel_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@id/tv_novel_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_novel_name"
+        tools:text="连载中" />
+
+    <TextView
+        android:id="@+id/tv_novel_newest_chapter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:text="最新章节:"
+        app:layout_constraintEnd_toStartOf="@id/iv_add_to_liked"
+        app:layout_constraintStart_toStartOf="@id/tv_novel_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_novel_state" />
+
+    <TextView
+        android:id="@+id/tv_novel_word_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@id/tv_novel_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_novel_newest_chapter"
+        tools:text="7667K" />
+
+    <ImageView
+        android:clickable="true"
+        android:id="@+id/iv_add_to_liked"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_liked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

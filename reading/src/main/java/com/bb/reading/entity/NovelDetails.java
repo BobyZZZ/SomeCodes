@@ -15,6 +15,7 @@ import java.util.List;
 import me.ghui.fruit.Attrs;
 import me.ghui.fruit.annotations.Pick;
 import me.ghui.fruit.reflect.TypeToken;
+
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
@@ -34,7 +35,7 @@ public class NovelDetails {
     @Pick("div#info > h1")
     public String name;
     @Pick("div#info > p")
-    @Convert(converter = InfoConverter.class,columnType = String.class)
+    @Convert(converter = InfoConverter.class, columnType = String.class)
     private List<String> infos;
     @Pick("div#intro > p")
     public String introduction;
@@ -48,7 +49,7 @@ public class NovelDetails {
 
     @Generated(hash = 2064726044)
     public NovelDetails(String novelId, String coverUrl, String name, List<String> infos,
-            String introduction) {
+                        String introduction) {
         this.novelId = novelId;
         this.coverUrl = coverUrl;
         this.name = name;
@@ -57,19 +58,19 @@ public class NovelDetails {
     }
 
     public String getAuthor() {
-        return infos.get(0);
+        return infos != null ? infos.get(0) : null;
     }
 
     public String getType() {
-        return infos.get(1);
+        return infos != null ? infos.get(1) : null;
     }
 
     public String getLastUpdateTime() {
-        return infos.get(2);
+        return infos != null ? infos.get(2) : null;
     }
 
     public String getNewestChapter() {
-        return infos.get(3);
+        return infos != null ? infos.get(3) : null;
     }
 
     public String getNovelId() {
@@ -131,15 +132,16 @@ public class NovelDetails {
         public String chapterUrl;
     }
 
-    public static class InfoConverter implements PropertyConverter<List<String>,String> {
+    public static class InfoConverter implements PropertyConverter<List<String>, String> {
         static String TAG = "InfoConverter";
 
         @Override
         public List<String> convertToEntityProperty(String databaseValue) {
             Gson gson = new Gson();
-            List<String> infos = gson.fromJson(databaseValue,new TypeToken<List<String>>(){}.getType());
+            List<String> infos = gson.fromJson(databaseValue, new TypeToken<List<String>>() {
+            }.getType());
             for (String info : infos) {
-                Log.d(TAG, "convertToEntityProperty: "+ info);
+                Log.d(TAG, "convertToEntityProperty: " + info);
             }
             Log.d(TAG, "convertToEntityProperty: finish========");
             return infos;

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">gnidaeR</string>
+    <string name="app_name">Reading</string>
     <string name="confirm">confirm</string>
     <string name="next">next</string>
     <string name="un_downloaded">未缓存</string>
@@ -13,4 +13,8 @@
     <string name="add_like_fail">收藏失败</string>
     <string name="search_text">请输入作品或作者，例如‘背影’</string>
     <string name="search_key_could_not_empty">搜索内容不能为空</string>
+    <string name="search_result_is_empty">没有找到相关信息</string>
+    <string name="novel_state">状态：%s</string>
+    <string name="newest_chapter">最新章节：%s</string>
+    <string name="novel_name">《%s》</string>
 </resources>

@@ -7,54 +7,22 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.bb.reading.R;
-import com.bb.reading.base.BaseMvpActivity;
-import com.bb.reading.entity.SearchHistory;
 import com.bb.reading.mvp.contract.SearchActivityContract;
 import com.bb.reading.mvp.presenter.SearchActivityPresenter;
-import com.bb.reading.view.FlowLayout;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.bb.reading.base.BaseMVPFragmentActivity;
 
 /**
  * Created by Boby on 2019/6/21.
  */
 
-public class SearchActivity extends BaseMvpActivity<SearchActivityPresenter> implements SearchActivityContract.IView {
+public class SearchActivity extends BaseMVPFragmentActivity<SearchActivityPresenter> implements SearchActivityContract.IView {
     String TAG = "SearchActivity";
 
-    String[] mTips = new String[]{"三体", "爆裂鼓手", "魔方游戏", "海贼王", "两小无猜", "海上钢琴师"};
     private EditText mEtSearch;
-    private TextView mClean;
-    private FlowLayout mFlTips;
-    private FlowLayout mFlHistorys;
-    private View mRoot;
-    private TextView mTvTrip;
-    private TextView mTvHistory;
-
-/*    @BindView(R.id.iv_blur_picture)
-    ImageView mImageView;
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.collapsingToolbarLayout)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
-    @BindView(R.id.mask)
-    View mMask;
-    @BindView(R.id.view_status_bar)
-    View statuBar;
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-    @BindView(R.id.appBarLayout)
-    AppBarLayout mAppBarLayout;*/
-
-    private String mKey;
-//    private SearchCommentRVAdapter mAdapter;
 
     public static void startSearchResultActivityForResult(Fragment fragment, String key) {
         Intent intent = new Intent(fragment.getContext(), SearchActivity.class);
@@ -62,9 +30,8 @@ public class SearchActivity extends BaseMvpActivity<SearchActivityPresenter> imp
         fragment.startActivityForResult(intent, 0);
     }
 
-    public static void startSearchResultActivity(Context context, String key) {
+    public static void startSearchActivity(Context context) {
         Intent intent = new Intent(context, SearchActivity.class);
-        intent.putExtra("key", key);
         context.startActivity(intent);
     }
 
@@ -74,31 +41,14 @@ public class SearchActivity extends BaseMvpActivity<SearchActivityPresenter> imp
     }
 
     @Override
-    protected int getLayoutId() {
-        return R.layout.activity_search;
+    protected int getOtherViewLayoutId() {
+        return R.layout.layout_search_bar;
     }
 
     @Override
-    protected void initView() {
-        mEtSearch = findViewById(R.id.et_search);
-        mClean = findViewById(R.id.tv_clear);
-        mFlTips = findViewById(R.id.ll_trip);
-        mFlHistorys = findViewById(R.id.ll_history);
-        mRoot = findViewById(R.id.root_layout);
-        mTvTrip = findViewById(R.id.tv_trip);
-        mTvHistory = findViewById(R.id.tv_history);
-
-        mFlHistorys.setRevert(true);
-        mFlHistorys.setMaxLinesCount(5);
-
-/*        mMask.setVisibility(View.VISIBLE);
-
-        mAdapter = new SearchCommentRVAdapter(null);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        */
-
+    protected void initOtherView(View otherView) {
+        super.initOtherView(otherView);
+        mEtSearch = otherView.findViewById(R.id.et_search);
         initListener();
     }
 
@@ -128,77 +78,18 @@ public class SearchActivity extends BaseMvpActivity<SearchActivityPresenter> imp
                 return false;
             }
         });
-        mClean.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEtSearch.clearFocus();
-                mPresenter.cleanHistory();
-            }
-        });
-        mFlHistorys.setOnTagClickedListener(new FlowLayout.OnTagClickedListener() {
-            @Override
-            public void onClick(String text, int index) {
-                mPresenter.search(text);
-            }
-        });
-        mFlTips.setOnTagClickedListener(new FlowLayout.OnTagClickedListener() {
-            @Override
-            public void onClick(String text, int index) {
-                mPresenter.search(text);
-            }
-        });
-
-/*        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                mPresenter.loadMoreComment();
-            }
-        }, mRecyclerView);
-
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                SearchInfo.Comment comment = ((SearchCommentRVAdapter) adapter).getData().get(position);
-                DetailPageActivity.startDetailPageActivity(SearchActivity.this, new DetailPageBean(comment.getId(), comment.getArticle(), comment.getWriter(), comment.getContent()));
-            }
-        });*/
-/*        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                //verticalOffset:完全打开时为0,收起时为-appBarLayout.getTotalScrollRange()
-                mTvTitle.setAlpha(-verticalOffset * 1.0f / appBarLayout.getTotalScrollRange());
-            }
-        });*/
     }
 
     @Override
     protected void process() {
-        /**
-         * 加载推荐
-         */
-        ArrayList<SearchHistory> others = new ArrayList<>();
-        for (int i = 0; i < mTips.length; i++) {
-            SearchHistory other = new SearchHistory(mTips[i], mTips[i]);
-            others.add(other);
-        }
-        mFlTips.setData(others);
-
-        mPresenter.refreshHistory();
-    }
-
-    @Override
-    public void updateHistory(List<SearchHistory> histories) {
-        if (histories == null) {
-            mFlHistorys.removeAll();
-        } else {
-            mFlHistorys.setData(histories);
-        }
+        mPresenter.process();
     }
 
     @Override
     public String getSearchKey() {
         return mEtSearch.getText().toString();
     }
+
 /*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

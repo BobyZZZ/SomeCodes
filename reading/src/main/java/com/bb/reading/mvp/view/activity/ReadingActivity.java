@@ -43,7 +43,7 @@ import java.util.List;
  * 小说阅读Activity
  */
 public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implements ReadingActivityContract.IMainView,
-        View.OnClickListener, BScrollerControl.OnScrollChange, NovelContentOnScrollListener.ReadingChangeListener {
+        BScrollerControl.OnScrollChange, NovelContentOnScrollListener.ReadingChangeListener {
     String TAG = "MainActivity";
     private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
     private String mChapterID = NovelService.JIAN_LAI_NOVEL_INDEX;
@@ -292,11 +292,6 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
 
         TextView tvReading = findViewById(R.id.tv_current_reading_chapter);
         tvReading.setText(novelChapterContent.getChapterName());
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 
     @Override

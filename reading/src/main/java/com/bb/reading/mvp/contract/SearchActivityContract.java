@@ -11,30 +11,20 @@ import java.util.List;
 
 public interface SearchActivityContract {
     interface IModel {
-        void getHistory();
-
-        void recordHistory(String searchKey);
-
-        void cleanHistory();
-
         void search(String searchKey);
     }
 
     interface IView {
         String getSearchKey();
-
-        void updateHistory(List<SearchHistory> histories);
     }
 
     interface IPresenter {
         void search(String searchKey);
 
-        void refreshHistory();
-
-        void onGetHistorySuccess(List<SearchHistory> histories);
-
         void onSearchSuccess(SearchResult searchResult);
 
         void onError(Throwable e);
+
+        void process();
     }
 }

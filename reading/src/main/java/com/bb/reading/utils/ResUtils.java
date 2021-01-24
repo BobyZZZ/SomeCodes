@@ -11,6 +11,10 @@ import com.bb.reading.base.FishApplication;
 public class ResUtils {
     private static Context mContext = FishApplication.mContext;
 
+    public static String getString(int id,String... s) {
+        return mContext.getResources().getString(id,s);
+    }
+
     public static String[] getStringArray(int id) {
         return mContext.getResources().getStringArray(id);
     }

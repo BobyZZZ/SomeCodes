@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bb.reading.R;
 import com.bb.reading.adapter.viewpager.TabFragmentPagerAdapter;
 import com.bb.reading.base.BaseFragment;
+import com.bb.reading.mvp.view.activity.SearchActivity;
 import com.google.android.material.tabs.TabLayout;
 
 /**
@@ -86,6 +87,12 @@ public class MainTabFragment extends BaseFragment {
 
         TextView tvTest = view.findViewById(R.id.tv_place_hold);
         tvTest.setText(TAG);
+        tvTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchActivity.startSearchActivity(getContext());
+            }
+        });
     }
 
     @Override

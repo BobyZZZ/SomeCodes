@@ -1,6 +1,7 @@
 package com.bb.reading.mvp.view.fragment;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import com.bb.reading.mvp.contract.LikedNovelFragmentContract;
 import com.bb.reading.mvp.presenter.LikedNovelFragmentPresenter;
 import com.bb.reading.mvp.view.activity.ReadingActivity;
 import com.bb.reading.utils.GlideUtils;
+import com.bb.reading.utils.ResUtils;
 
 import java.util.List;
 
@@ -114,8 +116,10 @@ public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresen
 
         @Override
         protected void convert(BaseVH holder, NovelDetails data) {
-            GlideUtils.load(data.coverUrl, holder.getView(R.id.iv_novel_cover, ImageView.class));
-            holder.setText(R.id.tv_novel_name, data.name);
+            if (!TextUtils.isEmpty(data.coverUrl)) {
+                GlideUtils.load(data.coverUrl, holder.getView(R.id.iv_novel_cover, ImageView.class));
+            }
+            holder.setText(R.id.tv_novel_name, ResUtils.getString(R.string.novel_name,data.name));
             holder.setText(R.id.tv_novel_author, data.getAuthor());
             holder.setText(R.id.tv_novel_introduction, data.introduction);
         }
