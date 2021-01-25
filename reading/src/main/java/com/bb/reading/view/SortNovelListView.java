@@ -130,7 +130,7 @@ public class SortNovelListView extends FrameLayout {
         private void onBindHottest(BaseVH holder, int position) {
 //            LongLogUtils.d(TAG, "onBindHottest() called with: holder = [" + holder + "], mHottestNovel = [" + mHottestNovel + "]");
             GlideUtils.load(mHottestNovel.coverUrl, holder.getView(R.id.iv_novel_cover, ImageView.class));
-            holder.setText(R.id.tv_novel_name, mHottestNovel.name);
+//            holder.setText(R.id.tv_novel_name, mHottestNovel.name);
             holder.setText(R.id.tv_novel_author, mHottestNovel.author);
             holder.setText(R.id.tv_novel_introduction, mHottestNovel.introduction);
             holder.itemView.setOnClickListener(new OnClickListener() {
