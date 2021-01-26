@@ -9,9 +9,9 @@ import com.bb.reading.R;
 import com.bb.reading.db.DaoHelper;
 import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
 import com.bb.reading.entity.SearchResult;
+import com.bb.reading.mvp.contract.NovelDetailActivityContract;
 import com.bb.reading.utils.ResUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +27,7 @@ import java.util.List;
 public class NovelSearchResultAdapter extends BaseQuickAdapter<SearchResult.Item, BaseViewHolder> {
     String TAG = "NovelSearchResultAdapter";
     private final NovelDBManager mNovelDBManager;
+    private NovelDetailActivityContract.IPresenter mPresenter;
 
     public NovelSearchResultAdapter(int layoutResId) {
         super(layoutResId);
@@ -62,6 +63,7 @@ public class NovelSearchResultAdapter extends BaseQuickAdapter<SearchResult.Item
             public void onClick(View v) {
                 if (!mNovelDBManager.isAlreadyLiked(item.novelId)) {
                     boolean result = mNovelDBManager.saveLikedNovel(item);
+                    mPresenter.getDetailData(item.novelId);
                     Log.d(TAG, "saveLikedNovel: " + result);
                 } else {
                     boolean result = mNovelDBManager.deleteLikedNovel(item);
@@ -70,5 +72,9 @@ public class NovelSearchResultAdapter extends BaseQuickAdapter<SearchResult.Item
                 notifyItemChanged(baseViewHolder.getLayoutPosition(),R.id.iv_add_to_liked);
             }
         });
+    }
+
+    public void setPresenter(NovelDetailActivityContract.IPresenter presenter) {
+        mPresenter = presenter;
     }
 }

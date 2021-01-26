@@ -60,6 +60,7 @@ public class SearchResultFragment extends BaseMvpFragment<SearchResultFragmentPr
         mRvSearchResult = view.findViewById(R.id.rv_search_result);
 
         mAdapter = new NovelSearchResultAdapter(R.layout.item_search_result);
+        mAdapter.setPresenter(mPresenter);
         mRvSearchResult.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvSearchResult.setAdapter(mAdapter);
     }
