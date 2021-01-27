@@ -51,7 +51,7 @@ public class NovelSearchResultAdapter extends BaseQuickAdapter<SearchResult.Item
     protected void convert(@NotNull BaseViewHolder baseViewHolder, SearchResult.Item item) {
         baseViewHolder.setText(R.id.tv_novel_name,ResUtils.getString(R.string.novel_name,item.getName()));
         baseViewHolder.setText(R.id.tv_novel_author,item.getAuthor());
-        baseViewHolder.setText(R.id.tv_novel_state,ResUtils.getString(R.string.novel_state,item.getState()));
+//        baseViewHolder.setText(R.id.tv_novel_state,ResUtils.getString(R.string.novel_state,item.getState()));
         baseViewHolder.setText(R.id.tv_novel_newest_chapter, ResUtils.getString(R.string.newest_chapter,item.getNewestChapter()));
         baseViewHolder.setText(R.id.tv_novel_word_count,item.getWordCount());
 

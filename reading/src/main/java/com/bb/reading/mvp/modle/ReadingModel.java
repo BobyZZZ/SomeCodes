@@ -56,7 +56,7 @@ public class ReadingModel implements ReadingActivityContract.IMainModel<NovelCha
 
     @Override
     public void getChapter(final String novelIndex, final String chapterIndex, final BaseCallback<NovelChapterContent> baseCallback) {
-        mNovelServiceReal.getChapter(novelIndex, chapterIndex)
+        mNovelServiceReal.getChapter(/*novelIndex, */chapterIndex)
                 .compose(RxUtils.<ResponseBody>rxScheduers())
                 .subscribe(new Observer<ResponseBody>() {
                     @Override

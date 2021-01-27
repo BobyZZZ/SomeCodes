@@ -37,14 +37,14 @@ public class SearchResult {
     }
 
     public static class Item {
-        //文章名称	最新章节	    作者	字数	更新	状态
-        @Pick(value = "td.odd > a", attr = Attrs.HREF)
-        public String novelId;
+        //文章名称	最新章节	    作者	更新
         @Pick(value = "td.even > a", attr = Attrs.HREF)
+        public String novelId;
+        @Pick(value = "td.odd > a", attr = Attrs.HREF)
         public String newestChapterId;
-        @Pick("td.odd")
-        private List<String> list1;
         @Pick("td.even")
+        private List<String> list1;
+        @Pick("td.odd")
         private List<String> list2;
 
         public String getName() {
@@ -67,7 +67,8 @@ public class SearchResult {
             return list2 != null ? list2.get(1) : "";
         }
 
-        public String getState() {
+        @Deprecated
+        private String getState() {
             return list2 != null ? list2.get(2) : "";
         }
 

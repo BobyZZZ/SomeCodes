@@ -28,16 +28,23 @@ public class NovelServiceTest {
     String TAG = "NovelServiceTest";
 
     private NovelService mNovelService;
+    private String mNovelIndex;
 
     @Before
     public void init() {
+        mNovelIndex = "http://www.biquge.info/10_10582/";
         mNovelService = RetrofitManager.getInstance().createRs(NovelService.class);
     }
 
     @Test
+    public void getCategory() {
+        mNovelService.getCategory(mNovelIndex);
+
+    }
+
+    @Test
     public void getNovelDetails() {
-        String novelIndex = "http://www.biquge.info/10_10582/";
-        mNovelService.getNovelDetails(novelIndex)
+        mNovelService.getNovelDetails(mNovelIndex)
                 .subscribe(new BaseObserver<NovelDetails>() {
                     @Override
                     protected void onSuccess(NovelDetails novelDetails) {

@@ -1,4 +1,4 @@
-package com.bb.reading.network;
+package com.bb.reading.network.api;
 
 import com.bb.reading.entity.HomePageBean;
 import com.bb.reading.entity.NovelDetails;
@@ -13,9 +13,8 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface NovelService {
-    public static String NORVEL_BASE_URL = "http://www.xbiquge.la/";
-//    public static String NORVEL_BASE_URL = "http://www.biquge.info/";//v1
+public interface NovelService_v1 {
+    public static String NORVEL_BASE_URL = "http://www.biquge.info/";
 //    public static String NORVEL_BASE_URL = "http://m.biquge.info/";
 
     public static String DIYI_XULIE_NOVEL_INDEX = "12_12696";//http://www.biquge.info/12_12696/5621986.html
@@ -30,10 +29,9 @@ public interface NovelService {
      */
     public static String FKNGMN_NOVEL_INDEX = "24_24159";
 
-//    @GET("{novel_index}/{chapter_href}")
-    @GET("/{chapter_href}")
+    @GET("{novel_index}/{chapter_href}")
     @Headers("needFilter:true")
-    Observable<ResponseBody> getChapter(/*@Path("novel_index") String novel_index,*/ @Path("chapter_href") String chapter_href);
+    Observable<ResponseBody> getChapter(@Path("novel_index") String novel_index, @Path("chapter_href") String chapter_href);
 
     @GET("{novel_index}/")
     @Headers("needFilter:true")
@@ -74,9 +72,9 @@ public interface NovelService {
     @GET("/")
     Observable<ResponseBody> getHomeDataTest();
 
-    @GET("modules/article/waps.php")
+    @GET("modules/article/search.php")
     @Html
-    Observable<SearchResult> searchNovel(@Query("searchkey")String searchKey);
+    Observable<SearchResult> searchNovel(@Query("searchkey") String searchKey);
 
 
     public class NovelType {

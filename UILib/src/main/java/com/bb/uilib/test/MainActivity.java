@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
                 UITester.test(MainActivity.this);
             }
         });*/
-        UITester.setContentView(this,R.layout.test_flash_text_logo);
+//        UITester.setContentView(this,R.layout.test_flash_text_logo);
     }
 
 }
