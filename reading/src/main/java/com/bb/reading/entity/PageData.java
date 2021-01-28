@@ -14,16 +14,16 @@ import me.ghui.fruit.annotations.Pick;
 @Pick("div#wrapper")
 public class PageData {
     @Pick("div.l > ul > li")
-    private List<NovelInfo> mChapters;
+    private List<NovelInfo> mNovels;
     @Pick("div.item")
     private List<TopNovel> mTopNovels;
 
-    public List<NovelInfo> getChapters() {
-        return mChapters;
+    public List<NovelInfo> getNovels() {
+        return mNovels;
     }
 
-    public void setChapters(List<NovelInfo> mChapters) {
-        this.mChapters = mChapters;
+    public void setNovels(List<NovelInfo> mChapters) {
+        this.mNovels = mChapters;
     }
 
     public List<TopNovel> getTopNovels() {
@@ -37,7 +37,7 @@ public class PageData {
     @Override
     public String toString() {
         return "PageData{" +
-                "mChapters=" + mChapters +
+                "mChapters=" + mNovels +
                 ", mTopNovels=" + mTopNovels +
                 '}';
     }

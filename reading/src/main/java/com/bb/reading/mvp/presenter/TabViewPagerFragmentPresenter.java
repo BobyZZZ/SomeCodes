@@ -8,6 +8,7 @@ import com.bb.reading.R;
 import com.bb.reading.base.BasePresenter;
 import com.bb.reading.mvp.contract.TabViewPagerFragmentContract;
 import com.bb.reading.mvp.view.fragment.HomeFragment;
+import com.bb.reading.mvp.view.fragment.SortFragment;
 import com.bb.reading.mvp.view.fragment.TabViewPagerFragment;
 import com.bb.reading.utils.ResUtils;
 
@@ -22,7 +23,6 @@ import java.util.List;
  */
 public class TabViewPagerFragmentPresenter extends BasePresenter<TabViewPagerFragment> implements TabViewPagerFragmentContract.IPresenter {
     String TAG = "TabViewPagerFragmentPresenter";
-    private final String Type_SHUCHENG = "";
     private String[] mTabs;
     private List<Fragment> mFragments;
 
@@ -34,6 +34,17 @@ public class TabViewPagerFragmentPresenter extends BasePresenter<TabViewPagerFra
     public void initTabsAndFragments() {
         Log.d(TAG, "initTabsAndFragments() called with type: " + mView.getType());
         switch (mView.getType()) {
+            case TabViewPagerFragment.TYPE_SHUCHENG:
+                mTabs = ResUtils.getStringArray(R.array.shucheng_tabs);
+                mFragments = new ArrayList<>();
+                mFragments.add(HomeFragment.getInstance());//精选
+//                mFragments.add(TabViewPagerFragment.newInstance(TabViewPagerFragment.TYPE_SORT));
+                mFragments.add(SortFragment.newInstance());//分类
+                break;
+/*            case TabViewPagerFragment.TYPE_SORT:
+                mTabs = ResUtils.getStringArray(R.array.sort_tabs);
+                mFragments.add(SortFragment.newInstance());
+                break;*/
             default:
                 mTabs = ResUtils.getStringArray(R.array.shucheng_tabs);
                 mFragments = new ArrayList<>();

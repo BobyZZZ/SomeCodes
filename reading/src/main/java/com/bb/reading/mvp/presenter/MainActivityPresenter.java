@@ -32,7 +32,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivity> implement
                     mFragments.add(LikedNovelFragment.newInstance());
                     break;
                 case 1:
-                    mFragments.add(TabViewPagerFragment.newInstance("书城"));
+                    mFragments.add(TabViewPagerFragment.newInstance(TabViewPagerFragment.TYPE_SHUCHENG));
                     break;
                 case 2:
                     mFragments.add(MainTabFragment.newInstance(MainTabFragment.TAB_ME));

@@ -4,7 +4,10 @@ import android.util.Log;
 
 import com.bb.network.observer.BaseObserver;
 import com.bb.reading.entity.NovelDetails;
+import com.bb.reading.entity.PageData;
 import com.bb.reading.entity.SearchResult;
+import com.bb.reading.mvp.callback.BaseCallback;
+import com.bb.reading.mvp.modle.NovelSortModel;
 import com.bb.reading.network.NovelService;
 import com.bb.reading.network.RetrofitManager;
 import com.bb.reading.utils.log.LongLogUtils;
@@ -16,6 +19,7 @@ import java.io.IOException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import okhttp3.ResponseBody;
 
 /**
@@ -82,6 +86,19 @@ public class NovelServiceTest {
                     @Override
                     public void onComplete() {
 
+                    }
+                });
+    }
+
+    @Test
+    public void getNovelBySort() {
+        int type = NovelService.NovelType.TYPE_XUANHUAN;
+        int page = 1;
+        mNovelService.getNovelBySort(type, page)
+                .subscribe(new Consumer<PageData>() {
+                    @Override
+                    public void accept(PageData pageData) throws Exception {
+                        Log.d(TAG, "onSuccess: ");
                     }
                 });
     }

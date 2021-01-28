@@ -15,6 +15,10 @@ public class ResUtils {
         return mContext.getResources().getString(id,s);
     }
 
+    public static int[] getIntArray(int id) {
+        return mContext.getResources().getIntArray(id);
+    }
+
     public static String[] getStringArray(int id) {
         return mContext.getResources().getStringArray(id);
     }

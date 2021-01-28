@@ -26,15 +26,18 @@ import java.util.List;
 public class TabViewPagerFragment extends BaseMvpFragment<TabViewPagerFragmentPresenter> implements TabViewPagerFragmentContract.IView {
     String TAG = "TabViewPagerFragment";
     private static final String KEY_TYPE = "type";
-    private String mType;
+    public static final int TYPE_SHUCHENG = 1;//书城
+    public static final int TYPE_SORT = 10;//分类页面，书城里的一个子页面
+
+    private int mType;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private TabFragmentPagerAdapter mPagerAdapter;
 
-    public static TabViewPagerFragment newInstance(String type) {
+    public static TabViewPagerFragment newInstance(int type) {
         TabViewPagerFragment tabViewPagerFragment = new TabViewPagerFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(KEY_TYPE, type);
+        bundle.putInt(KEY_TYPE, type);
         tabViewPagerFragment.setArguments(bundle);
         return tabViewPagerFragment;
     }
@@ -42,10 +45,8 @@ public class TabViewPagerFragment extends BaseMvpFragment<TabViewPagerFragmentPr
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mType = getArguments().getString(KEY_TYPE);
-        if (!TextUtils.isEmpty(mType)) {
-            TAG += "_" + mType;
-        }
+        mType = getArguments().getInt(KEY_TYPE);
+        TAG += "_" + mType;
     }
 
     @Override
@@ -89,7 +90,7 @@ public class TabViewPagerFragment extends BaseMvpFragment<TabViewPagerFragmentPr
 
     }
 
-    public String getType() {
+    public int getType() {
         return mType;
     }
 }

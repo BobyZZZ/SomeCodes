@@ -45,7 +45,7 @@ public interface NovelService {
      * @param page
      * @return
      */
-    @GET("list/{type}_{page}.html")
+    @GET("/fenlei/{type}_{page}.html")
     @Html
     Observable<PageData> getNovelBySort(@Path("type") int type, @Path("page") int page);
 
@@ -100,5 +100,9 @@ public interface NovelService {
          * 网游
          */
         public static final int TYPE_WANGYOU = 5;
+        /**
+         * 科幻
+         */
+        public static final int TYPE_KEHUAN = 6;
     }
 }

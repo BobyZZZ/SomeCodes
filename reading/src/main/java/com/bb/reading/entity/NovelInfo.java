@@ -29,9 +29,9 @@ public class NovelInfo {
     String chapterId;
     @Pick("span.s3 > a")
     String chapterName;
-    @Pick("span.s4")
-    String author;
     @Pick("span.s5")
+    String author;
+    @Pick(value = "span.s3",attr = Attrs.OWN_TEXT)
     String lastUpdate;
 
     @Keep
