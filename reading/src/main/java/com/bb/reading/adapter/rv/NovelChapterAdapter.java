@@ -25,6 +25,7 @@ public class NovelChapterAdapter extends RecyclerView.Adapter<BaseVH> {
     private final int TYPE_HEADER = 0;
     private final int TYPE_NORMAL = 1;
     private NovelDetails mNovelDetails;
+    private boolean hasHeader = false;
 
     public void setData(NovelDetails novelDetails) {
         mNovelDetails = novelDetails;
@@ -43,7 +44,10 @@ public class NovelChapterAdapter extends RecyclerView.Adapter<BaseVH> {
         if (itemViewType == TYPE_HEADER) {
             onBindHeader(holder, position);
         } else {
-            NovelDetails.Chapter chapter = mNovelDetails.chapterList.get(position - 1);
+            if (hasHeader) {
+                position -= 1;
+            }
+            NovelDetails.Chapter chapter = mNovelDetails.chapterList.get(position);
             onBindNormal(holder, chapter);
         }
     }
@@ -78,13 +82,18 @@ public class NovelChapterAdapter extends RecyclerView.Adapter<BaseVH> {
             return 0;
         }
         List<NovelDetails.Chapter> chapterList = mNovelDetails.chapterList;
-        int count = 1 + (chapterList == null ? 0 : chapterList.size());
+        int count;
+        if (hasHeader) {
+            count = 1 + (chapterList == null ? 0 : chapterList.size());
+        } else {
+            count = chapterList == null ? 0 : chapterList.size();
+        }
         return count;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
+        if (hasHeader && position == 0) {
             return TYPE_HEADER;
         } else {
             return TYPE_NORMAL;

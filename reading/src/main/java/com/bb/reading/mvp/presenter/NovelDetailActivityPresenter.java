@@ -37,10 +37,8 @@ public class NovelDetailActivityPresenter extends BasePresenter<NovelDetailActiv
     public void onDetailDataSuccess(NovelDetails novelDetails) {
         Log.d(TAG, "onDetailDataSuccess() called with: mView = [" + mView + "]");
         if (mView != null) {
-            mNovelDetails = novelDetails;
-            mNovelDetails.setNovelId(mView.getNovelId());
-
             mView.updateNovelDetail(novelDetails);
+            mView.updateNovelInfo(novelDetails);
         }
     }
 

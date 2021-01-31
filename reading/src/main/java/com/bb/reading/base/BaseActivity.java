@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bb.reading.annotation.impl.MyBufferKnife;
-import com.bb.reading.utils.UIUtils;
+import com.bb.reading.utils.StatusBarUtils;
 import com.bb.uilib.dialog.CustomDialog;
 import com.bb.uilib.loadingView.CircleLoadingView;
 
@@ -37,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void initStatusBar() {
-        UIUtils.ColorfulStatusBar(this, true);
+        StatusBarUtils.setStatusBar(this, Color.TRANSPARENT, true, false);
     }
 
     protected abstract int getLayoutId();
@@ -72,7 +72,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showLoading(DialogInterface.OnCancelListener onCancelListener) {
-        showLoading(onCancelListener,true);
+        showLoading(onCancelListener, true);
     }
 
     public void showLoading(DialogInterface.OnCancelListener onCancelListener, Boolean... canCancel) {

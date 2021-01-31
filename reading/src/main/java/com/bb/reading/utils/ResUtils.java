@@ -12,7 +12,7 @@ public class ResUtils {
     private static Context mContext = FishApplication.mContext;
 
     public static String getString(int id,String... s) {
-        return mContext.getResources().getString(id,s);
+        return mContext.getResources().getString(id, (Object[]) s);
     }
 
     public static int[] getIntArray(int id) {

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_item_bg_category"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/iv_novel_cover"
+        style="@style/IvNovelCover"
+        android:src="@mipmap/cover_place_holder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_novel_cover"
+        app:layout_constraintTop_toTopOf="@id/iv_novel_cover">
+
+        <TextView
+            android:id="@+id/tv_novel_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="元尊" />
+
+        <TextView
+            android:id="@+id/tv_novel_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_novel_name"
+            tools:text="作    者:耳根" />
+
+        <TextView
+            android:id="@+id/tv_novel_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="@id/tv_novel_author"
+            app:layout_constraintTop_toBottomOf="@id/tv_novel_author"
+            tools:text="类    别:修真小说" />
+
+        <TextView
+            android:id="@+id/tv_novel_last_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="@id/tv_novel_author"
+            app:layout_constraintTop_toBottomOf="@id/tv_novel_type"
+            tools:text="最后更新  :2021-01-15 19:30:00" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,7 @@ import com.bb.reading.constant.NovelConstant;
 import com.bb.reading.mvp.contract.ReadingActivityContract;
 import com.bb.reading.mvp.presenter.ReadingPresenter;
 import com.bb.reading.mvp.view.listener.NovelContentOnScrollListener;
+import com.bb.reading.utils.StatusBarUtils;
 import com.bb.reading.utils.log.LogUtils;
 import com.bb.reading.utils.log.LongLogUtils;
 import com.bb.reading.utils.NovelSpUtils;
@@ -71,6 +72,11 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
             mChapterID = getIntent().getStringExtra(NovelConstant.KEY_CHAPTER_ID);
         }
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void initStatusBar() {
+        StatusBarUtils.setStatusBar(this,getColor(R.color.bg_novel_content),true,false);
     }
 
     @Override

@@ -17,6 +17,7 @@
     <string name="novel_state">状态：%s</string>
     <string name="newest_chapter">最新章节：%s</string>
     <string name="novel_name">《%s》</string>
+    <string name="novel_detail">书籍详情</string>
 
     <string name="sort_tabs_xuanhuan">玄幻</string>
     <string name="sort_tabs_xiuzhen">修真</string>
