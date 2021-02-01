@@ -1,9 +1,11 @@
 package com.bb.reading.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,6 +24,7 @@ import com.bb.reading.R;
  * Time: 22:16
  */
 public class CustomBar extends FrameLayout {
+    String TAG = "CustomBar";
 
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
@@ -42,6 +45,7 @@ public class CustomBar extends FrameLayout {
 
     private void init(Context context) {
         initView(context);
+        initDefaultListener();
     }
 
     private void initView(Context context) {
@@ -52,6 +56,20 @@ public class CustomBar extends FrameLayout {
         mTvTitle = findViewById(R.id.tv_title);
         mIvRight = findViewById(R.id.iv_right);
         mTvRight = findViewById(R.id.tv_right);
+    }
+
+    private void initDefaultListener() {
+        mIvLeft.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = getContext();
+                if (context instanceof Activity) {
+                    ((Activity) context).onBackPressed();
+                } else {
+                    Log.d(TAG, "onClick: ");
+                }
+            }
+        });
     }
 
     public void setText(int type, String text) {
@@ -92,6 +110,7 @@ public class CustomBar extends FrameLayout {
 
     /**
      * 隐藏状态栏时，可通过此方法填充状态栏高度
+     *
      * @param expand
      */
     public void expandToStatusBarPlace(boolean expand) {
@@ -113,5 +132,14 @@ public class CustomBar extends FrameLayout {
         return null;
     }
 
-
+    public void setOnIconClickListener(int type, OnClickListener onClickListener) {
+        switch (type) {
+            case LEFT:
+                mIvLeft.setOnClickListener(onClickListener);
+                break;
+            case RIGHT:
+                mIvRight.setOnClickListener(onClickListener);
+                break;
+        }
+    }
 }
