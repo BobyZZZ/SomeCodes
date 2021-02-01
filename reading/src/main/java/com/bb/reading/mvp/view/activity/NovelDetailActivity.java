@@ -2,20 +2,18 @@ package com.bb.reading.mvp.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bb.reading.R;
-import com.bb.reading.adapter.base.BaseRvAdapter;
 import com.bb.reading.adapter.rv.NovelChapterAdapter;
 import com.bb.reading.base.BaseMvpActivity;
 import com.bb.reading.constant.NovelConstant;
@@ -27,6 +25,12 @@ import com.bb.reading.utils.StatusBarUtils;
 import com.bb.reading.view.CustomBar;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.google.android.material.appbar.AppBarLayout;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Android Studio.
@@ -60,7 +64,7 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
 
     @Override
     protected void initStatusBar() {
-        StatusBarUtils.setStatusBar(this,Color.TRANSPARENT,false,true);
+        StatusBarUtils.setStatusBar(this, Color.TRANSPARENT, false, true);
     }
 
     public String getNovelId() {
@@ -99,7 +103,7 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-                float fraction = Math.min(1,Math.abs(1.0f * i / (mAppBarLayout.getHeight() - mCustomBar.getHeight())));
+                float fraction = Math.min(1, Math.abs(1.0f * i / (mAppBarLayout.getHeight() - mCustomBar.getHeight())));
 //                LogUtils.d(TAG, "mAppBarLayout's height: " + mAppBarLayout.getHeight() + ",[offset]: " + i + ",[fraction]: " + fraction);
                 ColorDrawable colorDrawable = (ColorDrawable) mCustomBar.getBackground();
                 colorDrawable.setAlpha((int) (fraction * 255));
@@ -112,7 +116,7 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
     @Override
     protected void process() {
         mCustomBar.expandToStatusBarPlace(true);
-        mCustomBar.setText(CustomBar.TITLE,getString(R.string.novel_detail));
+        mCustomBar.setText(CustomBar.TITLE, getString(R.string.novel_detail));
         mPresenter.getDetailData(mNovelId);
     }
 
@@ -133,8 +137,32 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         holder.setText(R.id.tv_novel_last_update, novelDetails.getLastUpdateTime());
 
         ImageView ivCover = holder.getView(R.id.iv_novel_cover);
-        GlideUtils.load(novelDetails.getCoverUrl(), ivCover);
-        GlideUtils.load(novelDetails.getCoverUrl(), mIvCoverBg);
+        Single.just(novelDetails.coverUrl)
+                .subscribeOn(Schedulers.io())
+                .map(new Function<String, Bitmap>() {
+                    @Override
+                    public Bitmap apply(String s) throws Exception {
+                        //根据url获取bitmap
+                        return GlideUtils.getBitmap(s, ivCover);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<Bitmap, Bitmap>() {
+                    @Override
+                    public Bitmap apply(Bitmap bitmap) throws Exception {
+                        //小封面清晰图
+                        Bitmap bitmapOrigin = Bitmap.createBitmap(bitmap);
+                        ivCover.setImageBitmap(bitmapOrigin);
+                        return bitmap;
+                    }
+                })
+                .subscribe(new Consumer<Bitmap>() {
+                    @Override
+                    public void accept(Bitmap bitmap) throws Exception {
+                        //背景模糊图
+                        GlideUtils.blur(bitmap, mIvCoverBg, 15);
+                    }
+                });
     }
 
     @Override

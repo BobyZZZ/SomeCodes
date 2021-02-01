@@ -13,6 +13,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
+            android:background="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -28,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/cover_place_holder" />
+                    tools:src="@mipmap/cover_place_holder" />
 
                 <include
                     android:id="@+id/layout_novel_info"
