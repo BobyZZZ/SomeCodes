@@ -14,7 +14,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NovelService {
-    public static String NORVEL_BASE_URL = "http://www.xbiquge.la/";
+    public static String NORVEL_BASE_URL = "http://www.paoshuzw.com/";
+//    public static String NORVEL_BASE_URL = "http://www.xbiquge.la/";//v2
 //    public static String NORVEL_BASE_URL = "http://www.biquge.info/";//v1
 //    public static String NORVEL_BASE_URL = "http://m.biquge.info/";
 

@@ -6,7 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
@@ -17,6 +20,8 @@ import com.bb.reading.R;
 import com.bb.reading.adapter.rv.NovelChapterAdapter;
 import com.bb.reading.base.BaseMvpActivity;
 import com.bb.reading.constant.NovelConstant;
+import com.bb.reading.db.DaoHelper;
+import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
 import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.mvp.contract.NovelDetailActivityContract;
 import com.bb.reading.mvp.presenter.NovelDetailActivityPresenter;
@@ -25,6 +30,7 @@ import com.bb.reading.utils.StatusBarUtils;
 import com.bb.reading.view.CustomBar;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -47,6 +53,7 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
     private CustomBar mCustomBar;
     private AppBarLayout mAppBarLayout;
     private ImageView mIvCoverBg;
+    private FloatingActionButton mFabToTop;
 
     public static Intent createIntent(Context context, String novelId) {
         Intent intent = new Intent(context, NovelDetailActivity.class);
@@ -82,6 +89,7 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         mAppBarLayout = findViewById(R.id.appBarLayout);
         mIvCoverBg = findViewById(R.id.iv_novel_cover_bg);
         mRvNovel = findViewById(R.id.rv_novel_list);
+        mFabToTop = findViewById(R.id.fab_to_top);
 
         //目录
         mNovelChapterAdapter = new NovelChapterAdapter();
@@ -111,6 +119,16 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
                 mCustomBar.getTextView(CustomBar.TITLE).setAlpha(fraction);
             }
         });
+
+        mFabToTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //先强制停止rv当前的滚动
+                mRvNovel.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
+                mRvNovel.getLayoutManager().scrollToPosition(0);
+                mAppBarLayout.setExpanded(true);
+            }
+        });
     }
 
     @Override
@@ -130,11 +148,28 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
     }
 
     public void updateNovelInfo(NovelDetails novelDetails) {
+        NovelDBManager novelDBManager = DaoHelper.getInstance().getNovelDBManager();
+        boolean alreadyLiked = novelDBManager.isAlreadyLiked(novelDetails.novelId);
+
         BaseViewHolder holder = new BaseViewHolder(findViewById(R.id.layout_novel_info));
         holder.setText(R.id.tv_novel_author, novelDetails.getAuthor());
         holder.setText(R.id.tv_novel_name, novelDetails.name);
         holder.setText(R.id.tv_novel_type, novelDetails.getType());
         holder.setText(R.id.tv_novel_last_update, novelDetails.getLastUpdateTime());
+        holder.setImageResource(R.id.iv_add_to_liked, R.drawable.selector_like_iv);
+        holder.getView(R.id.iv_add_to_liked).setSelected(alreadyLiked);
+
+        holder.getView(R.id.iv_add_to_liked).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!novelDBManager.isAlreadyLiked(novelDetails.novelId)) {
+                    long result = novelDBManager.saveLikedNovel(novelDetails);
+                } else {
+                    boolean result = novelDBManager.deleteLikedNovel(novelDetails.novelId);
+                }
+                holder.getView(R.id.iv_add_to_liked).setSelected(novelDBManager.isAlreadyLiked(novelDetails.novelId));
+            }
+        });
 
         ImageView ivCover = holder.getView(R.id.iv_novel_cover);
         Single.just(novelDetails.coverUrl)

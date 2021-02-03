@@ -106,16 +106,20 @@ public class NovelDBManager {
         return insertOrReplace > 0;
     }
 
-    /**
-     * 取消收藏小说
-     */
-    public boolean deleteLikedNovel(SearchResult.Item item) {
-        NovelDetails load = mLikedNovelDB.load(item.novelId);
+    public boolean deleteLikedNovel(String novelId) {
+        NovelDetails load = mLikedNovelDB.load(novelId);
         if (load == null) {
             return false;
         }
         mLikedNovelDB.delete(load);
         return true;
+    }
+
+    /**
+     * 取消收藏小说
+     */
+    public boolean deleteLikedNovel(SearchResult.Item item) {
+        return deleteLikedNovel(item.novelId);
     }
 
     public boolean isAlreadyLiked(String novelId) {
