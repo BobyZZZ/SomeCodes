@@ -46,7 +46,7 @@ public class SortNovelModel implements SortFragmentContract.IModel {
 
                     @Override
                     protected void onFail(Throwable e) {
-
+                        LogUtils.e(TAG, "onFail: " + e);
                     }
                 });
     }

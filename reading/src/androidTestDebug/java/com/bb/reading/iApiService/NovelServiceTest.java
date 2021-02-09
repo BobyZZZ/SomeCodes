@@ -5,9 +5,8 @@ import android.util.Log;
 import com.bb.network.observer.BaseObserver;
 import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.entity.PageData;
+import com.bb.reading.entity.RankPageDataFruitBean;
 import com.bb.reading.entity.SearchResult;
-import com.bb.reading.mvp.callback.BaseCallback;
-import com.bb.reading.mvp.modle.NovelSortModel;
 import com.bb.reading.network.NovelService;
 import com.bb.reading.network.RetrofitManager;
 import com.bb.reading.utils.log.LongLogUtils;
@@ -15,12 +14,9 @@ import com.bb.reading.utils.log.LongLogUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import okhttp3.ResponseBody;
 
 /**
  * Created by Android Studio.
@@ -99,6 +95,19 @@ public class NovelServiceTest {
                     @Override
                     public void accept(PageData pageData) throws Exception {
                         Log.d(TAG, "onSuccess: ");
+                    }
+                });
+    }
+    
+    @Test
+    public void getRankData() {
+        mNovelService.getRankData()
+                .subscribe(new Consumer<RankPageDataFruitBean>() {
+                    @Override
+                    public void accept(RankPageDataFruitBean rankPageData) throws Exception {
+                        Log.d(TAG, "开始过滤: ");
+                        RankPageDataFruitBean.RankPageData rankPageData1 = rankPageData.filter();
+                        Log.d(TAG, "结束过滤: ");
                     }
                 });
     }

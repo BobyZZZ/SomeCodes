@@ -3,6 +3,7 @@ package com.bb.reading.network;
 import com.bb.reading.entity.HomePageBean;
 import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.entity.PageData;
+import com.bb.reading.entity.RankPageDataFruitBean;
 import com.bb.reading.entity.SearchResult;
 
 import io.reactivex.Observable;
@@ -78,6 +79,9 @@ public interface NovelService {
     @GET("modules/article/waps.php")
     @Html
     Observable<SearchResult> searchNovel(@Query("searchkey")String searchKey);
+
+    @GET("/paihangbang/")
+    Observable<RankPageDataFruitBean> getRankData();
 
 
     public class NovelType {
