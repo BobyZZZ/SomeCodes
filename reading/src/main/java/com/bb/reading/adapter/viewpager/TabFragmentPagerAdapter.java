@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.bb.reading.utils.log.LogUtils;
+
 import java.util.List;
 
 /**
@@ -33,9 +35,9 @@ public class TabFragmentPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = mFragments.get(position);
-/*        if (TAG != null) {
-            Log.e(TAG, "getItem: " + position + "---fragment:" + fragment);
-        }*/
+        if (TAG != null) {
+            LogUtils.e(TAG, "getItem: " + position + "---fragment:" + fragment);
+        }
         return fragment;
     }
 

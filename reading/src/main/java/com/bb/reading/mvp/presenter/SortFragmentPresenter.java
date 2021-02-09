@@ -37,7 +37,8 @@ public class SortFragmentPresenter extends BasePresenter<SortFragment> implement
         String[] types = ResUtils.getStringArray(R.array.sort_tabs);
         mView.initTypes(types);
 
-        getNovelsBySort(mCurrentType, mFirstPage);
+        //在mView.initTypes(types)中添加时指定第一项为selected，然后走到tab点击监听回调方法进行加载，so这里不需要手动加载一次
+//        getNovelsBySort(mCurrentType, mFirstPage);
     }
 
     @Override

@@ -24,6 +24,7 @@ import java.util.List;
 public class SortFragment extends BaseMvpListFragment<SortFragmentPresenter, SortNovelAdapter> implements SortFragmentContract.IView,
         OnLoadMoreListener, TabLayout.BaseOnTabSelectedListener {
 
+    String TAG = "SortFragment";
     private BaseLoadMoreModule mLoadMoreModule;
     private TabLayout mTabLayout;
 
@@ -70,10 +71,10 @@ public class SortFragment extends BaseMvpListFragment<SortFragmentPresenter, Sor
     @Override
     public void initTypes(String[] types) {
         mTabLayout.removeAllTabs();
-        for (String type : types) {
+        for (int i = 0; i < types.length; i++) {
             TabLayout.Tab tab = mTabLayout.newTab();
-            tab.setText(type);
-            mTabLayout.addTab(tab);
+            tab.setText(types[i]);
+            mTabLayout.addTab(tab, i == 0);
         }
 
         //添加头部
