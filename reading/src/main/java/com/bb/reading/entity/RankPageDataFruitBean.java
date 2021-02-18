@@ -2,7 +2,8 @@ package com.bb.reading.entity;
 
 import android.text.TextUtils;
 
-import java.util.ArrayList;
+import com.bb.reading.adapter.rv.ExpandListAdapter;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -18,7 +19,7 @@ import me.ghui.fruit.annotations.Pick;
  */
 public class RankPageDataFruitBean {
     @Pick("div#main > div#main > div")
-    private List<TypeRank> typeRanks;
+    public List<TypeRank> typeRanks;
 
     public RankPageData filter() {
         return new RankPageData(this);
@@ -28,11 +29,33 @@ public class RankPageDataFruitBean {
      * 小说类型推荐排行榜：
      * 玄幻、修真、都市、历史、网游、科幻、全本小说、全部小说
      */
-    public static class TypeRank {
+    public static class TypeRank implements ExpandListAdapter.GroupData {
         @Pick("div > h3")
         public String title;
         @Pick("div > ul")
-        private List<TimeTypeRank> timeTypeRanks;
+        public List<TimeTypeRank> timeTypeRanks;
+
+        @Override
+        public String getType() {
+            return title;
+        }
+
+        @Override
+        public int getChildCount(int period) {
+            return timeTypeRanks == null ? 0 : timeTypeRanks.get(period).items.size();
+        }
+
+        @Override
+        public TimeTypeRank.Item getChild(int period, int position) {
+            return timeTypeRanks == null ? null : timeTypeRanks.get(period).items.get(position);
+        }
+
+        @Override
+        public String toString() {
+            return "TypeRank{" +
+                    "title='" + title + '\'' +
+                    '}';
+        }
 
         /**
          * 总榜、周榜、月榜、日榜
@@ -42,13 +65,27 @@ public class RankPageDataFruitBean {
             @Pick("ul > li")
             public List<Item> items;
 
-            public static class Item {
-                @Pick(value = "li > span",attr = Attrs.OWN_TEXT)
+            public static class Item implements ExpandListAdapter.ChildData {
+                @Pick(value = "li > span", attr = Attrs.OWN_TEXT)
                 private String period;//总、年、月、日
-                @Pick(value = "li > a",attr = Attrs.OWN_TEXT)
+                @Pick(value = "li > a", attr = Attrs.OWN_TEXT)
                 public String novelName;
                 @Pick(value = "li > a", attr = Attrs.HREF)
                 public String novelId;
+
+                @Override
+                public String getName() {
+                    return novelName;
+                }
+
+                @Override
+                public String toString() {
+                    return "Item{" +
+                            "period='" + period + '\'' +
+                            ", novelName='" + novelName + '\'' +
+                            ", novelId='" + novelId + '\'' +
+                            '}';
+                }
             }
         }
     }
@@ -83,6 +120,13 @@ public class RankPageDataFruitBean {
             }
 
             typeRanks = originTypeRanks;
+        }
+
+        @Override
+        public String toString() {
+            return "RankPageData{" +
+                    "typeRanks=" + typeRanks +
+                    '}';
         }
     }
 }

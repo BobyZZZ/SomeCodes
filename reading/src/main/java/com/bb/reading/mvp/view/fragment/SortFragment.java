@@ -2,6 +2,8 @@ package com.bb.reading.mvp.view.fragment;
 
 import android.view.View;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.bb.reading.R;
 import com.bb.reading.adapter.rv.SortNovelAdapter;
 import com.bb.reading.base.BaseMvpListFragment;
@@ -61,6 +63,13 @@ public class SortFragment extends BaseMvpListFragment<SortFragmentPresenter, Sor
 
         mLoadMoreModule = mAdapter.getLoadMoreModule();
         mLoadMoreModule.setOnLoadMoreListener(this);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.getNewNovels(mTabLayout.getSelectedTabPosition());
+            }
+        });
     }
 
     @Override
@@ -87,12 +96,18 @@ public class SortFragment extends BaseMvpListFragment<SortFragmentPresenter, Sor
             mAdapter.setNewInstance(new ArrayList<>());
         }
         mAdapter.addData(novels);
+        loadSuccess(hasMore);
+    }
+
+    //刷新ui
+    private void loadSuccess(boolean hasMore) {
         if (!hasMore) {
             mLoadMoreModule.setEnableLoadMore(false);
         }
         if (mLoadMoreModule.isLoading()) {
             mLoadMoreModule.loadMoreComplete();
         }
+        setRefreshing(false);
     }
 
     @Override

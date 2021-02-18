@@ -8,7 +8,7 @@
     <string-array name="shucheng_tabs"><!--书城tabs-->
         <item>精选</item>
         <item>分类</item>
-<!--        <item>榜单</item>-->
+        <item>榜单</item>
     </string-array>
 
     <string-array name="sort_tabs"><!--分类tabs-->
@@ -18,5 +18,12 @@
         <item>@string/sort_tabs_chuanyue</item>
         <item>@string/sort_tabs_wangyou</item>
         <item>@string/sort_tabs_kehuan</item>
+    </string-array>
+
+    <string-array name="rank_type_array"><!--分类tabs-->
+        <item>@string/rank_type_hottest</item>
+        <item>@string/rank_type_finished</item>
+        <item>@string/rank_type_recommend</item>
+        <item>@string/rank_type_new</item>
     </string-array>
 </resources>

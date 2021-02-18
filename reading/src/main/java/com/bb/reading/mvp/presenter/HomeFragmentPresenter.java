@@ -26,10 +26,12 @@ public class HomeFragmentPresenter extends BasePresenter<HomeFragment> implement
 
     @Override
     public void onHomeData(HomePageBean homePageBean) {
-        mView.setBannerData(homePageBean.bannerNovels);
-        mView.setNovelListData(homePageBean.sortHotNovels);
+        if (mView != null) {
+            mView.setBannerData(homePageBean.bannerNovels);
+            mView.setNovelListData(homePageBean.sortHotNovels);
 
-        mView.loadDataFinish();
+            mView.loadDataFinish();
+        }
     }
 
     @Override

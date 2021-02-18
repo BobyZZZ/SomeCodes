@@ -8,6 +8,7 @@ import com.bb.reading.R;
 import com.bb.reading.base.BasePresenter;
 import com.bb.reading.mvp.contract.TabViewPagerFragmentContract;
 import com.bb.reading.mvp.view.fragment.HomeFragment;
+import com.bb.reading.mvp.view.fragment.RankFragment;
 import com.bb.reading.mvp.view.fragment.SortFragment;
 import com.bb.reading.mvp.view.fragment.TabViewPagerFragment;
 import com.bb.reading.utils.ResUtils;
@@ -40,6 +41,7 @@ public class TabViewPagerFragmentPresenter extends BasePresenter<TabViewPagerFra
                 mFragments.add(HomeFragment.getInstance());//精选
 //                mFragments.add(TabViewPagerFragment.newInstance(TabViewPagerFragment.TYPE_SORT));
                 mFragments.add(SortFragment.newInstance());//分类
+                mFragments.add(RankFragment.newInstance());//排行
                 break;
 /*            case TabViewPagerFragment.TYPE_SORT:
                 mTabs = ResUtils.getStringArray(R.array.sort_tabs);

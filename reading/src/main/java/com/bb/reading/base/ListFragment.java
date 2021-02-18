@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bb.reading.R;
 
@@ -18,6 +19,7 @@ public abstract class ListFragment<A extends RecyclerView.Adapter> extends BaseF
     private RecyclerView mRecyclerView;
     protected A mAdapter;
     private LinearLayoutManager mLayoutManager;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected int getLayoutId() {
@@ -26,6 +28,8 @@ public abstract class ListFragment<A extends RecyclerView.Adapter> extends BaseF
 
     @Override
     protected void initView(View view) {
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
         mRecyclerView = view.findViewById(R.id.rv_list);
         mAdapter = createAdapter();
         mLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -34,4 +38,8 @@ public abstract class ListFragment<A extends RecyclerView.Adapter> extends BaseF
     }
 
     protected abstract A createAdapter();
+
+    protected void setRefreshing(boolean refreshing) {
+        mSwipeRefreshLayout.setRefreshing(refreshing);
+    }
 }

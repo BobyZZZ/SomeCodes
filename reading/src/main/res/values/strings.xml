@@ -25,4 +25,10 @@
     <string name="sort_tabs_chuanyue">穿越</string>
     <string name="sort_tabs_wangyou">网游</string>
     <string name="sort_tabs_kehuan">科幻</string>
+
+    <string name="rank_type_hottest">最热榜</string>
+    <string name="rank_type_finished">完结榜</string>
+    <string name="rank_type_recommend">推荐榜</string>
+    <string name="rank_type_new">新书榜</string>
+
 </resources>
