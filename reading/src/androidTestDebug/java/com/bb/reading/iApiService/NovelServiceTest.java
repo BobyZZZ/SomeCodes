@@ -3,12 +3,14 @@ package com.bb.reading.iApiService;
 import android.util.Log;
 
 import com.bb.network.observer.BaseObserver;
+import com.bb.reading.entity.NovelChapterContentFruitBean;
 import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.entity.PageData;
 import com.bb.reading.entity.RankPageDataFruitBean;
 import com.bb.reading.entity.SearchResult;
 import com.bb.reading.network.NovelService;
 import com.bb.reading.network.RetrofitManager;
+import com.bb.reading.utils.JsoupUtils;
 import com.bb.reading.utils.log.LongLogUtils;
 
 import org.junit.Before;
@@ -108,6 +110,28 @@ public class NovelServiceTest {
                         Log.d(TAG, "开始过滤: ");
                         RankPageDataFruitBean.RankPageData rankPageData1 = rankPageData.filter();
                         Log.d(TAG, "结束过滤: ");
+                    }
+                });
+    }
+
+    @Test
+    public void getNovelChapterDetails() {
+        mNovelService.getNovelChapterDetails("/10/10489/4535761.html")
+                .subscribe(new BaseObserver<NovelChapterContentFruitBean>() {
+                    @Override
+                    protected void onSuccess(NovelChapterContentFruitBean novelChapterContentFruitBean) {
+                        String contentBeforeFilter = novelChapterContentFruitBean.content;
+                        Log.d(TAG, "getNovelChapterDetails before filter: " + contentBeforeFilter.length() + "\n" + contentBeforeFilter);
+                        String contentAfterFilter = JsoupUtils.parseContentToAndroidText(contentBeforeFilter);
+                        contentAfterFilter = null;
+//                        contentAfterFilter = contentBeforeFilter.replaceAll("\\s{8}", "\t");
+                        contentAfterFilter = contentBeforeFilter.replaceAll("\\s{5}","\n\t");
+                        Log.d(TAG, "getNovelChapterDetails after filter: " + contentAfterFilter.length() + "\n" + contentAfterFilter);
+                    }
+
+                    @Override
+                    protected void onFail(Throwable e) {
+                        Log.e(TAG, "onFail: ");
                     }
                 });
     }

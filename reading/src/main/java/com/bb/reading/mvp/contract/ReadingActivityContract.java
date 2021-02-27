@@ -1,6 +1,6 @@
 package com.bb.reading.mvp.contract;
 
-import com.bb.reading.entity.NovelChapterContent;
+import com.bb.reading.entity.NovelChapterContentFruitBean;
 import com.bb.reading.entity.NovelChapterInfo;
 import com.bb.reading.mvp.callback.BaseCallback;
 
@@ -19,7 +19,7 @@ public interface ReadingActivityContract {
         void loadingStart();
         void loadingStop();
         void updateCategory(List<NovelChapterInfo> novelCategory);
-        void loadContentSuccessAndToDisplay(NovelChapterContent content, boolean hasMore, boolean resetData);
+        void loadContentSuccessAndToDisplay(NovelChapterContentFruitBean content, boolean hasMore, boolean resetData);
 
         String getNovelID();
         String getChapterID();

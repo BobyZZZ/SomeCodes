@@ -2,6 +2,7 @@ package com.bb.reading.adapter.rv;
 
 import android.view.View;
 
+import com.bb.reading.entity.NovelChapterContentFruitBean;
 import com.bb.reading.mvp.presenter.ReadingPresenter;
 import com.bb.reading.utils.log.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -18,23 +19,23 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 
-public class NovelContentAdapter extends BaseQuickAdapter<NovelChapterContent, BaseViewHolder> implements LoadMoreModule {
+public class NovelContentAdapter extends BaseQuickAdapter<NovelChapterContentFruitBean, BaseViewHolder> implements LoadMoreModule {
     String TAG = "NovelContentAdapter";
 
     public NovelContentAdapter(int layoutResId) {
         super(layoutResId);
     }
 
-    public NovelContentAdapter(int layoutResId, List<NovelChapterContent> data) {
+    public NovelContentAdapter(int layoutResId, List<NovelChapterContentFruitBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(@NotNull final BaseViewHolder viewHolder, final NovelChapterContent novelChapterContent) {
-        String text = novelChapterContent.getContent();
+    protected void convert(@NotNull final BaseViewHolder viewHolder, final NovelChapterContentFruitBean novelChapterContent) {
+        String text = novelChapterContent.content;
 //        LogUtils.d(TAG, "convert getBookName: " + novelChapterContent.getChapterName());
 //        LogUtils.d(TAG, "convert getChapterNumber: " + novelChapterContent.getChapterNumber());
-        viewHolder.setText(R.id.tv_novel_title, novelChapterContent.getChapterName());
+        viewHolder.setText(R.id.tv_novel_title, novelChapterContent.chapterName);
         viewHolder.setText(R.id.tv_novel_content, text);
     }
 

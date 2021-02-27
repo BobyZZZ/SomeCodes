@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bb.network.exceptionHandler.ExceptionHandler;
 import com.bb.reading.base.BaseMvpActivity;
 import com.bb.reading.constant.NovelConstant;
+import com.bb.reading.entity.NovelChapterContentFruitBean;
 import com.bb.reading.mvp.contract.ReadingActivityContract;
 import com.bb.reading.mvp.presenter.ReadingPresenter;
 import com.bb.reading.mvp.view.listener.NovelContentOnScrollListener;
@@ -237,14 +238,13 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
     }
 
     @Override
-    public void loadContentSuccessAndToDisplay(NovelChapterContent novelChapterContent, boolean hasMore, boolean resetData) {
+    public void loadContentSuccessAndToDisplay(NovelChapterContentFruitBean novelChapterContent, boolean hasMore, boolean resetData) {
         closeCategoryMenu();
-        if (GlobalConstant.isFishMode()) {
-            LongLogUtils.w(TAG, "displayContent: " + novelChapterContent + ",resetData: " + resetData);
-        } else {
+        LongLogUtils.w(TAG, "displayContent: " + novelChapterContent + ",resetData: " + resetData);
+        if (!GlobalConstant.isFishMode()) {
             if (resetData) {
                 //设置新数据,场景：左侧菜单目录中选择某一章
-                ArrayList<NovelChapterContent> newData = new ArrayList();
+                ArrayList<NovelChapterContentFruitBean> newData = new ArrayList();
                 newData.add(novelChapterContent);
                 mNovelContentAdapter.setNewInstance(newData);
                 //重新加载数据后，手动调用一次方法，确保滑动到顶部
@@ -256,7 +256,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
             }
 
             if (mNovelContentAdapter.getLoadMoreModule().isLoading()) {
-                LogUtils.d(TAG, "load more complete: " + novelChapterContent.getChapterName());
+                LogUtils.d(TAG, "load more complete: " + novelChapterContent.chapterName);
                 mNovelContentAdapter.getLoadMoreModule().loadMoreComplete();
             }
 
@@ -272,20 +272,20 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
      *
      * @param novelChapterContent
      */
-    public void recoverLastReadingState(NovelChapterContent novelChapterContent) {
+    public void recoverLastReadingState(NovelChapterContentFruitBean novelChapterContent) {
         //获取当前阅读章节position
         int position = -1;
-        List<NovelChapterContent> datas = mNovelContentAdapter.getData();
+        List<NovelChapterContentFruitBean> datas = mNovelContentAdapter.getData();
         for (int i = 0; i < mNovelContentAdapter.getItemCount(); i++) {
-            if (datas.get(i).getChapterId().equals(novelChapterContent.getChapterId())) {
+            if (datas.get(i).chapterId.equals(novelChapterContent.chapterId)) {
                 position = i;
                 break;
             }
         }
         //向上滚offset应该为负值，但保存时存的是绝对值
-        int offset = -NovelSpUtils.getLastReadingPosition(novelChapterContent.getNovelId());
-        LogUtils.d(TAG, "recoverLastReadingState: " + novelChapterContent.getNovelId()
-                + "," + novelChapterContent.getChapterId() + ",position: " + position + "---offset: " + offset);
+        int offset = -NovelSpUtils.getLastReadingPosition(novelChapterContent.novelId);
+        LogUtils.d(TAG, "recoverLastReadingState: " + novelChapterContent.novelId
+                + "," + novelChapterContent.chapterId + ",position: " + position + "---offset: " + offset);
         if (position != -1) {
             mLayoutManagerNovelContent.scrollToPositionWithOffset(position, offset);
         }
@@ -298,12 +298,12 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
     /**
      * 当前阅读章节变化
      */
-    private void onCurrentReadingChapterChange(NovelChapterContent novelChapterContent, boolean resetReadingPosition) {
+    private void onCurrentReadingChapterChange(NovelChapterContentFruitBean novelChapterContent, boolean resetReadingPosition) {
         //currentReadingChapter change!!
         mPresenter.saveCurrentReading(novelChapterContent, resetReadingPosition);
 
         TextView tvReading = findViewById(R.id.tv_current_reading_chapter);
-        tvReading.setText(novelChapterContent.getChapterName());
+        tvReading.setText(novelChapterContent.chapterName);
     }
 
     @Override
@@ -376,7 +376,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
      */
     @Override
     public void onLastReadingProgressChanged(int currentReadingItemPosition, int alreadyScrollY) {
-        NovelChapterContent item = mNovelContentAdapter.getItem(currentReadingItemPosition);
-        NovelSpUtils.saveLastReadingPosition(item.getNovelId(), alreadyScrollY);
+        NovelChapterContentFruitBean item = mNovelContentAdapter.getItem(currentReadingItemPosition);
+        NovelSpUtils.saveLastReadingPosition(item.novelId, alreadyScrollY);
     }
 }

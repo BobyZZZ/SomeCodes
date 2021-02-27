@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.bb.network.exceptionHandler.ExceptionHandler;
 import com.bb.network.exceptionHandler.ResponseErrorHandler;
+import com.bb.network.observer.BaseObserver;
 import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
+import com.bb.reading.entity.NovelChapterContentFruitBean;
 import com.bb.reading.mvp.callback.BaseCallback;
 import com.bb.reading.mvp.contract.ReadingActivityContract;
 import com.bb.reading.utils.log.LogUtils;
@@ -33,7 +35,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class ReadingModel implements ReadingActivityContract.IMainModel<NovelChapterContent,List<NovelChapterInfo>> {
+public class ReadingModel implements ReadingActivityContract.IMainModel<NovelChapterContentFruitBean,List<NovelChapterInfo>> {
     String TAG = "MainModel";
     private NovelService mNovelServiceReal;
     private final NovelDBManager mNovelDBManager;
@@ -55,8 +57,8 @@ public class ReadingModel implements ReadingActivityContract.IMainModel<NovelCha
     }
 
     @Override
-    public void getChapter(final String novelIndex, final String chapterIndex, final BaseCallback<NovelChapterContent> baseCallback) {
-        mNovelServiceReal.getChapter(/*novelIndex, */chapterIndex)
+    public void getChapter(final String novelIndex, final String chapterIndex, final BaseCallback<NovelChapterContentFruitBean> baseCallback) {
+/*        mNovelServiceReal.getChapter(*//*novelIndex, *//*chapterIndex)
                 .compose(RxUtils.<ResponseBody>rxScheduers())
                 .subscribe(new Observer<ResponseBody>() {
                     @Override
@@ -84,6 +86,25 @@ public class ReadingModel implements ReadingActivityContract.IMainModel<NovelCha
                     @Override
                     public void onComplete() {
 
+                    }
+                });*/
+
+        mNovelServiceReal.getNovelChapterDetails(chapterIndex)
+                .compose(RxUtils.rxScheduers())
+                .subscribe(new BaseObserver<NovelChapterContentFruitBean>() {
+                    @Override
+                    protected void onSuccess(NovelChapterContentFruitBean novelChapterContentFruitBean) {
+                        novelChapterContentFruitBean.novelId = novelIndex;
+                        novelChapterContentFruitBean.chapterId = chapterIndex;
+
+                        novelChapterContentFruitBean.content = novelChapterContentFruitBean.content.replaceAll("\\s{5}","\n\t\t\t\t");
+                        baseCallback.onSuccess(novelChapterContentFruitBean);
+                    }
+
+                    @Override
+                    protected void onFail(Throwable e) {
+                        LogUtils.e(TAG, "read onError: " + e.getMessage());
+                        baseCallback.onError(e);
                     }
                 });
     }

@@ -1,6 +1,7 @@
 package com.bb.reading.network;
 
 import com.bb.reading.entity.HomePageBean;
+import com.bb.reading.entity.NovelChapterContentFruitBean;
 import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.entity.PageData;
 import com.bb.reading.entity.RankPageDataFruitBean;
@@ -36,6 +37,11 @@ public interface NovelService {
     @GET("/{chapter_href}")
     @Headers("needFilter:true")
     Observable<ResponseBody> getChapter(/*@Path("novel_index") String novel_index,*/ @Path("chapter_href") String chapter_href);
+
+    @Html
+    @GET("/{chapter_href}")
+    @Headers("needFilter:true")
+    Observable<NovelChapterContentFruitBean> getNovelChapterDetails(/*@Path("novel_index") String novel_index,*/ @Path("chapter_href") String chapter_href);
 
     @GET("{novel_index}/")
     @Headers("needFilter:true")

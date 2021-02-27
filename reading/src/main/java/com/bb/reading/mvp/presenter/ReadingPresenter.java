@@ -3,6 +3,7 @@ package com.bb.reading.mvp.presenter;
 import android.text.TextUtils;
 
 import com.bb.reading.base.BasePresenter;
+import com.bb.reading.entity.NovelChapterContentFruitBean;
 import com.bb.reading.utils.log.LogUtils;
 import com.bb.reading.utils.NovelSpUtils;
 import com.bb.reading.entity.NovelChapterInfo;
@@ -74,13 +75,13 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
      */
     public void read(final String novelID, String chapterID, final boolean resetData) {
         LogUtils.d(TAG, "read target chapterId: " + chapterID);
-        mModel.getChapter(novelID, chapterID, new BaseCallback<NovelChapterContent>() {
+        mModel.getChapter(novelID, chapterID, new BaseCallback<NovelChapterContentFruitBean>() {
             @Override
-            public void onSuccess(NovelChapterContent novelChapterContent, boolean... fromCache) {
+            public void onSuccess(NovelChapterContentFruitBean novelChapterContent, boolean... fromCache) {
                 mView.loadingStop();
                 //已缓存章节
-                mChapterIdLoaded = novelChapterContent.getChapterId();
-                mView.loadContentSuccessAndToDisplay(novelChapterContent, !isLastChapter(novelChapterContent.getChapterId()), resetData);
+                mChapterIdLoaded = novelChapterContent.chapterId;
+                mView.loadContentSuccessAndToDisplay(novelChapterContent, !isLastChapter(novelChapterContent.chapterId), resetData);
                 if (mFirstInit) {//初次加载时，滚到上次阅读的位置
                     mFirstInit = false;
                 }
@@ -126,10 +127,10 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
         return TextUtils.equals(lastChapter,chapterId);
     }
 
-    public void saveCurrentReading(NovelChapterContent novelChapterContent, boolean resetReadingPosition) {
-        NovelSpUtils.saveLastReadChapter(novelChapterContent.getNovelId(), novelChapterContent.getChapterId());
+    public void saveCurrentReading(NovelChapterContentFruitBean novelChapterContent, boolean resetReadingPosition) {
+        NovelSpUtils.saveLastReadChapter(novelChapterContent.novelId, novelChapterContent.chapterId);
         if (resetReadingPosition) {
-            NovelSpUtils.saveLastReadingPosition(novelChapterContent.getNovelId(), 0);
+            NovelSpUtils.saveLastReadingPosition(novelChapterContent.novelId, 0);
         }
     }
 
