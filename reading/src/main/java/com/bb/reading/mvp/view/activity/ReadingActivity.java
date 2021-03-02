@@ -121,27 +121,20 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
 
     private void initMode() {
         if (GlobalConstant.isFishMode()) {
-            View chapterName = findViewById(R.id.tv_current_reading_chapter);
+            View rootView = findViewById(R.id.ll_content_container);
             View rvContent = findViewById(R.id.rv_novel_content);
-            View tvPageNumber = findViewById(R.id.tv_pageNumber);
 
-            chapterName.setAlpha(0);
-            rvContent.setAlpha(0);
-            tvPageNumber.setAlpha(0);
+            rootView.setAlpha(0);
 
             rvContent.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getActionMasked()) {
                         case MotionEvent.ACTION_DOWN:
-                            rvContent.setAlpha(1f);
-                            chapterName.setAlpha(1f);
-                            tvPageNumber.setAlpha(1f);
+                            rootView.setAlpha(1f);
                             return true;
                         case MotionEvent.ACTION_UP:
-                            rvContent.setAlpha(0);
-                            chapterName.setAlpha(0);
-                            tvPageNumber.setAlpha(0);
+                            rootView.setAlpha(0);
                             break;
                     }
                     return false;
