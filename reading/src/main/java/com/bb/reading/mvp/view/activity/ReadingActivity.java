@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ import java.util.List;
  */
 public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implements ReadingActivityContract.IMainView,
         BScrollerControl.OnScrollChange, NovelContentOnScrollListener.ReadingChangeListener {
-    String TAG = "MainActivity";
+    String TAG = "ReadingActivity";
     private String mNovelID = NovelService.JIAN_LAI_NOVEL_INDEX;
     private String mChapterID = NovelService.JIAN_LAI_NOVEL_INDEX;
 
@@ -102,6 +103,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
 
     @Override
     protected void initView() {
+        initMode();
         //左侧菜单
         mDrawerLayout = findViewById(R.id.drawerlayout);
         mRvCategory = findViewById(R.id.rv_category);
@@ -115,6 +117,37 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
         mDrawerLayout.addDrawerListener(getDrawerLayoutListener());
 
         initRV();
+    }
+
+    private void initMode() {
+        if (GlobalConstant.isFishMode()) {
+            View chapterName = findViewById(R.id.tv_current_reading_chapter);
+            View rvContent = findViewById(R.id.rv_novel_content);
+            View tvPageNumber = findViewById(R.id.tv_pageNumber);
+
+            chapterName.setAlpha(0);
+            rvContent.setAlpha(0);
+            tvPageNumber.setAlpha(0);
+
+            rvContent.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getActionMasked()) {
+                        case MotionEvent.ACTION_DOWN:
+                            rvContent.setAlpha(1f);
+                            chapterName.setAlpha(1f);
+                            tvPageNumber.setAlpha(1f);
+                            return true;
+                        case MotionEvent.ACTION_UP:
+                            rvContent.setAlpha(0);
+                            chapterName.setAlpha(0);
+                            tvPageNumber.setAlpha(0);
+                            break;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     private DrawerLayout.DrawerListener getDrawerLayoutListener() {
@@ -241,29 +274,27 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
     public void loadContentSuccessAndToDisplay(NovelChapterContentFruitBean novelChapterContent, boolean hasMore, boolean resetData) {
         closeCategoryMenu();
         LongLogUtils.w(TAG, "displayContent: " + novelChapterContent + ",resetData: " + resetData);
-        if (!GlobalConstant.isFishMode()) {
-            if (resetData) {
-                //设置新数据,场景：左侧菜单目录中选择某一章
-                ArrayList<NovelChapterContentFruitBean> newData = new ArrayList();
-                newData.add(novelChapterContent);
-                mNovelContentAdapter.setNewInstance(newData);
-                //重新加载数据后，手动调用一次方法，确保滑动到顶部
-                mRvNovelContent.getLayoutManager().scrollToPosition(0);
-                onCurrentReadingChapterChange(novelChapterContent, true);
-            } else {
-                //添加到底部，适用场景：自动加载下一页
-                mNovelContentAdapter.addData(novelChapterContent);
-            }
+        if (resetData) {
+            //设置新数据,场景：左侧菜单目录中选择某一章
+            ArrayList<NovelChapterContentFruitBean> newData = new ArrayList();
+            newData.add(novelChapterContent);
+            mNovelContentAdapter.setNewInstance(newData);
+            //重新加载数据后，手动调用一次方法，确保滑动到顶部
+            mRvNovelContent.getLayoutManager().scrollToPosition(0);
+            onCurrentReadingChapterChange(novelChapterContent, true);
+        } else {
+            //添加到底部，适用场景：自动加载下一页
+            mNovelContentAdapter.addData(novelChapterContent);
+        }
 
-            if (mNovelContentAdapter.getLoadMoreModule().isLoading()) {
-                LogUtils.d(TAG, "load more complete: " + novelChapterContent.chapterName);
-                mNovelContentAdapter.getLoadMoreModule().loadMoreComplete();
-            }
+        if (mNovelContentAdapter.getLoadMoreModule().isLoading()) {
+            LogUtils.d(TAG, "load more complete: " + novelChapterContent.chapterName);
+            mNovelContentAdapter.getLoadMoreModule().loadMoreComplete();
+        }
 
-            mNovelContentAdapter.getLoadMoreModule().setEnableLoadMore(hasMore);
-            if (!hasMore) {
-                showToast(R.string.no_more);
-            }
+        mNovelContentAdapter.getLoadMoreModule().setEnableLoadMore(hasMore);
+        if (!hasMore) {
+            showToast(R.string.no_more);
         }
     }
 
