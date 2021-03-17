@@ -46,6 +46,7 @@ public class NovelDetailActivityModel<P extends NovelDetailActivityContract.IPre
             //for show
             observable
                     .compose(RxUtils.rxScheduers())
+                    .onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
                     .subscribe(new BaseObserver<NovelDetails>() {
                         @Override
                         protected void onSuccess(NovelDetails novelDetails) {
@@ -62,7 +63,8 @@ public class NovelDetailActivityModel<P extends NovelDetailActivityContract.IPre
                     });
         } else {
             //for add liked,db operate
-            observable.subscribeOn(Schedulers.io())
+            observable.onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
+                    .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
                     .subscribe(new BaseObserver<NovelDetails>() {
                         @Override

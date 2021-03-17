@@ -85,11 +85,6 @@ public class TabViewPagerFragment extends BaseMvpFragment<TabViewPagerFragmentPr
         mPagerAdapter.setData(fragmentList,titles);
     }
 
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
-
     public int getType() {
         return mType;
     }

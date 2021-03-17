@@ -31,6 +31,7 @@ public class NovelSortModel implements NovelSortContract.INovelSortModel {
         Observable<PageData> novelBySort = mNovelService.getNovelBySort(NovelService.NovelType.TYPE_XUANHUAN,1);
         novelBySort
                 .compose(RxUtils.rxScheduers())
+                .onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
                 .subscribe(new BaseObserver<PageData>() {
                     @Override
                     protected void onSuccess(PageData pageData) {

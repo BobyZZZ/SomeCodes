@@ -38,6 +38,7 @@ public class RankFragmentModel implements RankFragmentContract.IModel {
                     }
                 })
                 .compose(RxUtils.rxScheduers())
+                .onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
                 .subscribe(new BaseObserver<RankPageDataFruitBean.RankPageData>() {
                     @Override
                     protected void onSuccess(RankPageDataFruitBean.RankPageData rankPageData) {

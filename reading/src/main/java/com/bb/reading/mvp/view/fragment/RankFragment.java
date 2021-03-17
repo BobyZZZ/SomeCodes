@@ -32,6 +32,7 @@ import java.util.List;
  * Time: 13:59
  */
 public class RankFragment extends BaseMvpFragment<RankFragmentPresenter> implements RankFragmentContract.IView {
+    protected String TAG = "RankFragment";
 
     private RankExpandableAdapter mRankExpandableAdapter;
     private TextAdapter mRankPeriodsAdapter;
@@ -50,7 +51,8 @@ public class RankFragment extends BaseMvpFragment<RankFragmentPresenter> impleme
 
     @Override
     public void onError(Throwable throwable) {
-
+        super.onError(throwable);
+        loadSuccess();
     }
 
     @Override

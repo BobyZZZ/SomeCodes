@@ -37,5 +37,6 @@ public class HomeFragmentPresenter extends BasePresenter<HomeFragment> implement
     @Override
     public void onError(Throwable e) {
         Log.d(TAG, "onError() called with: e = [" + e + "]");
+        mView.onError(e);
     }
 }

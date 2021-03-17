@@ -34,6 +34,6 @@ public class LikedNovelFragmentPresenter extends BasePresenter<LikedNovelFragmen
 
     @Override
     public void onError(Throwable e) {
-
+        mView.onError(e);
     }
 }

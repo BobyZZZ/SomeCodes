@@ -199,9 +199,4 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
                     }
                 });
     }
-
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
 }

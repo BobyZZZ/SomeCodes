@@ -97,11 +97,6 @@ public class SearchActivity extends BaseMVPFragmentActivity<SearchActivityPresen
         mPresenter.getHistory();
     }*/
 
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
-
     public void onSearchError(Throwable e) {
 //        mAdapter.loadMoreEnd();
     }

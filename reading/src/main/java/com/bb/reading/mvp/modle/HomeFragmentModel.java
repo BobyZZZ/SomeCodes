@@ -29,6 +29,7 @@ public class HomeFragmentModel implements HomeFragmentContract.IModel {
     public void getHomeData() {
         mNovelService.getHomeData()
                 .compose(RxUtils.rxScheduers())
+                .onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
                 .subscribe(new BaseObserver<HomePageBean>() {
                     @Override
                     protected void onSuccess(HomePageBean homePageBean) {

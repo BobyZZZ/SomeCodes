@@ -26,7 +26,7 @@ import java.util.List;
 public class SortFragment extends BaseMvpListFragment<SortFragmentPresenter, SortNovelAdapter> implements SortFragmentContract.IView,
         OnLoadMoreListener, TabLayout.BaseOnTabSelectedListener {
 
-    String TAG = "SortFragment";
+    protected String TAG = "SortFragment";
     private BaseLoadMoreModule mLoadMoreModule;
     private TabLayout mTabLayout;
 
@@ -42,7 +42,8 @@ public class SortFragment extends BaseMvpListFragment<SortFragmentPresenter, Sor
 
     @Override
     public void onError(Throwable throwable) {
-
+        super.onError(throwable);
+        loadSuccess(true);
     }
 
     @Override

@@ -37,6 +37,6 @@ public class RankFragmentPresenter extends BasePresenter<RankFragment> implement
 
     @Override
     public void onError(Throwable e) {
-
+        mView.onError(e);
     }
 }

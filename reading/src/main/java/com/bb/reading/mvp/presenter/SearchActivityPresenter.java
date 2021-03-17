@@ -88,6 +88,6 @@ public class SearchActivityPresenter extends BasePresenter<SearchActivity> imple
 
     @Override
     public void onError(Throwable e) {
-
+        mView.onError(e);
     }
 }

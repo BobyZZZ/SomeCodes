@@ -37,6 +37,7 @@ public class SortNovelModel implements SortFragmentContract.IModel {
         Log.d(TAG, "getNovelsBySort() called with: type = [" + type + "], page = [" + page + "], cleanOldData = [" + cleanOldData + "]");
         mNovelService.getNovelBySort(type, page)
                 .compose(RxUtils.rxScheduers())
+                .onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
                 .subscribe(new BaseObserver<PageData>() {
                     @Override
                     protected void onSuccess(PageData pageData) {
@@ -47,6 +48,7 @@ public class SortNovelModel implements SortFragmentContract.IModel {
                     @Override
                     protected void onFail(Throwable e) {
                         LogUtils.e(TAG, "onFail: " + e);
+                        mPresenter.onError(e);
                     }
                 });
     }

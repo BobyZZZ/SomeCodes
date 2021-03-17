@@ -32,7 +32,7 @@ import java.util.List;
  * 首页
  */
 public class HomeFragment extends BaseMvpFragment<HomeFragmentPresenter> implements HomeFragmentContract.IView {
-    String TAG = "HomeFragment";
+    protected String TAG = "HomeFragment";
 
     private ViewGroup mSortNovelListContainer;
     private RecyclerView mBanner;
@@ -123,6 +123,7 @@ public class HomeFragment extends BaseMvpFragment<HomeFragmentPresenter> impleme
 
     @Override
     public void onError(Throwable throwable) {
-
+        super.onError(throwable);
+        loadDataFinish();
     }
 }

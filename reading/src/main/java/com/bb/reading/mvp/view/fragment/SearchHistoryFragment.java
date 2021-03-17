@@ -113,9 +113,4 @@ public class SearchHistoryFragment extends BaseMvpFragment<SearchHistoryFragment
         super.onActivityResult(requestCode, resultCode, data);
         mPresenter.refreshHistory();
     }
-
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
 }

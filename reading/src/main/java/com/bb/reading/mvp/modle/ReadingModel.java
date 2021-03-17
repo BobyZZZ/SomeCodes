@@ -91,6 +91,7 @@ public class ReadingModel implements ReadingActivityContract.IMainModel<NovelCha
 
         mNovelServiceReal.getNovelChapterDetails(chapterIndex)
                 .compose(RxUtils.rxScheduers())
+                .onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
                 .subscribe(new BaseObserver<NovelChapterContentFruitBean>() {
                     @Override
                     protected void onSuccess(NovelChapterContentFruitBean novelChapterContentFruitBean) {

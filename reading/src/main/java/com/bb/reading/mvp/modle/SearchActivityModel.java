@@ -33,6 +33,7 @@ public class SearchActivityModel implements SearchActivityContract.IModel {
     public void search(String searchKey) {
         mNovelService.searchNovel(searchKey)
                 .compose(RxUtils.rxScheduers())
+                .onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
                 .subscribe(new BaseObserver<SearchResult>() {
                     @Override
                     protected void onSuccess(SearchResult searchResult) {

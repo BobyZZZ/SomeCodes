@@ -87,9 +87,4 @@ public class SearchResultFragment extends BaseMvpFragment<SearchResultFragmentPr
     public void updateResults(SearchResult searchResult) {
         mAdapter.setNewInstance(searchResult.getResults());
     }
-
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
 }

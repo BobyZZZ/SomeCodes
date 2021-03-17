@@ -233,18 +233,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
 
     @Override
     public void onError(Throwable throwable) {
-        LogUtils.e(TAG, "onError: " + throwable);
-        if (throwable instanceof ExceptionHandler.ResponseThrowable) {
-            ExceptionHandler.ResponseThrowable error = (ExceptionHandler.ResponseThrowable) throwable;
-            switch (error.code) {
-                case ExceptionHandler.Error.LOCAL_CACHE_ERROR:
-                    break;
-                default:
-                    showToast(R.string.error_server);
-                    hideLoading();
-                    break;
-            }
-        }
+        super.onError(throwable);
 
         BaseLoadMoreModule loadMoreModule = mNovelContentAdapter.getLoadMoreModule();
         if (loadMoreModule.isLoading()) {

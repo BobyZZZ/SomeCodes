@@ -1,6 +1,7 @@
 package com.bb.network.utils;
 
 import com.bb.network.bean.BaseResponse;
+import com.bb.network.exceptionHandler.ResponseErrorHandler;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -24,5 +25,9 @@ public class RxUtils {
                 return upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
             }
         };
+    }
+
+    public static <T> Function<Throwable, Observable<T>> handleError() {
+        return new ResponseErrorHandler<>();
     }
 }

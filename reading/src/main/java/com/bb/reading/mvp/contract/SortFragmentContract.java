@@ -30,5 +30,7 @@ public interface SortFragmentContract {
         void loadMore();
 
         void getNewNovels(int position);
+
+        void onError(Throwable throwable);
     }
 }

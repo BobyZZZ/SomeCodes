@@ -66,4 +66,9 @@ public class SortFragmentPresenter extends BasePresenter<SortFragment> implement
         getNovelsBySort(mCurrentType, (mCurrentPage + 1));
         Log.d(TAG, "loadMore mCurrentType: " + mCurrentType + ",page: " + (mCurrentPage + 1));
     }
+
+    @Override
+    public void onError(Throwable throwable) {
+        mView.onError(throwable);
+    }
 }

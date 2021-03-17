@@ -5,12 +5,16 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bb.network.exceptionHandler.ExceptionHandler;
+import com.bb.reading.R;
+import com.bb.reading.utils.log.LogUtils;
+
 /**
  * Created by Boby on 2019/6/17.
  */
 
-public abstract class BaseMvpListFragment<P extends BasePresenter,A extends RecyclerView.Adapter> extends ListFragment<A> implements BaseView {
-    String TAG = "BaseMvpFragment";
+public abstract class BaseMvpListFragment<P extends BasePresenter,A extends RecyclerView.Adapter> extends ListFragment<A> implements IBaseView {
+    protected String TAG = "BaseMvpFragment";
     protected P mPresenter;
 
     /**
@@ -37,6 +41,22 @@ public abstract class BaseMvpListFragment<P extends BasePresenter,A extends Recy
         super.onDestroy();
         if (mPresenter != null) {
             mPresenter.detachView();
+        }
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+        LogUtils.e(TAG, "onError: " + throwable);
+        if (throwable instanceof ExceptionHandler.ResponseThrowable) {
+            ExceptionHandler.ResponseThrowable error = (ExceptionHandler.ResponseThrowable) throwable;
+            switch (error.code) {
+                case ExceptionHandler.Error.LOCAL_CACHE_ERROR:
+                    break;
+                default:
+                    showToast(R.string.error_server);
+                    hideLoading();
+                    break;
+            }
         }
     }
 }

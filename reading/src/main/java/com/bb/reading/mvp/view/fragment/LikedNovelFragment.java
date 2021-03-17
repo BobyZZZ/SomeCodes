@@ -100,11 +100,6 @@ public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresen
         mLikedNovelAdapter.setNewData(allLikedNovel);
     }
 
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
-
     public void setRefreshing(boolean refreshing) {
         mSwipeRefreshLayout.setRefreshing(refreshing);
     }

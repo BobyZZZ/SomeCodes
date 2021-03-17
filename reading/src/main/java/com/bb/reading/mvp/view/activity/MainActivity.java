@@ -84,9 +84,4 @@ public class MainActivity extends BaseMvpActivity<MainActivityPresenter> impleme
         mPagerAdapter.setData(fragmentList, titles);
         mViewPager.setCurrentItem(0);
     }
-
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
 }
