@@ -8,6 +8,7 @@ import com.bb.reading.mvp.contract.MainActivityContract;
 import com.bb.reading.mvp.view.activity.MainActivity;
 import com.bb.reading.mvp.view.fragment.LikedNovelFragment;
 import com.bb.reading.mvp.view.fragment.MainTabFragment;
+import com.bb.reading.mvp.view.fragment.SearchHistoryFragmentWithSearchBar;
 import com.bb.reading.mvp.view.fragment.TabViewPagerFragment;
 import com.bb.reading.utils.ResUtils;
 
@@ -35,7 +36,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivity> implement
                     mFragments.add(TabViewPagerFragment.newInstance(TabViewPagerFragment.TYPE_SHUCHENG));
                     break;
                 case 2:
-                    mFragments.add(MainTabFragment.newInstance(MainTabFragment.TAB_ME));
+                    mFragments.add(SearchHistoryFragmentWithSearchBar.newInstance());
                     break;
                 default:
                     mFragments.add(MainTabFragment.newInstance(MainTabFragment.TAB_SHUJIA));

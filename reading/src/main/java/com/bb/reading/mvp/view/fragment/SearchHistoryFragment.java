@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.bb.reading.R;
 import com.bb.reading.base.BaseMvpFragment;
 import com.bb.reading.entity.SearchHistory;
+import com.bb.reading.mvp.contract.SearchActivityContract;
 import com.bb.reading.mvp.contract.SearchHistoryFragmentContract;
 import com.bb.reading.mvp.presenter.SearchActivityPresenter;
 import com.bb.reading.mvp.presenter.SearchHistoryFragmentPresenter;
@@ -30,14 +31,14 @@ public class SearchHistoryFragment extends BaseMvpFragment<SearchHistoryFragment
     private View mRoot;
     private TextView mTvTrip;
     private TextView mTvHistory;
-    private SearchActivityPresenter mSearchActivityPresenter;
+    private SearchActivityContract.IPresenter mSearchActivityPresenter;
 
     public static SearchHistoryFragment newInstance() {
         SearchHistoryFragment fragment = new SearchHistoryFragment();
         return fragment;
     }
 
-    public void setOthersPresenter(SearchActivityPresenter searchActivityPresenter) {
+    public void setOthersPresenter(SearchActivityContract.IPresenter searchActivityPresenter) {
         mSearchActivityPresenter = searchActivityPresenter;
     }
 

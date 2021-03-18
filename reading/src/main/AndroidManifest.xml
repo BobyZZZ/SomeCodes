@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
-        <activity android:name=".mvp.view.activity.MainActivity">
+        <activity android:name=".mvp.view.activity.MainActivity" android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,6 +37,7 @@
         <activity android:name=".mvp.view.activity.SearchActivity">
 
         </activity>
+        <activity android:name=".mvp.view.activity.SearchResultActivity"/>
     </application>
 
 </manifest>

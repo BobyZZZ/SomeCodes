@@ -18,15 +18,13 @@ import java.util.List;
  */
 
 public class SearchActivityModel implements SearchActivityContract.IModel {
-    SearchActivityPresenter mPresenter;
-    private final SearchHistoryDB mDao;
+    SearchActivityContract.IPresenter mPresenter;
     private final NovelService mNovelService;
 
 
-    public SearchActivityModel(SearchActivityPresenter searchFragmentPresenter) {
+    public SearchActivityModel(SearchActivityContract.IPresenter searchFragmentPresenter) {
         this.mPresenter = searchFragmentPresenter;
         mNovelService = RetrofitManager.getInstance().createRs(NovelService.class);
-        mDao = DaoHelper.getInstance().getSearchHistoryDB();
     }
 
     @Override

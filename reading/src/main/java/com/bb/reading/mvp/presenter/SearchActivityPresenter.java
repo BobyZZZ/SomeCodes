@@ -49,7 +49,7 @@ public class SearchActivityPresenter extends BasePresenter<SearchActivity> imple
                 fragment = searchHistoryFragment;
                 break;
             case FRAGMENT_SEARCH_RESULT_TYPE:
-                SearchResultFragment searchResultFragment = SearchResultFragment.newInstance();
+                SearchResultFragment searchResultFragment = SearchResultFragment.newInstance(null);
                 fragment = searchResultFragment;
                 break;
         }

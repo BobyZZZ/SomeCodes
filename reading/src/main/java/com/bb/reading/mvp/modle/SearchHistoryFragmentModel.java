@@ -22,12 +22,10 @@ import java.util.List;
 public class SearchHistoryFragmentModel implements SearchHistoryFragmentContract.IModel {
     SearchHistoryFragmentPresenter mPresenter;
     private final SearchHistoryDB mDao;
-    private final NovelService mNovelService;
 
 
     public SearchHistoryFragmentModel(SearchHistoryFragmentPresenter searchHistoryFragmentPresenter) {
         this.mPresenter = searchHistoryFragmentPresenter;
-        mNovelService = RetrofitManager.getInstance().createRs(NovelService.class);
         mDao = DaoHelper.getInstance().getSearchHistoryDB();
     }
 

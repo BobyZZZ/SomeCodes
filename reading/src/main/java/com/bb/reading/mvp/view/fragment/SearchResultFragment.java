@@ -1,13 +1,12 @@
 package com.bb.reading.mvp.view.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +19,9 @@ import com.bb.reading.entity.SearchResult;
 import com.bb.reading.mvp.contract.SearchResultFragmentContract;
 import com.bb.reading.mvp.presenter.SearchResultFragmentPresenter;
 import com.bb.reading.mvp.view.activity.NovelDetailActivity;
+import com.bb.reading.mvp.view.activity.SearchResultActivity;
+import com.bb.reading.utils.log.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 
 /**
@@ -35,14 +35,23 @@ public class SearchResultFragment extends BaseMvpFragment<SearchResultFragmentPr
 
     private RecyclerView mRvSearchResult;
     private NovelSearchResultAdapter mAdapter;
+    private String mSearchKey;
 
-    public static SearchResultFragment newInstance() {
+    public static SearchResultFragment newInstance(String searchKey) {
         SearchResultFragment fragment = new SearchResultFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(SearchResultActivity.KEY_SEARCHKEY, searchKey);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
-    private SearchResultFragment() {
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mSearchKey = arguments.getString(SearchResultActivity.KEY_SEARCHKEY);
+        }
     }
 
     @Override
@@ -80,7 +89,11 @@ public class SearchResultFragment extends BaseMvpFragment<SearchResultFragmentPr
 
     @Override
     protected void process() {
-
+        if (!TextUtils.isEmpty(mSearchKey)) {
+            mPresenter.search(mSearchKey);
+        } else {
+            showToast(R.string.search_key_could_not_empty);
+        }
     }
 
     @Override

@@ -1,15 +1,14 @@
 package com.bb.reading.mvp.presenter;
 
-import android.util.Log;
+import android.content.Intent;
 
 import com.bb.reading.base.BasePresenter;
 import com.bb.reading.entity.SearchHistory;
 import com.bb.reading.entity.SearchResult;
 import com.bb.reading.mvp.contract.SearchActivityContract;
 import com.bb.reading.mvp.contract.SearchHistoryFragmentContract;
-import com.bb.reading.mvp.modle.SearchActivityModel;
 import com.bb.reading.mvp.modle.SearchHistoryFragmentModel;
-import com.bb.reading.mvp.view.activity.SearchActivity;
+import com.bb.reading.mvp.view.activity.SearchResultActivity;
 import com.bb.reading.mvp.view.fragment.SearchHistoryFragment;
 
 import java.util.List;
@@ -20,30 +19,55 @@ import java.util.List;
  * Date: 2021/1/21
  * Time: 22:24
  */
-public class SearchHistoryFragmentPresenter extends BasePresenter<SearchHistoryFragment> implements SearchHistoryFragmentContract.IPresenter {
+public class SearchHistoryFragmentPresenter extends BasePresenter<SearchHistoryFragment> implements SearchHistoryFragmentContract.IPresenter,
+SearchActivityContract.IPresenter{
     String TAG = "SearchActivityPresenter";
-    private SearchHistoryFragmentModel mModel;
+    private SearchHistoryFragmentModel mHistoryModel;
 
     public SearchHistoryFragmentPresenter() {
-        mModel = new SearchHistoryFragmentModel(this);
+        mHistoryModel = new SearchHistoryFragmentModel(this);
     }
 
     public void recordHistory(String key) {
-        mModel.recordHistory(key);
+        mHistoryModel.recordHistory(key);
     }
 
     public void cleanHistory() {
-        mModel.cleanHistory();
+        mHistoryModel.cleanHistory();
         mView.updateHistory(null);
     }
 
     @Override
     public void refreshHistory() {
-        mModel.getHistory();
+        mHistoryModel.getHistory();
     }
 
     @Override
     public void onGetHistorySuccess(List<SearchHistory> histories) {
         mView.updateHistory(histories);
     }
+
+    /*******************************************只做页面跳转，不做实际搜索功能处理******************************************/
+    @Override
+    public void search(String searchKey) {
+        recordHistory(searchKey);
+        refreshHistory();
+        Intent intent = SearchResultActivity.createIntent(mView.getContext(), searchKey);
+        mView.startActivityForResult(intent,0);
+    }
+
+    @Override
+    public void onSearchSuccess(SearchResult searchResult) {
+
+    }
+
+    @Override
+    public void onError(Throwable e) {
+    }
+
+    @Override
+    public void process() {
+
+    }
+    /*******************************************只做页面跳转，不做实际搜索功能处理******************************************/
 }
