@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Reading</string>
+    <string name="app_name">悦读</string>
     <string name="confirm">confirm</string>
     <string name="next">next</string>
     <string name="un_downloaded">未缓存</string>
