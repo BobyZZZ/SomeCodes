@@ -55,5 +55,5 @@
         app:layout_anchor="@id/rv_novel_list"
         app:pressedTranslationZ="8dp"
         app:layout_anchorGravity="bottom|end"
-        app:layout_behavior=".view.behavior.FabInOutBehavior" />
+        app:layout_behavior="com.bb.reading.view.behavior.FabInOutBehavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
