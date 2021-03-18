@@ -67,6 +67,7 @@ public class TabViewPagerFragment extends BaseMvpFragment<TabViewPagerFragmentPr
         //tablayout + viewpager
         mTabLayout.setupWithViewPager(mViewPager);
         mPagerAdapter = new TabFragmentPagerAdapter(getContext(), getChildFragmentManager(), "书城Adapter");
+        mViewPager.setOffscreenPageLimit(Integer.MAX_VALUE);
         mViewPager.setAdapter(mPagerAdapter);
     }
 
