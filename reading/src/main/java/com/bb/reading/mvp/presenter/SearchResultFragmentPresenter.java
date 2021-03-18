@@ -38,16 +38,20 @@ public class SearchResultFragmentPresenter extends BasePresenter<SearchResultFra
 
     @Override
     public void onSearchSuccess(SearchResult searchResult) {
-        if (!searchResult.getResults().isEmpty()) {
-            mView.updateResults(searchResult);
-        } else {
-            mView.showToast(R.string.search_result_is_empty);
+        if (mView != null) {
+            if (!searchResult.getResults().isEmpty()) {
+                mView.updateResults(searchResult);
+            } else {
+                mView.showToast(R.string.search_result_is_empty);
+            }
         }
     }
 
     @Override
     public void onError(Throwable e) {
-        mView.onError(e);
+        if (mView != null) {
+            mView.onError(e);
+        }
     }
 
     @Override

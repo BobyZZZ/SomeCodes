@@ -34,7 +34,9 @@ SearchActivityContract.IPresenter{
 
     public void cleanHistory() {
         mHistoryModel.cleanHistory();
-        mView.updateHistory(null);
+        if (mView != null) {
+            mView.updateHistory(null);
+        }
     }
 
     @Override
@@ -44,7 +46,9 @@ SearchActivityContract.IPresenter{
 
     @Override
     public void onGetHistorySuccess(List<SearchHistory> histories) {
-        mView.updateHistory(histories);
+        if (mView != null) {
+            mView.updateHistory(histories);
+        }
     }
 
     /*******************************************只做页面跳转，不做实际搜索功能处理******************************************/
@@ -52,8 +56,10 @@ SearchActivityContract.IPresenter{
     public void search(String searchKey) {
         recordHistory(searchKey);
         refreshHistory();
-        Intent intent = SearchResultActivity.createIntent(mView.getContext(), searchKey);
-        mView.startActivityForResult(intent,0);
+        if (mView != null) {
+            Intent intent = SearchResultActivity.createIntent(mView.getContext(), searchKey);
+            mView.startActivityForResult(intent,0);
+        }
     }
 
     @Override
