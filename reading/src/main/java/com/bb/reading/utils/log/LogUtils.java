@@ -37,8 +37,12 @@ public class LogUtils {
     }
 
     public static void e(String TAG, String msg) {
+        e(TAG, msg, null);
+    }
+
+    public static void e(String TAG, String msg, Throwable e) {
         if (LOG_LEVEL >= LEVEL_ERROR && isDebug()) {
-            Log.e(TAG, msg);
+            Log.e(TAG, msg, e);
         }
     }
 

@@ -6,10 +6,10 @@ import android.util.Log;
 import com.bb.network.observer.BaseObserver;
 import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.mvp.contract.NovelDetailActivityContract;
-import com.bb.reading.mvp.presenter.NovelDetailActivityPresenter;
 import com.bb.reading.network.NovelService;
 import com.bb.reading.network.RetrofitManager;
 import com.bb.reading.utils.RxUtils;
+import com.bb.reading.utils.log.LogUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -40,7 +40,7 @@ public class NovelDetailActivityModel<P extends NovelDetailActivityContract.IPre
      * @param sync 同步操作
      */
     public void getDetailData(String novelIndex, boolean sync) {
-        Log.d(TAG, "getDetailData() called with: novelIndex = [" + novelIndex + "],sync = [" + sync + "]");
+        LogUtils.d(TAG, "getDetailData() called with: novelIndex = [" + novelIndex + "],sync = [" + sync + "]");
         Observable<NovelDetails> observable = mNovelService.getNovelDetails(novelIndex);
         if (!sync) {
             //for show
@@ -58,7 +58,7 @@ public class NovelDetailActivityModel<P extends NovelDetailActivityContract.IPre
 
                         @Override
                         protected void onFail(Throwable e) {
-
+                            mPresenter.onError(e);
                         }
                     });
         } else {
@@ -77,7 +77,7 @@ public class NovelDetailActivityModel<P extends NovelDetailActivityContract.IPre
 
                         @Override
                         protected void onFail(Throwable e) {
-
+                            mPresenter.onError(e);
                         }
                     });
         }

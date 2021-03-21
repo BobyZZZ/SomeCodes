@@ -139,6 +139,16 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
     }
 
     @Override
+    public void onLoadStart() {
+        showLoading(null,false);
+    }
+
+    @Override
+    public void onLoadEnd() {
+        hideLoading();
+    }
+
+    @Override
     public NovelDetailActivityPresenter createPresenter() {
         return new NovelDetailActivityPresenter();
     }

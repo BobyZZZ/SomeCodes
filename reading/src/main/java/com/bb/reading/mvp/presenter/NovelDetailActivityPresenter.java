@@ -10,6 +10,7 @@ import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.mvp.contract.NovelDetailActivityContract;
 import com.bb.reading.mvp.modle.NovelDetailActivityModel;
 import com.bb.reading.mvp.view.activity.NovelDetailActivity;
+import com.bb.reading.utils.log.LogUtils;
 
 /**
  * Created by Android Studio.
@@ -30,15 +31,26 @@ public class NovelDetailActivityPresenter extends BasePresenter<NovelDetailActiv
     }
 
     public void getDetailData(String novelIndex) {
+        if (mView != null) {
+            mView.onLoadStart();
+        }
         mNovelDetailActivityModel.getDetailData(novelIndex);
     }
 
     @Override
     public void onDetailDataSuccess(NovelDetails novelDetails) {
-        Log.d(TAG, "onDetailDataSuccess() called with: mView = [" + mView + "]");
+        LogUtils.d(TAG, "onDetailDataSuccess() called with: mView = [" + mView + "]");
         if (mView != null) {
             mView.updateNovelDetail(novelDetails);
             mView.updateNovelInfo(novelDetails);
+            mView.onLoadEnd();
+        }
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        if (mView != null) {
+            mView.onError(e);
         }
     }
 

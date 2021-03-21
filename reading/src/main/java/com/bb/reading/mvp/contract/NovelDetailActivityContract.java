@@ -14,12 +14,15 @@ public interface NovelDetailActivityContract {
     }
 
     interface IView {
-
+        void onLoadStart();
+        void onLoadEnd();
     }
 
     interface IPresenter {
         void getDetailData(String novelIndex);
 
         void onDetailDataSuccess(NovelDetails novelDetails);
+
+        void onError(Throwable e);
     }
 }
