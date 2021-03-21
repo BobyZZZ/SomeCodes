@@ -83,13 +83,13 @@ public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresen
 
     @Override
     protected void process() {
-        mSwipeRefreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setRefreshing(true);
-                mPresenter.getAllLiked();
-            }
-        }, 300);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setRefreshing(true);
+        mPresenter.getAllLiked();
     }
 
     @Override
