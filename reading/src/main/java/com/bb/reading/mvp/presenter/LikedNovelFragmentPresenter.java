@@ -32,8 +32,14 @@ public class LikedNovelFragmentPresenter extends BasePresenter<LikedNovelFragmen
         mView.updateLikedNovelList(allLikedNovel);
     }
 
+    public void delete(String novelId) {
+        mNovelDBManager.deleteLikedNovel(novelId);
+        mView.refreshFavorite();
+    }
     @Override
     public void onError(Throwable e) {
-        mView.onError(e);
+        if (mView != null) {
+            mView.onError(e);
+        }
     }
 }

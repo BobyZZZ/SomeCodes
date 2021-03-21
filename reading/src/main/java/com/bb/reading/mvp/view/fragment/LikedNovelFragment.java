@@ -17,6 +17,7 @@ import com.bb.reading.base.BaseMvpFragment;
 import com.bb.reading.entity.NovelDetails;
 import com.bb.reading.mvp.contract.LikedNovelFragmentContract;
 import com.bb.reading.mvp.presenter.LikedNovelFragmentPresenter;
+import com.bb.reading.mvp.view.activity.NovelDetailActivity;
 import com.bb.reading.mvp.view.activity.ReadingActivity;
 import com.bb.reading.utils.GlideUtils;
 import com.bb.reading.utils.ResUtils;
@@ -88,6 +89,10 @@ public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresen
     @Override
     public void onStart() {
         super.onStart();
+        refreshFavorite();
+    }
+
+    public void refreshFavorite() {
         setRefreshing(true);
         mPresenter.getAllLiked();
     }
@@ -111,12 +116,22 @@ public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresen
 
         @Override
         protected void convert(BaseVH holder, NovelDetails data) {
+            ImageView ivCover = holder.getView(R.id.iv_novel_cover, ImageView.class);
             if (!TextUtils.isEmpty(data.coverUrl)) {
-                GlideUtils.load(data.coverUrl, holder.getView(R.id.iv_novel_cover, ImageView.class));
+                GlideUtils.load(data.coverUrl, ivCover);
             }
+
             holder.setText(R.id.tv_novel_name, ResUtils.getString(R.string.novel_name,data.name));
             holder.setText(R.id.tv_novel_author, data.getAuthor());
             holder.setText(R.id.tv_novel_introduction, data.introduction);
+            ivCover.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //点击封面图片进入详情页面
+                    Intent intent = NovelDetailActivity.createIntent(getContext(), data.getNovelId());
+                    startActivity(intent);
+                }
+            });
         }
     }
 }
