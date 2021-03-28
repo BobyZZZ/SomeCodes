@@ -1,18 +1,13 @@
-package com.bb.reading.adapter.rv;
+package com.bb.module_noveldetail.adapter;
 
-import android.view.View;
-
-import com.bb.reading.entity.NovelChapterContentFruitBean;
-import com.bb.reading.mvp.presenter.ReadingPresenter;
-import com.bb.reading.utils.log.LogUtils;
+import com.bb.module_noveldetail.R;
+import com.bb.module_novelmanager.entity.NovelChapterContentFruitBean;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.chad.library.adapter.base.module.BaseLoadMoreModule;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.bb.reading.R;
-import com.bb.reading.entity.NovelChapterContent;
-import com.bb.reading.entity.NovelChapterInfo;
+import com.bb.module_novelmanager.entity.NovelChapterInfo;
 
 import org.jetbrains.annotations.NotNull;
 

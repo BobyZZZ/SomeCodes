@@ -1,4 +1,4 @@
-package com.bb.reading.adapter.rv;
+package com.bb.module_noveldetail.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,10 +7,10 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bb.reading.R;
-import com.bb.reading.adapter.base.BaseVH;
-import com.bb.reading.entity.NovelDetails;
-import com.bb.reading.utils.GlideUtils;
+import com.bb.module_common.adapter.base.BaseVH;
+import com.bb.module_noveldetail.R;
+import com.bb.module_novelmanager.entity.NovelDetails;
+import com.bb.module_common.utils.GlideUtils;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class NovelChapterAdapter extends RecyclerView.Adapter<BaseVH> {
         GlideUtils.load(mNovelDetails.getCoverUrl(), ivCover);
     }
 
-    private void onBindNormal(BaseVH holder, NovelDetails.Chapter chapter) {
+    private void onBindNormal(BaseVH holder, final NovelDetails.Chapter chapter) {
         holder.setText(R.id.tv_chapter_name, chapter.name);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

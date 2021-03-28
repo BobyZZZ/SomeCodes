@@ -1,17 +1,16 @@
-package com.bb.reading.mvp.presenter;
+package com.bb.module_noveldetail.mvp.presenter;
 
 import android.text.TextUtils;
 
-import com.bb.reading.base.BasePresenter;
-import com.bb.reading.entity.NovelChapterContentFruitBean;
-import com.bb.reading.utils.log.LogUtils;
-import com.bb.reading.utils.NovelSpUtils;
-import com.bb.reading.entity.NovelChapterInfo;
-import com.bb.reading.mvp.callback.BaseCallback;
-import com.bb.reading.mvp.contract.ReadingActivityContract;
-import com.bb.reading.entity.NovelChapterContent;
-import com.bb.reading.mvp.modle.ReadingModel;
-import com.bb.reading.mvp.view.activity.ReadingActivity;
+import com.bb.module_common.base.BasePresenter;
+import com.bb.module_noveldetail.mvp.view.ReadingActivity;
+import com.bb.module_novelmanager.entity.NovelChapterContentFruitBean;
+import com.bb.module_common.utils.log.LogUtils;
+import com.bb.module_novelmanager.utils.NovelSpUtils;
+import com.bb.module_novelmanager.entity.NovelChapterInfo;
+import com.bb.module_noveldetail.callback.BaseCallback;
+import com.bb.module_noveldetail.mvp.contract.ReadingActivityContract;
+import com.bb.module_noveldetail.mvp.modle.ReadingModel;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
     }
 
     @Override
-    public void getCategory(String novelIndex, boolean readCache) {
+    public void getCategory(final String novelIndex, boolean readCache) {
         mView.loadingStart();
         mModel.getCategory(novelIndex, readCache, new BaseCallback<List<NovelChapterInfo>>() {
             @Override
@@ -73,7 +72,7 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
      * @param chapterID 该章节的href
      * @param resetData 是否需要重新设置数据
      */
-    public void read(final String novelID, String chapterID, final boolean resetData) {
+    public void read(final String novelID, final String chapterID, final boolean resetData) {
         LogUtils.d(TAG, "read target chapterId: " + chapterID);
         mModel.getChapter(novelID, chapterID, new BaseCallback<NovelChapterContentFruitBean>() {
             @Override

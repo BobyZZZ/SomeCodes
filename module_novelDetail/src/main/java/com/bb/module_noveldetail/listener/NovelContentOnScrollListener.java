@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.view.listener;
+package com.bb.module_noveldetail.listener;
 
 import android.view.View;
 
@@ -6,8 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bb.reading.adapter.rv.NovelContentAdapter;
-import com.bb.reading.utils.log.LogUtils;
+import com.bb.module_common.utils.log.LogUtils;
 
 /**
  * Created by Android Studio.

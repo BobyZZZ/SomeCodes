@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.callback;
+package com.bb.module_noveldetail.callback;
 
 /**
  * 普通接口，泛型方法

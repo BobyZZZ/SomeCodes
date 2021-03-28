@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.view.activity;
+package com.bb.module_noveldetail.mvp.view;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,28 +16,27 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bb.network.exceptionHandler.ExceptionHandler;
-import com.bb.reading.base.BaseMvpActivity;
-import com.bb.reading.constant.NovelConstant;
-import com.bb.reading.entity.NovelChapterContentFruitBean;
-import com.bb.reading.mvp.contract.ReadingActivityContract;
-import com.bb.reading.mvp.presenter.ReadingPresenter;
-import com.bb.reading.mvp.view.listener.NovelContentOnScrollListener;
-import com.bb.reading.utils.StatusBarUtils;
-import com.bb.reading.utils.log.LogUtils;
-import com.bb.reading.utils.log.LongLogUtils;
-import com.bb.reading.utils.NovelSpUtils;
-import com.bb.reading.utils.RecyclerViewUtils;
-import com.bb.reading.view.BScrollerControl;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.bb.module_common.base.BaseMvpActivity;
+import com.bb.module_common.utils.RecyclerViewUtils;
+import com.bb.module_common.view.BScrollerControl;
+import com.bb.module_noveldetail.R;
+import com.bb.module_noveldetail.adapter.CategoryAdapter;
+import com.bb.module_noveldetail.adapter.NovelContentAdapter;
+import com.bb.module_novelmanager.constant.NovelConstant;
+import com.bb.module_novelmanager.entity.NovelChapterContentFruitBean;
+import com.bb.module_noveldetail.mvp.contract.ReadingActivityContract;
+import com.bb.module_noveldetail.mvp.presenter.ReadingPresenter;
+import com.bb.module_noveldetail.listener.NovelContentOnScrollListener;
+import com.bb.module_common.utils.StatusBarUtils;
+import com.bb.module_common.utils.log.LogUtils;
+import com.bb.module_common.utils.log.LongLogUtils;
+import com.bb.module_novelmanager.utils.NovelSpUtils;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.chad.library.adapter.base.module.BaseLoadMoreModule;
-import com.bb.reading.R;
-import com.bb.reading.constant.GlobalConstant;
-import com.bb.reading.entity.NovelChapterInfo;
-import com.bb.reading.entity.NovelChapterContent;
-import com.bb.reading.network.NovelService;
-import com.bb.reading.adapter.rv.CategoryAdapter;
-import com.bb.reading.adapter.rv.NovelContentAdapter;
+import com.bb.module_novelmanager.constant.GlobalConstant;
+import com.bb.module_novelmanager.entity.NovelChapterInfo;
+import com.bb.module_novelmanager.network.NovelService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +44,7 @@ import java.util.List;
 /**
  * 小说阅读Activity
  */
+@Route(path = "/act/ReadingActivity")
 public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implements ReadingActivityContract.IMainView,
         BScrollerControl.OnScrollChange, NovelContentOnScrollListener.ReadingChangeListener {
     String TAG = "ReadingActivity";
@@ -121,7 +120,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
 
     private void initMode() {
         if (GlobalConstant.isFishMode()) {
-            View rootView = findViewById(R.id.ll_content_container);
+            final View rootView = findViewById(R.id.ll_content_container);
             View rvContent = findViewById(R.id.rv_novel_content);
 
             rootView.setAlpha(0);

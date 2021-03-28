@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.view.activity;
+package com.bb.module_noveldetail.mvp.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,18 +16,20 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bb.reading.R;
-import com.bb.reading.adapter.rv.NovelChapterAdapter;
-import com.bb.reading.base.BaseMvpActivity;
-import com.bb.reading.constant.NovelConstant;
-import com.bb.reading.db.DaoHelper;
-import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
-import com.bb.reading.entity.NovelDetails;
-import com.bb.reading.mvp.contract.NovelDetailActivityContract;
-import com.bb.reading.mvp.presenter.NovelDetailActivityPresenter;
-import com.bb.reading.utils.GlideUtils;
-import com.bb.reading.utils.StatusBarUtils;
-import com.bb.reading.view.CustomBar;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.bb.module_common.base.BaseMvpActivity;
+import com.bb.module_common.view.CustomBar;
+import com.bb.module_noveldetail.R;
+import com.bb.module_noveldetail.adapter.NovelChapterAdapter;
+import com.bb.module_noveldetail.mvp.presenter.NovelDetailActivityPresenter;
+import com.bb.module_novelmanager.RouterManager;
+import com.bb.module_novelmanager.constant.NovelConstant;
+import com.bb.module_novelmanager.db.greenDao.DaoHelper;
+import com.bb.module_novelmanager.db.greenDao.impl.NovelDBManager;
+import com.bb.module_novelmanager.entity.NovelDetails;
+import com.bb.module_noveldetail.mvp.contract.NovelDetailActivityContract;
+import com.bb.module_common.utils.GlideUtils;
+import com.bb.module_common.utils.StatusBarUtils;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,6 +46,7 @@ import io.reactivex.schedulers.Schedulers;
  * Date: 2021/1/18
  * Time: 0:01
  */
+@Route(path = "/act/NovelDetailActivity")
 public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPresenter> implements NovelDetailActivityContract.IView {
     String TAG = "NovelDetailActivity";
 
@@ -96,9 +99,9 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         mNovelChapterAdapter.setOnItemClickListener(new NovelChapterAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(NovelDetails.Chapter data) {
-                Log.d(TAG, "onItemClick() called with: data = [" + data + "]");
-                Intent intent = ReadingActivity.createIntent(NovelDetailActivity.this, getNovelId(), data.chapterUrl);
-                startActivity(intent);
+//                Intent intent = ReadingActivity.createIntent(NovelDetailActivity.this, getNovelId(), data.chapterUrl);
+//                startActivity(intent);
+                RouterManager.getInstance().toNovelReading(getNovelId(),data.chapterUrl);
             }
         });
         mRvNovel.setLayoutManager(new LinearLayoutManager(this));
@@ -157,11 +160,11 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         mNovelChapterAdapter.setData(novelDetails);
     }
 
-    public void updateNovelInfo(NovelDetails novelDetails) {
-        NovelDBManager novelDBManager = DaoHelper.getInstance().getNovelDBManager();
+    public void updateNovelInfo(final NovelDetails novelDetails) {
+        final NovelDBManager novelDBManager = DaoHelper.getInstance().getNovelDBManager();
         boolean alreadyLiked = novelDBManager.isAlreadyLiked(novelDetails.novelId);
 
-        BaseViewHolder holder = new BaseViewHolder(findViewById(R.id.layout_novel_info));
+        final BaseViewHolder holder = new BaseViewHolder(findViewById(R.id.layout_novel_info));
         holder.setText(R.id.tv_novel_author, novelDetails.getAuthor());
         holder.setText(R.id.tv_novel_name, novelDetails.name);
         holder.setText(R.id.tv_novel_type, novelDetails.getType());
@@ -181,7 +184,7 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
             }
         });
 
-        ImageView ivCover = holder.getView(R.id.iv_novel_cover);
+        final ImageView ivCover = holder.getView(R.id.iv_novel_cover);
         Single.just(novelDetails.coverUrl)
                 .subscribeOn(Schedulers.io())
                 .map(new Function<String, Bitmap>() {

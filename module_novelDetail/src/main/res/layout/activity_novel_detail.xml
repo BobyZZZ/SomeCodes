@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom" />
 
-            <com.bb.reading.view.CustomBar
+            <com.bb.module_common.view.CustomBar
                 android:id="@+id/customBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,5 +55,5 @@
         app:layout_anchor="@id/rv_novel_list"
         app:pressedTranslationZ="8dp"
         app:layout_anchorGravity="bottom|end"
-        app:layout_behavior="com.bb.reading.view.behavior.FabInOutBehavior" />
+        app:layout_behavior="com.bb.module_common.view.behavior.FabInOutBehavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

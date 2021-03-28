@@ -1,16 +1,15 @@
-package com.bb.reading.adapter.rv;
+package com.bb.module_noveldetail.adapter;
 
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.bb.reading.utils.log.LogUtils;
-import com.bb.reading.utils.NovelSpUtils;
+import com.bb.module_common.utils.log.LogUtils;
+import com.bb.module_noveldetail.R;
+import com.bb.module_novelmanager.entity.NovelChapterInfo;
+import com.bb.module_novelmanager.utils.NovelSpUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.bb.reading.R;
-
-import com.bb.reading.entity.NovelChapterInfo;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -1,17 +1,18 @@
-package com.bb.reading.mvp.modle;
+package com.bb.module_noveldetail.mvp.modle;
 
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.bb.module_common.utils.RxUtils;
+import com.bb.module_noveldetail.mvp.contract.NovelDetailActivityContract;
+import com.bb.module_novelmanager.entity.NovelDetails;
+import com.bb.module_novelmanager.network.NovelService;
+import com.bb.module_novelmanager.network.RetrofitManager;
+import com.bb.module_common.utils.log.LogUtils;
 import com.bb.network.observer.BaseObserver;
-import com.bb.reading.entity.NovelDetails;
-import com.bb.reading.mvp.contract.NovelDetailActivityContract;
-import com.bb.reading.network.NovelService;
-import com.bb.reading.network.RetrofitManager;
-import com.bb.reading.utils.RxUtils;
-import com.bb.reading.utils.log.LogUtils;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -32,21 +33,21 @@ public class NovelDetailActivityModel<P extends NovelDetailActivityContract.IPre
 
     @Override
     public void getDetailData(String novelIndex) {
-        getDetailData(novelIndex,false);
+        getDetailData(novelIndex, false);
     }
 
     /**
      * @param novelIndex
-     * @param sync 同步操作
+     * @param sync       同步操作
      */
-    public void getDetailData(String novelIndex, boolean sync) {
+    public void getDetailData(final String novelIndex, boolean sync) {
         LogUtils.d(TAG, "getDetailData() called with: novelIndex = [" + novelIndex + "],sync = [" + sync + "]");
         Observable<NovelDetails> observable = mNovelService.getNovelDetails(novelIndex);
         if (!sync) {
             //for show
             observable
-                    .compose(RxUtils.rxScheduers())
-                    .onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
+                    .compose(RxUtils.<NovelDetails>rxScheduers())
+                    .onErrorResumeNext(RxUtils.<NovelDetails>handleError())
                     .subscribe(new BaseObserver<NovelDetails>() {
                         @Override
                         protected void onSuccess(NovelDetails novelDetails) {
@@ -63,7 +64,7 @@ public class NovelDetailActivityModel<P extends NovelDetailActivityContract.IPre
                     });
         } else {
             //for add liked,db operate
-            observable.onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
+            observable.onErrorResumeNext(RxUtils.<NovelDetails>handleError())
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
                     .subscribe(new BaseObserver<NovelDetails>() {

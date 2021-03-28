@@ -1,16 +1,14 @@
-package com.bb.reading.mvp.presenter;
+package com.bb.module_noveldetail.mvp.presenter;
 
-import android.util.Log;
-
-import com.bb.reading.R;
-import com.bb.reading.base.BasePresenter;
-import com.bb.reading.db.DaoHelper;
-import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
-import com.bb.reading.entity.NovelDetails;
-import com.bb.reading.mvp.contract.NovelDetailActivityContract;
-import com.bb.reading.mvp.modle.NovelDetailActivityModel;
-import com.bb.reading.mvp.view.activity.NovelDetailActivity;
-import com.bb.reading.utils.log.LogUtils;
+import com.bb.module_common.base.BasePresenter;
+import com.bb.module_noveldetail.R;
+import com.bb.module_noveldetail.mvp.modle.NovelDetailActivityModel;
+import com.bb.module_noveldetail.mvp.view.NovelDetailActivity;
+import com.bb.module_novelmanager.db.greenDao.DaoHelper;
+import com.bb.module_novelmanager.db.greenDao.impl.NovelDBManager;
+import com.bb.module_novelmanager.entity.NovelDetails;
+import com.bb.module_noveldetail.mvp.contract.NovelDetailActivityContract;
+import com.bb.module_common.utils.log.LogUtils;
 
 /**
  * Created by Android Studio.

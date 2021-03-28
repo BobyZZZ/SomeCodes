@@ -1,22 +1,21 @@
-package com.bb.reading.mvp.modle;
+package com.bb.module_noveldetail.mvp.modle;
 
 import android.util.Log;
 
+import com.bb.module_novelmanager.entity.NovelCategory;
 import com.bb.network.exceptionHandler.ExceptionHandler;
 import com.bb.network.exceptionHandler.ResponseErrorHandler;
 import com.bb.network.observer.BaseObserver;
-import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
-import com.bb.reading.entity.NovelChapterContentFruitBean;
-import com.bb.reading.mvp.callback.BaseCallback;
-import com.bb.reading.mvp.contract.ReadingActivityContract;
-import com.bb.reading.utils.log.LogUtils;
-import com.bb.reading.network.RetrofitManager;
-import com.bb.reading.utils.RxUtils;
-import com.bb.reading.db.DaoHelper;
-import com.bb.reading.entity.NovelCategory;
-import com.bb.reading.entity.NovelChapterContent;
-import com.bb.reading.entity.NovelChapterInfo;
-import com.bb.reading.network.NovelService;
+import com.bb.module_novelmanager.db.greenDao.impl.NovelDBManager;
+import com.bb.module_novelmanager.entity.NovelChapterContentFruitBean;
+import com.bb.module_noveldetail.callback.BaseCallback;
+import com.bb.module_noveldetail.mvp.contract.ReadingActivityContract;
+import com.bb.module_common.utils.log.LogUtils;
+import com.bb.module_novelmanager.network.RetrofitManager;
+import com.bb.module_common.utils.RxUtils;
+import com.bb.module_novelmanager.db.greenDao.DaoHelper;
+import com.bb.module_novelmanager.entity.NovelChapterInfo;
+import com.bb.module_novelmanager.network.NovelService;
 
 
 import java.io.IOException;
@@ -90,8 +89,8 @@ public class ReadingModel implements ReadingActivityContract.IMainModel<NovelCha
                 });*/
 
         mNovelServiceReal.getNovelChapterDetails(chapterIndex)
-                .compose(RxUtils.rxScheduers())
-                .onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
+                .compose(RxUtils.<NovelChapterContentFruitBean>rxScheduers())
+                .onErrorResumeNext(RxUtils.<NovelChapterContentFruitBean>handleError())
                 .subscribe(new BaseObserver<NovelChapterContentFruitBean>() {
                     @Override
                     protected void onSuccess(NovelChapterContentFruitBean novelChapterContentFruitBean) {
@@ -172,7 +171,7 @@ public class ReadingModel implements ReadingActivityContract.IMainModel<NovelCha
                 .observeOn(Schedulers.io());
 
 
-        Observable<List<NovelChapterInfo>> listObservable;
+        final Observable<List<NovelChapterInfo>> listObservable;
         if (readFromCache) {
             listObservable = Observable.concat(cacheObservable, serverObservable);
         } else {

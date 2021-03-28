@@ -1,8 +1,8 @@
-package com.bb.reading.mvp.contract;
+package com.bb.module_noveldetail.mvp.contract;
 
-import com.bb.reading.entity.NovelChapterContentFruitBean;
-import com.bb.reading.entity.NovelChapterInfo;
-import com.bb.reading.mvp.callback.BaseCallback;
+import com.bb.module_novelmanager.entity.NovelChapterContentFruitBean;
+import com.bb.module_novelmanager.entity.NovelChapterInfo;
+import com.bb.module_noveldetail.callback.BaseCallback;
 
 import java.util.List;
 
