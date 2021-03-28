@@ -2,12 +2,12 @@ package com.bb.reading.mvp.modle.proxy.cacheImpl;
 
 import android.util.Log;
 
-import com.bb.reading.db.DaoHelper;
-import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
-import com.bb.reading.entity.NovelChapterContent;
-import com.bb.reading.entity.NovelChapterInfo;
-import com.bb.reading.mvp.callback.BaseCallback;
-import com.bb.reading.mvp.contract.ReadingActivityContract;
+import com.bb.module_novelmanager.db.greenDao.DaoHelper;
+import com.bb.module_novelmanager.db.greenDao.impl.NovelDBManager;
+import com.bb.module_novelmanager.entity.NovelChapterContent;
+import com.bb.module_novelmanager.entity.NovelChapterInfo;
+import com.bb.module_noveldetail.callback.BaseCallback;
+import com.bb.module_noveldetail.mvp.contract.ReadingActivityContract;
 
 import java.util.List;
 

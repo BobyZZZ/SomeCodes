@@ -2,15 +2,15 @@ package com.bb.reading.mvp.presenter;
 
 import androidx.fragment.app.Fragment;
 
+import com.bb.module_bookshelf.mvp.view.LikedNovelFragment;
 import com.bb.reading.R;
-import com.bb.reading.base.BasePresenter;
+import com.bb.module_common.base.BasePresenter;
 import com.bb.reading.mvp.contract.MainActivityContract;
 import com.bb.reading.mvp.view.activity.MainActivity;
-import com.bb.reading.mvp.view.fragment.LikedNovelFragment;
 import com.bb.reading.mvp.view.fragment.MainTabFragment;
-import com.bb.reading.mvp.view.fragment.SearchHistoryFragmentWithSearchBar;
-import com.bb.reading.mvp.view.fragment.TabViewPagerFragment;
-import com.bb.reading.utils.ResUtils;
+import com.bb.module_booksearch.mvp.view.SearchHistoryFragmentWithSearchBar;
+import com.bb.module_bookstore.mvp.view.TabViewPagerFragment;
+import com.bb.module_common.utils.ResUtils;
 
 import java.util.ArrayList;
 

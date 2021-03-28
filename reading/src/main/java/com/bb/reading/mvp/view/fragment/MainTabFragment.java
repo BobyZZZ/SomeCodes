@@ -9,9 +9,9 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bb.reading.R;
-import com.bb.reading.adapter.viewpager.TabFragmentPagerAdapter;
-import com.bb.reading.base.BaseFragment;
-import com.bb.reading.mvp.view.activity.SearchActivity;
+import com.bb.module_bookstore.adapter.TabFragmentPagerAdapter;
+import com.bb.module_common.base.BaseFragment;
+import com.bb.module_booksearch.mvp.view.SearchActivity;
 import com.google.android.material.tabs.TabLayout;
 
 /**

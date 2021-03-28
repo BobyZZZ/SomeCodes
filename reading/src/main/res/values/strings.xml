@@ -3,29 +3,12 @@
     <string name="app_name_debug">悦读Debug</string>
     <string name="confirm">confirm</string>
     <string name="next">next</string>
-    <string name="un_downloaded">未缓存</string>
-    <string name="no_more">已经到底了!!</string>
-    <string name="pageNumber">%d/%d</string>
-
     <string name="error_server">访问服务器失败</string>
-    <string name="introduction">简介</string>
     <string name="last_read">最后阅读</string>
-    <string name="add_like_success">收藏成功</string>
-    <string name="add_like_fail">收藏失败</string>
     <string name="search_text">请输入作品或作者，例如‘背影’</string>
     <string name="search_key_could_not_empty">搜索内容不能为空</string>
     <string name="search_result_is_empty">没有找到相关信息</string>
     <string name="novel_state">状态：%s</string>
-    <string name="newest_chapter">最新章节：%s</string>
-    <string name="novel_name">《%s》</string>
-    <string name="novel_detail">书籍详情</string>
-
-    <string name="sort_tabs_xuanhuan">玄幻</string>
-    <string name="sort_tabs_xiuzhen">修真</string>
-    <string name="sort_tabs_dushi">都市</string>
-    <string name="sort_tabs_chuanyue">穿越</string>
-    <string name="sort_tabs_wangyou">网游</string>
-    <string name="sort_tabs_kehuan">科幻</string>
 
     <string name="rank_type_hottest">最热榜</string>
     <string name="rank_type_finished">完结榜</string>

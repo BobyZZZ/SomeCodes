@@ -1,20 +1,14 @@
 package com.bb.reading.base;
 
-import android.app.Application;
-import android.content.Context;
+import com.bb.module_common.base.BaseApplication;
+import com.bb.module_novelmanager.constant.GlobalConstant;
+import com.bb.module_novelmanager.db.greenDao.DaoHelper;
 
-import com.bb.reading.constant.GlobalConstant;
-import com.bb.reading.db.DaoHelper;
-
-public class FishApplication extends Application {
-
-    public static Context mContext;
+public class FishApplication extends BaseApplication {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = getApplicationContext();
-
         initConfig();
         DaoHelper.getInstance().init(this);
     }

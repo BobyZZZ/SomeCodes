@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.WindowManager;
 
 
-import com.bb.uilib.loadingView.CircleLoadingView;
+import com.bb.module_common.view.CircleLoadingView;
 import com.bb.uilib.R;
-import com.bb.uilib.dialog.CustomDialog;
+import com.bb.module_common.dialog.CustomDialog;
 
 public class UITester {
 

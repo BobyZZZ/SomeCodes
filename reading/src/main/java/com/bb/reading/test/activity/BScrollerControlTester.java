@@ -2,7 +2,7 @@ package com.bb.reading.test.activity;
 
 import android.widget.SeekBar;
 
-import com.bb.reading.view.BScrollerControl;
+import com.bb.module_common.view.BScrollerControl;
 
 public class BScrollerControlTester implements SeekBar.OnSeekBarChangeListener {
 

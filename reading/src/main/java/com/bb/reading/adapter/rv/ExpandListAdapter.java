@@ -1,6 +1,5 @@
 package com.bb.reading.adapter.rv;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bb.reading.R;
-import com.bb.reading.utils.log.LogUtils;
+import com.bb.module_common.utils.log.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,7 @@ public class ExpandListAdapter<G extends ExpandListAdapter.GroupData> extends Re
         }
     }
 
-    private void onBindGroup(GroupVH holder, G g, int position, int groupIndex) {
+    private void onBindGroup(GroupVH holder, G g, int position, final int groupIndex) {
 //        LogUtils.d(TAG, "onBindGroup() called with: g = [" + g + "], position = [" + position + "], groupIndex = [" + groupIndex + "]");
         holder.tvText.setText(g.getType());
         holder.ivArrow.setImageResource(R.drawable.ic_arrow_down);
@@ -71,7 +70,7 @@ public class ExpandListAdapter<G extends ExpandListAdapter.GroupData> extends Re
         });
     }
 
-    private void onBindChild(ChildVH holder, ChildData childData) {
+    private void onBindChild(ChildVH holder, final ChildData childData) {
 //        LogUtils.d(TAG, "onBindChild: " + childData.toString());
         holder.tvText.setText(childData.getName());
         if (mOnChildClickListener != null) {

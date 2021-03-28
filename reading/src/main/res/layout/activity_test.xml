@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.bb.reading.test.activity.TestActivity">
 
-    <com.bb.reading.view.BScrollerControl
+    <com.bb.module_common.view.BScrollerControl
         android:id="@+id/bsc"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"

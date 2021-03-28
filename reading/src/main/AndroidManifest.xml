@@ -28,16 +28,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.view.activity.ReadingActivity">
+        <activity android:name="com.bb.module_noveldetail.mvp.view.ReadingActivity">
 
         </activity>
-        <activity android:name=".mvp.view.activity.NovelDetailActivity">
+        <activity android:name="com.bb.module_noveldetail.mvp.view.NovelDetailActivity">
 
         </activity>
-        <activity android:name=".mvp.view.activity.SearchActivity">
+        <activity android:name="com.bb.module_booksearch.mvp.view.SearchActivity">
 
         </activity>
-        <activity android:name=".mvp.view.activity.SearchResultActivity"/>
+        <activity android:name="com.bb.module_booksearch.mvp.view.SearchResultActivity"/>
     </application>
 
 </manifest>

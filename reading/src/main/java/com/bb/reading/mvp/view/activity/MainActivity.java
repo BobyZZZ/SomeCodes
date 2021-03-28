@@ -5,9 +5,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bb.reading.R;
 
-import com.bb.reading.adapter.viewpager.TabFragmentPagerAdapter;
+import com.bb.module_bookstore.adapter.TabFragmentPagerAdapter;
 import com.bb.reading.annotation.BindView;
-import com.bb.reading.base.BaseMvpActivity;
+import com.bb.module_common.base.BaseMvpActivity;
 import com.bb.reading.mvp.contract.MainActivityContract;
 import com.bb.reading.mvp.presenter.MainActivityPresenter;
 import com.google.android.material.tabs.TabLayout;
@@ -16,9 +16,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends BaseMvpActivity<MainActivityPresenter> implements MainActivityContract.IMainView {
     String TAG = "MainActivity";
-    @BindView(R.id.main_viewPager)
     public ViewPager mViewPager;
-    @BindView(R.id.main_tabLayout)
     public TabLayout mTabLayout;
 
     TabFragmentPagerAdapter mPagerAdapter;
@@ -35,6 +33,9 @@ public class MainActivity extends BaseMvpActivity<MainActivityPresenter> impleme
 
     @Override
     protected void initView() {
+        mViewPager = findViewById(R.id.main_viewPager);
+        mTabLayout = findViewById(R.id.main_tabLayout);
+
         //viewPager + tablayout
         mPagerAdapter = new TabFragmentPagerAdapter(this, getSupportFragmentManager(), "外层ViewPager的Adapter");
         mViewPager.setAdapter(mPagerAdapter);
