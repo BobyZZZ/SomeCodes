@@ -1,6 +1,6 @@
-package com.bb.reading.mvp.contract;
+package com.bb.module_bookshelf.mvp.contract;
 
-import com.bb.reading.entity.NovelDetails;
+import com.bb.module_novelmanager.entity.NovelDetails;
 
 import java.util.List;
 

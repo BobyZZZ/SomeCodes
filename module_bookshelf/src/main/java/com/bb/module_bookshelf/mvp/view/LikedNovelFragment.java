@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.view.fragment;
+package com.bb.module_bookshelf.mvp.view;
 
 import android.content.Intent;
 import android.text.TextUtils;
@@ -10,17 +10,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bb.reading.R;
-import com.bb.reading.adapter.base.BaseRvAdapter;
-import com.bb.reading.adapter.base.BaseVH;
-import com.bb.reading.base.BaseMvpFragment;
-import com.bb.reading.entity.NovelDetails;
-import com.bb.reading.mvp.contract.LikedNovelFragmentContract;
-import com.bb.reading.mvp.presenter.LikedNovelFragmentPresenter;
-import com.bb.reading.mvp.view.activity.NovelDetailActivity;
-import com.bb.reading.mvp.view.activity.ReadingActivity;
-import com.bb.reading.utils.GlideUtils;
-import com.bb.reading.utils.ResUtils;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.bb.module_bookshelf.R;
+import com.bb.module_bookshelf.mvp.contract.LikedNovelFragmentContract;
+import com.bb.module_bookshelf.mvp.presenter.LikedNovelFragmentPresenter;
+import com.bb.module_common.adapter.base.BaseRvAdapter;
+import com.bb.module_common.adapter.base.BaseVH;
+import com.bb.module_common.base.BaseMvpFragment;
+import com.bb.module_common.utils.ResUtils;
+import com.bb.module_novelmanager.RouterManager;
+import com.bb.module_novelmanager.constant.NovelConstant;
+import com.bb.module_novelmanager.entity.NovelDetails;
+import com.bb.module_common.utils.GlideUtils;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ import java.util.List;
  * Time: 0:27
  */
 public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresenter> implements LikedNovelFragmentContract.IView {
-    String TAG = "LikedNovelFragment";
+    public static String TAG = "LikedNovelFragment";
 
     private RecyclerView mRvLikedNovel;
     private LikedNovelAdapter mLikedNovelAdapter;
@@ -67,9 +68,10 @@ public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresen
         mLikedNovelAdapter.setOnItemClickListener(new BaseRvAdapter.OnItemClickListener<NovelDetails>() {
             @Override
             public void onItemClick(NovelDetails data, int position) {
-                //打开小说内容阅读页面
+/*                //打开小说内容阅读页面
                 Intent intent = ReadingActivity.createIntent(getContext(), data.getNovelId(), null);
-                startActivity(intent);
+                startActivity(intent);*/
+                RouterManager.getInstance().toNovelReading(data.getNovelId(),null);
             }
         });
 
@@ -115,7 +117,7 @@ public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresen
         }
 
         @Override
-        protected void convert(BaseVH holder, NovelDetails data) {
+        protected void convert(BaseVH holder, final NovelDetails data) {
             ImageView ivCover = holder.getView(R.id.iv_novel_cover, ImageView.class);
             if (!TextUtils.isEmpty(data.coverUrl)) {
                 GlideUtils.load(data.coverUrl, ivCover);
@@ -127,9 +129,10 @@ public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresen
             ivCover.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //点击封面图片进入详情页面
+/*                    //点击封面图片进入详情页面
                     Intent intent = NovelDetailActivity.createIntent(getContext(), data.getNovelId());
-                    startActivity(intent);
+                    startActivity(intent);*/
+                    RouterManager.getInstance().toNovelDetail(data.getNovelId());
                 }
             });
         }

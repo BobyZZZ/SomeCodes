@@ -1,14 +1,12 @@
-package com.bb.reading.mvp.presenter;
+package com.bb.module_bookshelf.mvp.presenter;
 
-import android.util.Log;
-
-import com.bb.reading.base.BasePresenter;
-import com.bb.reading.db.DaoHelper;
-import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
-import com.bb.reading.entity.NovelDetails;
-import com.bb.reading.mvp.contract.LikedNovelFragmentContract;
-import com.bb.reading.mvp.view.fragment.LikedNovelFragment;
-import com.bb.reading.utils.log.LogUtils;
+import com.bb.module_common.base.BasePresenter;
+import com.bb.module_novelmanager.db.greenDao.DaoHelper;
+import com.bb.module_novelmanager.db.greenDao.impl.NovelDBManager;
+import com.bb.module_novelmanager.entity.NovelDetails;
+import com.bb.module_bookshelf.mvp.contract.LikedNovelFragmentContract;
+import com.bb.module_bookshelf.mvp.view.LikedNovelFragment;
+import com.bb.module_common.utils.log.LogUtils;
 
 import java.util.List;
 

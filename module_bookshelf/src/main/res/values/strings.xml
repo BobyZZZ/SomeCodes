@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">bookshelf_module</string>
+    <string name="novel_name">《%s》</string>
+</resources>
