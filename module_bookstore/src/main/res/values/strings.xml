@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">bookstore_module</string>
+    <string name="sort_tabs_xuanhuan">玄幻</string>
+    <string name="sort_tabs_xiuzhen">修真</string>
+    <string name="sort_tabs_dushi">都市</string>
+    <string name="sort_tabs_chuanyue">穿越</string>
+    <string name="sort_tabs_wangyou">网游</string>
+    <string name="sort_tabs_kehuan">科幻</string>
+</resources>
