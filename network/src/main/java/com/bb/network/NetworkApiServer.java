@@ -15,6 +15,7 @@ import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import me.ghui.fruit.converter.retrofit.FruitConverterFactory;
 import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -83,7 +84,8 @@ public abstract class NetworkApiServer implements INetworkEnvironment {
 
         retrofit = new Retrofit.Builder().client(createOKhttpClient())
                 .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(FruitConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         mRetrofitMap.put(baseUrl, retrofit);
@@ -124,7 +126,7 @@ public abstract class NetworkApiServer implements INetworkEnvironment {
      * @param <T>
      * @return
      */
-    public <T> ObservableTransformer<T, T> ioToMainWithHandlerError() {
+    public static <T> ObservableTransformer<T, T> ioToMainWithHandlerError() {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
@@ -144,7 +146,7 @@ public abstract class NetworkApiServer implements INetworkEnvironment {
      * @param <T>
      * @return
      */
-    public <T> Function<T, T> getServerExceptionHandler() {
+    private static  <T> Function<T, T> getServerExceptionHandler() {
         return new Function<T, T>() {
             @Override
             public T apply(T t) throws Exception {

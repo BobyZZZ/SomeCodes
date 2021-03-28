@@ -10,9 +10,6 @@ import io.reactivex.disposables.Disposable;
  * Time: 18:19
  */
 public abstract class BaseObserver<T> implements Observer<T> {
-    public BaseObserver() {
-
-    }
 
     @Override
     public void onSubscribe(Disposable d) {
