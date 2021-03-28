@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    api project(path: ':network')
+
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    api rootProject.ext.dependencies["material"]
+    api rootProject.ext.dependencies["constraintlayout"]
+
+    //Glide
+    api rootProject.ext.dependencies["glide"]
+    api rootProject.ext.dependencies["glide_annotationProcessor"]
+
+    //okhttp
+    api rootProject.ext.dependencies["okhttp3_logging-interceptor"]
+    // RxJava
+    api rootProject.ext.dependencies["rxjava2"]
+    api rootProject.ext.dependencies["retrofit2"]
+    // Retrofit和jxjava关联
+    api rootProject.ext.dependencies["retrofit2:adapter-rxjava2"]
+    // Retrofit使用Gson转换
+    api rootProject.ext.dependencies["retrofit2:converter-gson"]
+    // RxAndroid
+    api rootProject.ext.dependencies["rxandroid"]
+    //HTML的解析器
+    api rootProject.ext.dependencies["fruit-converter-retrofit"]
+    api rootProject.ext.dependencies["global-retrofit-converter"]
+
+    //BRVAH
+    api rootProject.ext.dependencies["brvah"]
+    //数据库
+    api rootProject.ext.dependencies["greendao"]
+    //调色器
+    api rootProject.ext.dependencies["palette"]
+
+    //Arouter路由
+    api rootProject.ext.dependencies["arouter_api"]
+}
