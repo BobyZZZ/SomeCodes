@@ -1,0 +1,71 @@
+/**
+ * 全局统一配置
+ */
+ext {
+    /**
+     * module开关统一声明在此处
+     * true：module作为application，可单独打包为apk
+     * false：module作为library，可作为宿主application的组件
+     */
+    bookshelfAsModule = true
+    bookstoreAsModule = true
+    booksearchAsModule = true
+    novelDetailAsModule = true
+
+    versions = [
+            "materialVersion"                   : "1.0.0",
+            "constraintlayoutVersion"           : "2.0.1",
+            "glideVersion"                      : "4.9.0",
+            "okhttp3_logging-interceptorVersion": "3.4.1",
+            "rxjava2Version"                    : "2.1.12",
+            "retrofit2Version"                  : "2.6.0",
+            "adapter-rxjava2Version"            : "2.4.0",
+            "converter-gsonVersion"             : "2.4.0",
+            "rxandroidVersion"                  : "2.0.2",
+            "fruit-converter-retrofitVersion"   : "1.0.4",
+            "global-retrofit-converterVersion"  : "1.0.1",
+            "brvahVersion"                      : "3.0.4",
+            "greenDaoVersion"                   : "3.3.0",
+            "paletteVersion"                    : "1.0.0",
+
+            arouterApiVersion                   : "1.5.1",
+            arouterCompilerVersion              : "1.5.1",
+            arouterAnnotationVersion            : "1.0.4"
+    ]
+
+    dependencies = [
+            "constraintlayout"           : "androidx.constraintlayout:constraintlayout:${versions["constraintlayoutVersion"]}",
+            "material"                   : "com.google.android.material:material:${versions["materialVersion"]}",
+
+            //Glide
+            "glide"                      : "com.github.bumptech.glide:glide:${versions["glideVersion"]}",
+            "glide_annotationProcessor"  : "com.github.bumptech.glide:compiler:${versions["glideVersion"]}",
+
+            //okhttp
+            "okhttp3_logging-interceptor": "com.squareup.okhttp3:logging-interceptor:${versions["okhttp3_logging-interceptorVersion"]}",
+            // RxJava
+            "rxjava2"                    : "io.reactivex.rxjava2:rxjava:${versions["rxjava2Version"]}",
+            "retrofit2"                  : "com.squareup.retrofit2:retrofit:${versions["retrofit2Version"]}",
+            // Retrofit和jxjava关联
+            "retrofit2:adapter-rxjava2"  : "com.squareup.retrofit2:adapter-rxjava2:${versions["adapter-rxjava2Version"]}",
+            // Retrofit使用Gson转换
+            "retrofit2:converter-gson"   : "com.squareup.retrofit2:converter-gson:${versions["converter-gsonVersion"]}",
+            // RxAndroid
+            "rxandroid"                  : "io.reactivex.rxjava2:rxandroid:${versions["rxandroidVersion"]}",
+            //HTML的解析器
+            "fruit-converter-retrofit"   : "me.ghui:fruit-converter-retrofit:${versions["fruit-converter-retrofitVersion"]}",
+            "global-retrofit-converter"  : "me.ghui:global-retrofit-converter:${versions["global-retrofit-converterVersion"]}",
+
+            //BRVAH
+            "brvah"                      : "com.github.CymChad:BaseRecyclerViewAdapterHelper:${versions["brvahVersion"]}",
+            //数据库
+            "greendao"                   : "org.greenrobot:greendao:${versions["greenDaoVersion"]}",
+            //调色器
+            "palette"                    : "androidx.palette:palette:${versions["paletteVersion"]}",
+
+            //阿里路由
+            "arouter_api"                : "com.alibaba:arouter-api:${versions["arouterApiVersion"]}",
+            "arouter_compiler"           : "com.alibaba:arouter-compiler:${versions["arouterCompilerVersion"]}",
+            "arouter_annotation"         : "com.alibaba:arouter-annotation:${versions["arouterAnnotationVersion"]}",
+    ]
+}
