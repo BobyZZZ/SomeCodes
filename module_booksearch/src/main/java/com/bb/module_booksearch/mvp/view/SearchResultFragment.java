@@ -1,8 +1,9 @@
-package com.bb.reading.mvp.view.fragment;
+package com.bb.module_booksearch.mvp.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -10,17 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bb.reading.R;
-import com.bb.reading.adapter.rv.NovelSearchResultAdapter;
-import com.bb.reading.base.BaseMvpFragment;
-import com.bb.reading.db.DaoHelper;
-import com.bb.reading.db.greenDao.beanManager.NovelDBManager;
-import com.bb.reading.entity.SearchResult;
-import com.bb.reading.mvp.contract.SearchResultFragmentContract;
-import com.bb.reading.mvp.presenter.SearchResultFragmentPresenter;
-import com.bb.reading.mvp.view.activity.NovelDetailActivity;
-import com.bb.reading.mvp.view.activity.SearchResultActivity;
-import com.bb.reading.utils.log.LogUtils;
+import com.bb.module_booksearch.R;
+import com.bb.module_booksearch.adapter.NovelSearchResultAdapter;
+import com.bb.module_booksearch.mvp.contract.SearchResultFragmentContract;
+import com.bb.module_booksearch.mvp.presenter.SearchResultFragmentPresenter;
+import com.bb.module_common.base.BaseMvpFragment;
+import com.bb.module_novelmanager.RouterManager;
+import com.bb.module_novelmanager.entity.SearchResult;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 
@@ -69,9 +66,14 @@ public class SearchResultFragment extends BaseMvpFragment<SearchResultFragmentPr
         mRvSearchResult = view.findViewById(R.id.rv_search_result);
 
         mAdapter = new NovelSearchResultAdapter(R.layout.item_search_result);
-        mAdapter.setPresenter(mPresenter);
         mRvSearchResult.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvSearchResult.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -81,8 +83,9 @@ public class SearchResultFragment extends BaseMvpFragment<SearchResultFragmentPr
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 NovelSearchResultAdapter novelSearchResultAdapter = (NovelSearchResultAdapter) adapter;
                 SearchResult.Item item = novelSearchResultAdapter.getItem(position);
-                Intent intent = NovelDetailActivity.createIntent(getContext(), item.novelId);
-                startActivity(intent);
+//                Intent intent = NovelDetailActivity.createIntent(getContext(), item.novelId);
+//                startActivity(intent);
+                RouterManager.getInstance().toNovelDetail(item.novelId);
             }
         });
     }

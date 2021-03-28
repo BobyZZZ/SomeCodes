@@ -45,7 +45,7 @@
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/tv_trip">
 
-            <com.bb.reading.view.FlowLayout
+            <com.bb.module_common.view.FlowLayout
                 android:id="@+id/ll_trip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -87,7 +87,7 @@
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/tv_history">
 
-            <com.bb.reading.view.FlowLayout
+            <com.bb.module_common.view.FlowLayout
                 android:id="@+id/ll_history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

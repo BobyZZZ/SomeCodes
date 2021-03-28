@@ -1,17 +1,15 @@
-package com.bb.reading.mvp.presenter;
-
-import android.util.Log;
+package com.bb.module_booksearch.mvp.presenter;
 
 import androidx.fragment.app.Fragment;
 
-import com.bb.reading.R;
-import com.bb.reading.base.BasePresenter;
-import com.bb.reading.entity.SearchResult;
-import com.bb.reading.mvp.contract.SearchActivityContract;
-import com.bb.reading.mvp.modle.SearchActivityModel;
-import com.bb.reading.mvp.view.activity.SearchActivity;
-import com.bb.reading.mvp.view.fragment.SearchHistoryFragment;
-import com.bb.reading.mvp.view.fragment.SearchResultFragment;
+import com.bb.module_booksearch.R;
+import com.bb.module_booksearch.mvp.contract.SearchActivityContract;
+import com.bb.module_booksearch.mvp.modle.SearchActivityModel;
+import com.bb.module_booksearch.mvp.view.SearchActivity;
+import com.bb.module_booksearch.mvp.view.SearchHistoryFragment;
+import com.bb.module_booksearch.mvp.view.SearchResultFragment;
+import com.bb.module_common.base.BasePresenter;
+import com.bb.module_novelmanager.entity.SearchResult;
 
 import java.util.HashMap;
 

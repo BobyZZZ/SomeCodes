@@ -1,17 +1,11 @@
-package com.bb.reading.mvp.modle;
+package com.bb.module_booksearch.mvp.modle;
 
+import com.bb.module_novelmanager.network.NovelService;
+import com.bb.module_novelmanager.network.RetrofitManager;
 import com.bb.network.observer.BaseObserver;
-import com.bb.reading.db.DaoHelper;
-import com.bb.reading.db.greenDao.beanManager.SearchHistoryDB;
-import com.bb.reading.entity.SearchHistory;
-import com.bb.reading.entity.SearchResult;
-import com.bb.reading.mvp.contract.SearchActivityContract;
-import com.bb.reading.mvp.presenter.SearchActivityPresenter;
-import com.bb.reading.network.NovelService;
-import com.bb.reading.network.RetrofitManager;
-import com.bb.reading.utils.RxUtils;
-
-import java.util.List;
+import com.bb.module_novelmanager.entity.SearchResult;
+import com.bb.module_booksearch.mvp.contract.SearchActivityContract;
+import com.bb.module_common.utils.RxUtils;
 
 /**
  * Created by Boby on 2019/6/25.
@@ -30,8 +24,8 @@ public class SearchActivityModel implements SearchActivityContract.IModel {
     @Override
     public void search(String searchKey) {
         mNovelService.searchNovel(searchKey)
-                .compose(RxUtils.rxScheduers())
-                .onErrorResumeNext(com.bb.network.utils.RxUtils.handleError())
+                .compose(RxUtils.<SearchResult>rxScheduers())
+                .onErrorResumeNext(RxUtils.<SearchResult>handleError())
                 .subscribe(new BaseObserver<SearchResult>() {
                     @Override
                     protected void onSuccess(SearchResult searchResult) {

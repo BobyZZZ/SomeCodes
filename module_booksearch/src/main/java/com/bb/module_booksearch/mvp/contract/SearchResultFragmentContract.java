@@ -1,6 +1,6 @@
-package com.bb.reading.mvp.contract;
+package com.bb.module_booksearch.mvp.contract;
 
-import com.bb.reading.entity.SearchResult;
+import com.bb.module_novelmanager.entity.SearchResult;
 
 /**
  * Created by Android Studio.

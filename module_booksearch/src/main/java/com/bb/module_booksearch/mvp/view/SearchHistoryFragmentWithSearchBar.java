@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.view.fragment;
+package com.bb.module_booksearch.mvp.view;
 
 import android.content.Intent;
 import android.text.TextUtils;
@@ -7,15 +7,16 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.EditText;
 
-import com.bb.reading.R;
-import com.bb.reading.mvp.presenter.SearchHistoryFragmentPresenter;
+import com.bb.module_booksearch.R;
+import com.bb.module_booksearch.mvp.presenter.SearchHistoryFragmentPresenter;
+
 
 /**
  * Created by Boby on 2019/6/20.
  */
 
 public class SearchHistoryFragmentWithSearchBar extends SearchHistoryFragment {
-    String TAG = "SearchHistoryFragmentWithSearchBar";
+    public static String TAG = "SearchHistoryFragmentWithSearchBar";
     private EditText mEtSearch;
 
     public static SearchHistoryFragmentWithSearchBar newInstance() {

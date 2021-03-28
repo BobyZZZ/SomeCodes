@@ -1,9 +1,6 @@
-package com.bb.reading.mvp.contract;
+package com.bb.module_booksearch.mvp.contract;
 
-import com.bb.reading.entity.SearchHistory;
-import com.bb.reading.entity.SearchResult;
-
-import java.util.List;
+import com.bb.module_novelmanager.entity.SearchResult;
 
 /**
  * Created by Boby on 2019/6/25.

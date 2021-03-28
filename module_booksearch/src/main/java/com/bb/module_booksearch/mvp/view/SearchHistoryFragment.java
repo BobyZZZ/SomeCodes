@@ -1,18 +1,17 @@
-package com.bb.reading.mvp.view.fragment;
+package com.bb.module_booksearch.mvp.view;
 
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bb.reading.R;
-import com.bb.reading.base.BaseMvpFragment;
-import com.bb.reading.entity.SearchHistory;
-import com.bb.reading.mvp.contract.SearchActivityContract;
-import com.bb.reading.mvp.contract.SearchHistoryFragmentContract;
-import com.bb.reading.mvp.presenter.SearchActivityPresenter;
-import com.bb.reading.mvp.presenter.SearchHistoryFragmentPresenter;
-import com.bb.reading.view.FlowLayout;
+import com.bb.module_booksearch.R;
+import com.bb.module_booksearch.mvp.contract.SearchActivityContract;
+import com.bb.module_booksearch.mvp.contract.SearchHistoryFragmentContract;
+import com.bb.module_booksearch.mvp.presenter.SearchHistoryFragmentPresenter;
+import com.bb.module_common.base.BaseMvpFragment;
+import com.bb.module_novelmanager.entity.SearchHistory;
+import com.bb.module_common.view.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;

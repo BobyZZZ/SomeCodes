@@ -1,17 +1,10 @@
-package com.bb.reading.mvp.modle;
+package com.bb.module_booksearch.mvp.modle;
 
-import com.bb.network.observer.BaseObserver;
-import com.bb.reading.db.DaoHelper;
-import com.bb.reading.db.greenDao.beanManager.SearchHistoryDB;
-import com.bb.reading.entity.SearchHistory;
-import com.bb.reading.entity.SearchResult;
-import com.bb.reading.mvp.contract.SearchActivityContract;
-import com.bb.reading.mvp.contract.SearchHistoryFragmentContract;
-import com.bb.reading.mvp.presenter.SearchActivityPresenter;
-import com.bb.reading.mvp.presenter.SearchHistoryFragmentPresenter;
-import com.bb.reading.network.NovelService;
-import com.bb.reading.network.RetrofitManager;
-import com.bb.reading.utils.RxUtils;
+import com.bb.module_booksearch.mvp.contract.SearchHistoryFragmentContract;
+import com.bb.module_booksearch.mvp.presenter.SearchHistoryFragmentPresenter;
+import com.bb.module_novelmanager.db.greenDao.DaoHelper;
+import com.bb.module_novelmanager.db.greenDao.impl.SearchHistoryDB;
+import com.bb.module_novelmanager.entity.SearchHistory;
 
 import java.util.List;
 

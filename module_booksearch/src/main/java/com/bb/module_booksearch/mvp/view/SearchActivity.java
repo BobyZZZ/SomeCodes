@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.view.activity;
+package com.bb.module_booksearch.mvp.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,10 +10,10 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
-import com.bb.reading.R;
-import com.bb.reading.mvp.contract.SearchActivityContract;
-import com.bb.reading.mvp.presenter.SearchActivityPresenter;
-import com.bb.reading.base.BaseMVPFragmentActivity;
+import com.bb.module_booksearch.R;
+import com.bb.module_booksearch.mvp.contract.SearchActivityContract;
+import com.bb.module_booksearch.mvp.presenter.SearchActivityPresenter;
+import com.bb.module_common.base.BaseMVPFragmentActivity;
 
 /**
  * Created by Boby on 2019/6/21.

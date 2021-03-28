@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">booksearch_module</string>
+    <string name="search_text">请输入作品或作者，例如‘背影’</string>
+    <string name="search_key_could_not_empty">搜索内容不能为空</string>
+    <string name="search_result_is_empty">没有找到相关信息</string>
+    <string name="novel_name">《%s》</string>
+    <string name="newest_chapter">最新章节：%s</string>
+</resources>

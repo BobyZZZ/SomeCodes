@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.view.activity;
+package com.bb.module_booksearch.mvp.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,9 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.bb.reading.base.BaseMVPFragmentActivity;
-import com.bb.reading.base.BasePresenter;
-import com.bb.reading.mvp.view.fragment.SearchResultFragment;
+import com.bb.module_common.base.BaseMVPFragmentActivity;
+import com.bb.module_common.base.BasePresenter;
 
 /**
  * Created by Android Studio.
