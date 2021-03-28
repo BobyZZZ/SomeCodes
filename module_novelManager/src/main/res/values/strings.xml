@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_like_success">收藏成功</string>
+    <string name="add_like_fail">收藏失败</string>
+    <string name="un_downloaded">未缓存</string>
+    <string name="introduction">简介</string>
+    <string name="novel_detail">书籍详情</string>
+</resources>
