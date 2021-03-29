@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.modle.proxy.cacheImpl;
+package com.bb.reading.ui.mvp.modle.proxy.cacheImpl;
 
 import android.util.Log;
 

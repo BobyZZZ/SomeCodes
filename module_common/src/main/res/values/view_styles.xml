@@ -5,4 +5,12 @@
         <attr name="thumbHeight" format="dimension"/>
         <attr name="thumbRes" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="FlashTextLogo">
+        <attr name="logo_text" format="string"/>
+        <attr name="logo_text_size" format="dimension"/>
+        <attr name="logo_text_color" format="color"/>
+        <attr name="logo_text_padding" format="dimension"/>
+        <attr name="logo_flash_color" format="string"/><!--"#ffffff,#ff0000,#ffffff"-->
+    </declare-styleable>
 </resources>

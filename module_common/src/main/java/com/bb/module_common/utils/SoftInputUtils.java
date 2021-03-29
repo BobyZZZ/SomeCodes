@@ -1,4 +1,4 @@
-package com.bb.reading.utils;
+package com.bb.module_common.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,14 +8,14 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.bb.reading.base.FishApplication;
+import com.bb.module_common.base.BaseApplication;
 
 public class SoftInputUtils {
     /**
      * 显示输入法
      */
     public static void showSoftInput() {
-        InputMethodManager systemService = (InputMethodManager) FishApplication.mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager systemService = (InputMethodManager) BaseApplication.mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         systemService.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
@@ -24,7 +24,7 @@ public class SoftInputUtils {
      * @param view
      */
     public static void hideSoftInput(View view) {
-        InputMethodManager systemService = (InputMethodManager) FishApplication.mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager systemService = (InputMethodManager) BaseApplication.mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         systemService.hideSoftInputFromWindow(view.getWindowToken(),0);
     }
 

@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.modle.proxy;
+package com.bb.reading.ui.mvp.modle.proxy;
 
 import com.bb.module_common.utils.log.LogUtils;
 

@@ -1,14 +1,10 @@
 package com.bb.module_bookstore.adapter;
 
-import android.content.Intent;
 import android.view.View;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.bb.module_bookstore.R;
-import com.bb.module_novelmanager.RouterManager;
-import com.bb.module_novelmanager.constant.NovelConstant;
+import com.bb.module_novelmanager.arouter.RouterManager;
 import com.bb.module_novelmanager.entity.NovelInfo;
-import com.bb.module_novelmanager.entity.PageData;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;

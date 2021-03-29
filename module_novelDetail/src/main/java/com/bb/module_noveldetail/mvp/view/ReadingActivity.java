@@ -23,6 +23,7 @@ import com.bb.module_common.view.BScrollerControl;
 import com.bb.module_noveldetail.R;
 import com.bb.module_noveldetail.adapter.CategoryAdapter;
 import com.bb.module_noveldetail.adapter.NovelContentAdapter;
+import com.bb.module_novelmanager.arouter.UrlConstant;
 import com.bb.module_novelmanager.constant.NovelConstant;
 import com.bb.module_novelmanager.entity.NovelChapterContentFruitBean;
 import com.bb.module_noveldetail.mvp.contract.ReadingActivityContract;
@@ -44,7 +45,7 @@ import java.util.List;
 /**
  * 小说阅读Activity
  */
-@Route(path = "/act/ReadingActivity")
+@Route(path = UrlConstant.ACTIVITY_URL_NOVEL_READING)
 public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implements ReadingActivityContract.IMainView,
         BScrollerControl.OnScrollChange, NovelContentOnScrollListener.ReadingChangeListener {
     String TAG = "ReadingActivity";

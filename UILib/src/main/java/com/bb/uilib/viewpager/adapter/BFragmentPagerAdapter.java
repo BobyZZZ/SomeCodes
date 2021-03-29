@@ -14,16 +14,16 @@ import java.util.List;
  * Date: 2020/12/5
  * Time: 23:15
  */
-public class BBFragmentPagerAdapter<T extends Fragment> extends FragmentPagerAdapter {
+public class BFragmentPagerAdapter<T extends Fragment> extends FragmentPagerAdapter {
 
     private List<T> mDatas;
     private List<String> mTitles;
 
-    public BBFragmentPagerAdapter(@NonNull FragmentManager fm) {
+    public BFragmentPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
 
-    public BBFragmentPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+    public BFragmentPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
 

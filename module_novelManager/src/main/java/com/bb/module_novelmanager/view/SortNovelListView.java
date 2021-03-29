@@ -1,7 +1,6 @@
 package com.bb.module_novelmanager.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bb.module_common.adapter.base.BaseVH;
 import com.bb.module_novelmanager.R;
-import com.bb.module_novelmanager.RouterManager;
+import com.bb.module_novelmanager.arouter.RouterManager;
 import com.bb.module_novelmanager.entity.HomePageBean;
 import com.bb.module_common.utils.GlideUtils;
 

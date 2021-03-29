@@ -1,9 +1,7 @@
 package com.bb.module_booksearch.mvp.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,7 +14,7 @@ import com.bb.module_booksearch.adapter.NovelSearchResultAdapter;
 import com.bb.module_booksearch.mvp.contract.SearchResultFragmentContract;
 import com.bb.module_booksearch.mvp.presenter.SearchResultFragmentPresenter;
 import com.bb.module_common.base.BaseMvpFragment;
-import com.bb.module_novelmanager.RouterManager;
+import com.bb.module_novelmanager.arouter.RouterManager;
 import com.bb.module_novelmanager.entity.SearchResult;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;

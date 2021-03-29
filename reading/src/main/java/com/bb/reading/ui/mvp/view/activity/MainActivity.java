@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.view.activity;
+package com.bb.reading.ui.mvp.view.activity;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -6,10 +6,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.bb.reading.R;
 
 import com.bb.module_bookstore.adapter.TabFragmentPagerAdapter;
-import com.bb.reading.annotation.BindView;
 import com.bb.module_common.base.BaseMvpActivity;
-import com.bb.reading.mvp.contract.MainActivityContract;
-import com.bb.reading.mvp.presenter.MainActivityPresenter;
+import com.bb.reading.ui.mvp.contract.MainActivityContract;
+import com.bb.reading.ui.mvp.presenter.MainActivityPresenter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;

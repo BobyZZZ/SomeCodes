@@ -1,6 +1,5 @@
 package com.bb.module_bookstore.mvp.view;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -15,7 +14,7 @@ import com.bb.module_bookstore.adapter.RankExpandableAdapter;
 import com.bb.module_bookstore.adapter.TextAdapter;
 import com.bb.module_bookstore.mvp.presenter.RankFragmentPresenter;
 import com.bb.module_common.base.BaseMvpFragment;
-import com.bb.module_novelmanager.RouterManager;
+import com.bb.module_novelmanager.arouter.RouterManager;
 import com.bb.module_novelmanager.entity.RankPageDataFruitBean;
 import com.bb.module_bookstore.mvp.contract.RankFragmentContract;
 import com.chad.library.adapter.base.BaseQuickAdapter;

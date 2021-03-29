@@ -1,9 +1,10 @@
-package com.bb.uilib;
+package com.bb.module_common.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -12,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -19,6 +21,8 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.bb.module_common.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +35,9 @@ public class FlashTextLogo extends FrameLayout {
     private int mHeight;
     private String mLogoText = "FlashText  Logo";
     private List<String> mLogoWords;
-    private int mTextColor = Color.BLACK;
-    private float mTextSize = 50f;
-    private float mTextPadding = 2f;
+    private int mTextColor;
+    private float mTextSize;
+    private float mTextPadding;
     private int[] mGradientColors = {Color.BLACK, Color.RED, Color.BLACK};
     private float[] mGradientPositions = {0f, 0.5f, 1f};
     private Paint mPaint;
@@ -49,8 +53,31 @@ public class FlashTextLogo extends FrameLayout {
     public FlashTextLogo(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
+        initAttr(attrs);
         initWordArray();
         initPaint();
+    }
+
+    private void initAttr(AttributeSet attrs) {
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.FlashTextLogo);
+        String logoText = typedArray.getString(R.styleable.FlashTextLogo_logo_text);
+        if (!TextUtils.isEmpty(logoText)) {
+            mLogoText = logoText;
+        }
+
+        mTextSize = typedArray.getDimensionPixelSize(R.styleable.FlashTextLogo_logo_text_size, 50);
+        mTextColor = typedArray.getColor(R.styleable.FlashTextLogo_logo_text_color, Color.BLACK);
+        mTextPadding = typedArray.getDimensionPixelSize(R.styleable.FlashTextLogo_logo_text_padding, 2);
+
+        String flashColor = typedArray.getString(R.styleable.FlashTextLogo_logo_flash_color);
+        if (!TextUtils.isEmpty(flashColor)) {
+            String[] colors = flashColor.split(",");
+            mGradientColors = new int[colors.length];
+            for (int i = 0; i < colors.length; i++) {
+                mGradientColors[i] = Color.parseColor(colors[i]);
+            }
+        }
+        typedArray.recycle();
     }
 
     private void initWordArray() {
@@ -147,6 +174,8 @@ public class FlashTextLogo extends FrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                mPaint.setShader(null);
+                invalidate();
                 Log.d(TAG, "onAnimationEnd() called with: animation = [" + animation + "]");
             }
 

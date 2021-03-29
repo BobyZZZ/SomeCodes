@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.bb.module_common.view.FlashTextLogo xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:logo_flash_color="#03DAC5,#2203DAC5,#03DAC5"
+    app:logo_text="Enjoy Reading"
+    app:logo_text_color="@color/colorAccent"
+    app:logo_text_size="30sp"
+    tools:context="com.bb.reading.ui.SplashActivity">
+
+</com.bb.module_common.view.FlashTextLogo>

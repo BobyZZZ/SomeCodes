@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.contract;
+package com.bb.reading.ui.mvp.contract;
 
 import androidx.fragment.app.Fragment;
 

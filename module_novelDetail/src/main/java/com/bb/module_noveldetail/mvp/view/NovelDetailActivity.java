@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,7 +21,8 @@ import com.bb.module_common.view.CustomBar;
 import com.bb.module_noveldetail.R;
 import com.bb.module_noveldetail.adapter.NovelChapterAdapter;
 import com.bb.module_noveldetail.mvp.presenter.NovelDetailActivityPresenter;
-import com.bb.module_novelmanager.RouterManager;
+import com.bb.module_novelmanager.arouter.RouterManager;
+import com.bb.module_novelmanager.arouter.UrlConstant;
 import com.bb.module_novelmanager.constant.NovelConstant;
 import com.bb.module_novelmanager.db.greenDao.DaoHelper;
 import com.bb.module_novelmanager.db.greenDao.impl.NovelDBManager;
@@ -46,7 +46,7 @@ import io.reactivex.schedulers.Schedulers;
  * Date: 2021/1/18
  * Time: 0:01
  */
-@Route(path = "/act/NovelDetailActivity")
+@Route(path = UrlConstant.ACTIVITY_URL_NOVEL_DETAIL)
 public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPresenter> implements NovelDetailActivityContract.IView {
     String TAG = "NovelDetailActivity";
 

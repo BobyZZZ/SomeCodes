@@ -11,33 +11,34 @@
         android:icon="@drawable/ic_novel"
         android:label="${APP_NAME}"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_novel"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".test.activity.TestActivity">
-<!--            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
-        <activity android:name=".mvp.view.activity.MainActivity" android:windowSoftInputMode="adjustNothing">
+        <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.bb.module_noveldetail.mvp.view.ReadingActivity">
+        <activity android:name=".test.activity.TestActivity">
 
-        </activity>
-        <activity android:name="com.bb.module_noveldetail.mvp.view.NovelDetailActivity">
+            <!--
+                <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
         </activity>
-        <activity android:name="com.bb.module_booksearch.mvp.view.SearchActivity">
-
+        <activity
+            android:name=".ui.mvp.view.activity.MainActivity"
+            android:windowSoftInputMode="adjustNothing">
         </activity>
-        <activity android:name="com.bb.module_booksearch.mvp.view.SearchResultActivity"/>
+        <activity android:name="com.bb.module_noveldetail.mvp.view.ReadingActivity"></activity>
+        <activity android:name="com.bb.module_noveldetail.mvp.view.NovelDetailActivity"></activity>
+        <activity android:name="com.bb.module_booksearch.mvp.view.SearchActivity"></activity>
+        <activity android:name="com.bb.module_booksearch.mvp.view.SearchResultActivity" />
     </application>
 
 </manifest>

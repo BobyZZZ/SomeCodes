@@ -24,7 +24,7 @@ public class StatusBarUtils {
      * 修改状态栏颜色，跟随内容布局颜色
      *
      * @param activity
-     * @param statusBarColor 状态栏颜色
+     * @param statusBarColor 状态栏颜色,-1:默认不修改
      * @param darkTextColor  状态栏黑色字体
      * @param fullScreen     页面内容是否显示在状态栏底下
      */

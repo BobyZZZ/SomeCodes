@@ -1,4 +1,4 @@
-package com.bb.reading.mvp.view.fragment;
+package com.bb.reading.ui.mvp.view.fragment;
 
 import android.os.Bundle;
 import android.util.Log;

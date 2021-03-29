@@ -3,6 +3,8 @@ package com.bb.module_novelmanager.network.interceptor;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.bb.module_common.utils.log.LogUtils;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import okhttp3.Response;
  * Time: 22:35
  */
 public class ChangeUrlInterceptor implements Interceptor {
+    String TAG = "ChangeUrlInterceptor";
     final String urlHeader = "needFilter";
 
     @Override
@@ -45,7 +48,7 @@ public class ChangeUrlInterceptor implements Interceptor {
         HttpUrl newUrl = urlBuilder.build();
 
         Request newRequest = newBuilder.url(newUrl).build();
-        Log.d("debug", "intercept() called with: newRequest = [" + newRequest + "]");
+        LogUtils.d(TAG, "intercept() called with: newRequest = [" + newRequest + "]");
         return chain.proceed(newRequest);
     }
 }

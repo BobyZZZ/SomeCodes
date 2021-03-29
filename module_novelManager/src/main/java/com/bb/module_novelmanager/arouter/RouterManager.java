@@ -1,4 +1,4 @@
-package com.bb.module_novelmanager;
+package com.bb.module_novelmanager.arouter;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bb.module_novelmanager.constant.NovelConstant;
@@ -26,7 +26,7 @@ public class RouterManager {
      * @param novelID 小说id
      */
     public void toNovelDetail(String novelID) {
-        ARouter.getInstance().build("/act/NovelDetailActivity")
+        ARouter.getInstance().build(UrlConstant.ACTIVITY_URL_NOVEL_DETAIL)
                 .withString(NovelConstant.KEY_NOVEL_ID, novelID)
                 .navigation();
     }
@@ -36,7 +36,7 @@ public class RouterManager {
      * @param novelID 小说id
      */
     public void toNovelReading(String novelID, String chapterId) {
-        ARouter.getInstance().build("/act/ReadingActivity")
+        ARouter.getInstance().build(UrlConstant.ACTIVITY_URL_NOVEL_READING)
                 .withString(NovelConstant.KEY_NOVEL_ID, novelID)
                 .withString(NovelConstant.KEY_CHAPTER_ID, chapterId)
                 .navigation();
