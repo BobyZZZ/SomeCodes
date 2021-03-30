@@ -3,6 +3,7 @@ package com.bb.module_noveldetail.mvp.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -78,7 +79,15 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
 
     @Override
     protected void initStatusBar() {
-        StatusBarUtils.setStatusBar(this,getColor(R.color.bg_novel_content),true,false);
+        StatusBarUtils.setStatusBar(this, Color.TRANSPARENT/*getColor(R.color.bg_novel_content)*/,true,true);
+        final int top = StatusBarUtils.getStatusBarHeight(this);
+        findViewById(android.R.id.content).post(new Runnable() {
+            @Override
+            public void run() {
+                findViewById(R.id.ll_content_container).setPadding(0,top,0,0);
+                findViewById(R.id.fl_menu_container).setPadding(0,top,0,0);
+            }
+        });
     }
 
     @Override

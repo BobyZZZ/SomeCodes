@@ -47,6 +47,7 @@
 
     <!--左侧菜单-->
     <FrameLayout
+        android:id="@+id/fl_menu_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
