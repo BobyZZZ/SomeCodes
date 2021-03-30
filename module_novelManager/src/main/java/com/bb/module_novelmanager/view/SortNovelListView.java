@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -149,6 +150,11 @@ public class SortNovelListView extends FrameLayout {
 //            LongLogUtils.d(TAG, "onBindNormal() called with: holder = [" + holder + "], data's position = [" + position + "], item: " + item);
             holder.setText(R.id.tv_novel_name, item.name);
             holder.setText(R.id.tv_novel_author, item.author);
+            //去掉权重，宽度改为wrap_content
+            TextView tvAuthor = holder.getView(R.id.tv_novel_author, TextView.class);
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tvAuthor.getLayoutParams();
+            lp.weight = 0;
+            lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
             holder.itemView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

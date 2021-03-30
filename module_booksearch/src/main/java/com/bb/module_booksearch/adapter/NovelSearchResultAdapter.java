@@ -47,10 +47,10 @@ public class NovelSearchResultAdapter extends BaseQuickAdapter<SearchResult.Item
     @Override
     protected void convert(@NotNull final BaseViewHolder baseViewHolder, final SearchResult.Item item) {
         baseViewHolder.setText(R.id.tv_novel_name,ResUtils.getString(R.string.novel_name,item.getName()));
-        baseViewHolder.setText(R.id.tv_novel_author,item.getAuthor());
-//        baseViewHolder.setText(R.id.tv_novel_state,ResUtils.getString(R.string.novel_state,item.getState()));
+//        baseViewHolder.setText(R.id.tv_novel_author,item.getAuthor());
+        baseViewHolder.setText(R.id.tv_novel_state,ResUtils.getString(R.string.novel_author,item.getAuthor()));
         baseViewHolder.setText(R.id.tv_novel_newest_chapter, ResUtils.getString(R.string.newest_chapter,item.getNewestChapter()));
-        baseViewHolder.setText(R.id.tv_novel_word_count,item.getWordCount());
+        baseViewHolder.setText(R.id.tv_novel_word_count,ResUtils.getString(R.string.novel_update_time,item.getWordCount()));
 
         boolean alreadyLiked = mNovelDBManager.isAlreadyLiked(item.novelId);
         baseViewHolder.setImageResource(R.id.iv_add_to_liked,alreadyLiked ? R.drawable.ic_unliked : R.drawable.ic_liked);

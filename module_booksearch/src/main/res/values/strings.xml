@@ -6,4 +6,6 @@
     <string name="search_result_is_empty">没有找到相关信息</string>
     <string name="novel_name">《%s》</string>
     <string name="newest_chapter">最新章节：%s</string>
+    <string name="novel_author">作者：%s</string>
+    <string name="novel_update_time">更新：%s</string>
 </resources>

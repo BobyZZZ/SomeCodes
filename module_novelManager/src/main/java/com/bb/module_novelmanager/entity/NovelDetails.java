@@ -1,5 +1,7 @@
 package com.bb.module_novelmanager.entity;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 
 import org.greenrobot.greendao.annotation.Convert;
@@ -35,7 +37,9 @@ public class NovelDetails {
     @Pick("div#info > p")
     @Convert(converter = InfoConverter.class, columnType = String.class)
     private List<String> infos;
-    @Pick("div#intro > p")
+    @Transient
+    @Pick(value = "div#intro > p", attr = Attrs.OWN_TEXT)
+    List<String> introductions;
     public String introduction;
     @Pick("div#list > dl > dd")
     @Transient
@@ -104,6 +108,9 @@ public class NovelDetails {
     }
 
     public String getIntroduction() {
+        if (TextUtils.isEmpty(introduction) && introductions != null && !introductions.isEmpty()) {
+            introduction = introductions.get(introductions.size() - 1);
+        }
         return this.introduction;
     }
 
