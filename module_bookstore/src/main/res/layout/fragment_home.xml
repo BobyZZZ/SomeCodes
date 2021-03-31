@@ -14,10 +14,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
+<!--            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="150dp" />
+                android:layout_height="150dp" />-->
+            <com.bb.module_common.view.WrapHeightViewPager
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <LinearLayout
                 android:id="@+id/ll_container"

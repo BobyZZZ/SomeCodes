@@ -3,6 +3,9 @@ package com.bb.module_novelmanager.network;
 import com.bb.module_novelmanager.network.interceptor.ChangeUrlInterceptor;
 import com.bb.module_common.utils.log.LogUtils;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 import me.ghui.fruit.converter.retrofit.FruitConverterFactory;
@@ -23,6 +26,7 @@ public class RetrofitManager {
         });
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .proxy(new Proxy(Proxy.Type.HTTP,new InetSocketAddress("192.168.1.102",808)))
                 .addNetworkInterceptor(new ChangeUrlInterceptor())
                 .addNetworkInterceptor(loggingInterceptor)
                 .connectTimeout(15, TimeUnit.SECONDS)

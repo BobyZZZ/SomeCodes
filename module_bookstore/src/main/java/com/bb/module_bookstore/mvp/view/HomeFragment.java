@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bb.module_bookstore.R;
 import com.bb.module_bookstore.adapter.BannerAdapter;
+import com.bb.module_bookstore.adapter.VPBannerAdapter;
 import com.bb.module_bookstore.rvHelper.BannerSnapHelper;
+import com.bb.module_common.adapter.base.BasePagerAdapter;
 import com.bb.module_common.adapter.base.BaseRvAdapter;
 import com.bb.module_common.base.BaseMvpFragment;
 import com.bb.module_novelmanager.arouter.RouterManager;
@@ -34,8 +37,8 @@ public class HomeFragment extends BaseMvpFragment<HomeFragmentPresenter> impleme
     protected String TAG = "HomeFragment";
 
     private ViewGroup mSortNovelListContainer;
-    private RecyclerView mBanner;
-    private BannerAdapter mBannerAdapter;
+    private ViewPager mBanner;
+    private VPBannerAdapter mBannerAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static HomeFragment getInstance() {
@@ -62,11 +65,11 @@ public class HomeFragment extends BaseMvpFragment<HomeFragmentPresenter> impleme
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         //banner
-        mBannerAdapter = new BannerAdapter(R.layout.item_banner);
+        mBannerAdapter = new VPBannerAdapter(R.layout.item_banner,mBanner);
         mBanner.setAdapter(mBannerAdapter);
-        //轮播效果
+/*        //轮播效果
         PagerSnapHelper pagerSnapHelper = new BannerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(mBanner);
+        pagerSnapHelper.attachToRecyclerView(mBanner);*/
     }
 
     @Override
@@ -79,9 +82,9 @@ public class HomeFragment extends BaseMvpFragment<HomeFragmentPresenter> impleme
             }
         });
 
-        mBannerAdapter.setOnItemClickListener(new BaseRvAdapter.OnItemClickListener<PageData.TopNovel>() {
+        mBannerAdapter.setOnItemClickListener(new BasePagerAdapter.OnItemClickListener<PageData.TopNovel>() {
             @Override
-            public void onItemClick(PageData.TopNovel data, int position) {
+            public void onItemClick(int position, PageData.TopNovel data) {
 //                Intent intent = NovelDetailActivity.createIntent(getContext(), data.getNovelDetailUrl());
 //                startActivity(intent);
                 RouterManager.getInstance().toNovelDetail(data.getNovelDetailUrl());
@@ -105,7 +108,7 @@ public class HomeFragment extends BaseMvpFragment<HomeFragmentPresenter> impleme
 
     @Override
     public void setBannerData(List<PageData.TopNovel> bannerData) {
-        mBannerAdapter.setNewData(bannerData);
+        mBannerAdapter.setDatas(bannerData);
     }
 
     @Override
