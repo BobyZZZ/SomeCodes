@@ -78,6 +78,24 @@ public class GlideUtils {
         return null;
     }
 
+    /**
+     * @param url   图片url
+     * @param context   上下文
+     * @return  bitmap
+     */
+    public static Bitmap getBitmap(String url,Context context) {
+        try {
+            return Glide.with(context)
+                    .asBitmap()
+                    .load(url)
+                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void blur(Bitmap bitmap, ImageView imageView, float radius) {
         Bitmap blur = renderScriptBlur(imageView.getContext(), bitmap, radius);
         imageView.setImageBitmap(blur);

@@ -67,6 +67,8 @@ public class HomeFragment extends BaseMvpFragment<HomeFragmentPresenter> impleme
         //banner
         mBannerAdapter = new VPBannerAdapter(R.layout.item_banner,mBanner);
         mBanner.setAdapter(mBannerAdapter);
+
+        mBannerAdapter.setBgView(view.findViewById(R.id.fl_banner_container));
 /*        //轮播效果
         PagerSnapHelper pagerSnapHelper = new BannerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(mBanner);*/

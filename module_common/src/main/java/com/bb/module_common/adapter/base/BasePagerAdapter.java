@@ -53,7 +53,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         View inflate = LayoutInflater.from(container.getContext()).inflate(mLayoutId, container,false);
         container.addView(inflate);
         final T itemData = getItemData(position);
-        onBindView(inflate,itemData);
+        onBindView(inflate,itemData,position);
 
         inflate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +66,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         return inflate;
     }
 
-    protected abstract void onBindView(View view, T itemData);
+    protected abstract void onBindView(View view, T itemData, int position);
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {

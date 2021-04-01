@@ -1,5 +1,7 @@
 package com.bb.module_novelmanager.entity;
 
+import com.bb.module_common.utils.palette.PaletteColorInfo;
+
 import java.util.List;
 
 import me.ghui.fruit.Attrs;
@@ -56,6 +58,7 @@ public class PageData {
         private String mName;
         @Pick("dl > dd")
         private String mIntroduction;
+        public PaletteColorInfo mPaletteColorInfo;//viewpager切换时计算背景颜色使用
 
         public String getNovelDetailUrl() {
             return mNovelDetailUrl;
