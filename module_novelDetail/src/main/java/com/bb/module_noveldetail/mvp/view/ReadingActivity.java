@@ -284,9 +284,6 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
         }
 
         mNovelContentAdapter.getLoadMoreModule().setEnableLoadMore(hasMore);
-        if (!hasMore) {
-            showToast(R.string.no_more);
-        }
     }
 
     /**
@@ -400,5 +397,12 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
     public void onLastReadingProgressChanged(int currentReadingItemPosition, int alreadyScrollY) {
         NovelChapterContentFruitBean item = mNovelContentAdapter.getItem(currentReadingItemPosition);
         NovelSpUtils.saveLastReadingPosition(item.novelId, alreadyScrollY);
+    }
+
+    @Override
+    public void onScrolledToBottom() {
+        if (!mPresenter.hasMoreChapter()) {
+            showToast(R.string.no_more);
+        }
     }
 }

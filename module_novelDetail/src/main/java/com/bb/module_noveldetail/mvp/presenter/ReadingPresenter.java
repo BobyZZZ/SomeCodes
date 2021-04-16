@@ -80,7 +80,7 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
                 mView.loadingStop();
                 //已缓存章节
                 mChapterIdLoaded = novelChapterContent.chapterId;
-                mView.loadContentSuccessAndToDisplay(novelChapterContent, !isLastChapter(novelChapterContent.chapterId), resetData);
+                mView.loadContentSuccessAndToDisplay(novelChapterContent, hasMoreChapter(), resetData);
                 if (mFirstInit) {//初次加载时，滚到上次阅读的位置
                     mFirstInit = false;
                 }
@@ -116,6 +116,13 @@ public class ReadingPresenter extends BasePresenter<ReadingActivity> implements 
         }
         LogUtils.d(TAG, "auto loadMore chapter: " + nextChapterId);
         return nextChapterId;
+    }
+
+    /**
+     * @return true:还有下一章；false：没有下一章了
+     */
+    public boolean hasMoreChapter() {
+        return !isLastChapter(mChapterIdLoaded);
     }
 
     private boolean isLastChapter(String chapterId) {

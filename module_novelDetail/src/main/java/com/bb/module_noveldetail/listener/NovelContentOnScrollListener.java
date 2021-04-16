@@ -17,7 +17,7 @@ import com.bb.module_common.utils.log.LogUtils;
 public class NovelContentOnScrollListener extends RecyclerView.OnScrollListener {
     private final LinearLayoutManager mLayoutManagerNovelContent;
     private final RecyclerView mRvNovelContent;
-    String TAG = "mRvNovelContent$Listener";
+    String TAG = "NovelContentOnScrollListener";
 
     public NovelContentOnScrollListener(LinearLayoutManager layoutManager, RecyclerView recyclerView,
                                         ReadingChangeListener readingChangeListener) {
@@ -55,18 +55,41 @@ public class NovelContentOnScrollListener extends RecyclerView.OnScrollListener 
             }
         }
 
+        int rvHeight = mRvNovelContent.getHeight();
+        /*
+         * 判断是否已滑动到底部
+         */
+        View lastItem = mLayoutManagerNovelContent.findViewByPosition(
+                mLayoutManagerNovelContent.findLastVisibleItemPosition());
+        if (lastItem != null) {
+            int lastItemBottom = lastItem.getBottom();
+//            LogUtils.d(TAG,"rvHeight: " + rvHeight + ",lastItemBottom: " + lastItemBottom);
+            if (rvHeight >= lastItemBottom) {
+                onScrolledToBottom();
+            }
+        }
+
         View currentView = mLayoutManagerNovelContent.findViewByPosition(mLastReadingItemPosition);
         if (currentView != null) {
             //更新底部页码:1/7
-            int totalPage = (int) Math.ceil(1.0d * currentView.getHeight() / mRvNovelContent.getHeight());//总页数
+            int totalPage = (int) Math.ceil(1.0d * currentView.getHeight() / rvHeight);//总页数
             int alreadyScrollY = Math.abs(currentView.getTop());
-            int currentPage = 1 + alreadyScrollY / mRvNovelContent.getHeight();//当前页码
+            int currentPage = 1 + alreadyScrollY / rvHeight;//当前页码
 //            LogUtils.d(TAG, currentPage + "/" + totalPage + "---alreadyScrollY: " + alreadyScrollY);
             onPageNumberChanged(currentPage, totalPage);
             //更新阅读位置
             onLastReadingProgressChanged(mLastReadingItemPosition, alreadyScrollY);
         } else {
             LogUtils.e(TAG, "currentView == null");
+        }
+    }
+
+    /**
+     * 已滑动到底部回调
+     */
+    private void onScrolledToBottom() {
+        if (mReadingChangeListener != null) {
+            mReadingChangeListener.onScrolledToBottom();
         }
     }
 
@@ -94,5 +117,6 @@ public class NovelContentOnScrollListener extends RecyclerView.OnScrollListener 
         void onPageNumberChanged(int currentPage, int totalPage);
         void onCurrentReadingChapterChange(int currentReadingItemPosition);
         void onLastReadingProgressChanged(int currentReadingItemPosition, int alreadyScrollY);
+        void onScrolledToBottom();
     }
 }
