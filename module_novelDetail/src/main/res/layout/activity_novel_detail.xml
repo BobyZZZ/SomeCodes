@@ -46,14 +46,14 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_to_top"
+    <com.bb.uilib.operateMenu.OperateMenu
+        android:id="@+id/operateMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_top"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="18dp"
         app:backgroundTint="@android:color/darker_gray"
         app:layout_anchor="@id/rv_novel_list"
-        app:pressedTranslationZ="8dp"
         app:layout_anchorGravity="bottom|end"
         app:layout_behavior="com.bb.module_common.view.behavior.FabInOutBehavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bb.module_common.base.BaseMvpActivity;
+import com.bb.module_common.utils.log.LogUtils;
 import com.bb.module_common.view.CustomBar;
 import com.bb.module_noveldetail.R;
 import com.bb.module_noveldetail.adapter.NovelChapterAdapter;
@@ -30,9 +31,15 @@ import com.bb.module_novelmanager.entity.NovelDetails;
 import com.bb.module_noveldetail.mvp.contract.NovelDetailActivityContract;
 import com.bb.module_common.utils.GlideUtils;
 import com.bb.module_common.utils.StatusBarUtils;
+import com.bb.uilib.adapter.base.BaseRvAdapter;
+import com.bb.uilib.adapter.base.BaseVH;
+import com.bb.uilib.operateMenu.OperateBean;
+import com.bb.uilib.operateMenu.OperateMenu;
+import com.bb.uilib.operateMenu.OperateMenuAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -56,7 +63,7 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
     private CustomBar mCustomBar;
     private AppBarLayout mAppBarLayout;
     private ImageView mIvCoverBg;
-    private FloatingActionButton mFabToTop;
+    private OperateMenu mOperateMenu;
 
     public static Intent createIntent(Context context, String novelId) {
         Intent intent = new Intent(context, NovelDetailActivity.class);
@@ -92,7 +99,7 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         mAppBarLayout = findViewById(R.id.appBarLayout);
         mIvCoverBg = findViewById(R.id.iv_novel_cover_bg);
         mRvNovel = findViewById(R.id.rv_novel_list);
-        mFabToTop = findViewById(R.id.fab_to_top);
+        mOperateMenu = findViewById(R.id.operateMenu);
 
         //目录
         mNovelChapterAdapter = new NovelChapterAdapter();
@@ -107,7 +114,38 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
         mRvNovel.setLayoutManager(new LinearLayoutManager(this));
         mRvNovel.setAdapter(mNovelChapterAdapter);
 
+        initOperateMenu();
+
         initListener();
+    }
+
+    /**
+     * 初始化操作菜单
+     */
+    private void initOperateMenu() {
+        ArrayList<OperateBean> operateBeans = new ArrayList<>();
+        operateBeans.add(new OperateBean(R.drawable.ic_back,getString(R.string.back)));
+        operateBeans.add(new OperateBean(R.drawable.ic_top,getString(R.string.toTop)));
+
+        OperateMenuAdapter<OperateBean> operateMenuAdapter = new OperateMenuAdapter<OperateBean>(R.layout.item_operate_default, operateBeans) {
+            @Override
+            protected void convert(BaseVH holder, OperateBean data) {
+                ImageView ivIcon = holder.getView(R.id.iv, ImageView.class);
+                ivIcon.setImageResource(data.imgRes);
+                ivIcon.setBackgroundResource(R.drawable.shape_circle_black);
+            }
+        };
+        operateMenuAdapter.setOnItemClickListener(new BaseRvAdapter.OnItemClickListener<OperateBean>() {
+            @Override
+            public void onItemClick(OperateBean data, int position) {
+                if (data.imgRes == R.drawable.ic_back) {
+                    onBackPressed();
+                } else if (data.imgRes == R.drawable.ic_top) {
+                    scrollToTop();
+                }
+            }
+        });
+        mOperateMenu.setAdapter(operateMenuAdapter);
     }
 
     private void initListener() {
@@ -122,16 +160,16 @@ public class NovelDetailActivity extends BaseMvpActivity<NovelDetailActivityPres
                 mCustomBar.getTextView(CustomBar.TITLE).setAlpha(fraction);
             }
         });
+    }
 
-        mFabToTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //先强制停止rv当前的滚动
-                mRvNovel.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
-                mRvNovel.getLayoutManager().scrollToPosition(0);
-                mAppBarLayout.setExpanded(true);
-            }
-        });
+    /**
+     * 滑动到页面顶部
+     */
+    private void scrollToTop() {
+        //先强制停止rv当前的滚动
+        mRvNovel.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
+        mRvNovel.getLayoutManager().scrollToPosition(0);
+        mAppBarLayout.setExpanded(true);
     }
 
     @Override

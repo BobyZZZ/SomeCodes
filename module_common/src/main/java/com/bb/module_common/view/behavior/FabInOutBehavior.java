@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -19,7 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * Date: 2021/2/2
  * Time: 23:28
  */
-public class FabInOutBehavior extends CoordinatorLayout.Behavior<FloatingActionButton> {
+public class FabInOutBehavior extends CoordinatorLayout.Behavior<View> {
     String TAG = "FabInOutBehavior";
 
     public FabInOutBehavior(Context context, AttributeSet attrs) {
@@ -36,12 +37,12 @@ public class FabInOutBehavior extends CoordinatorLayout.Behavior<FloatingActionB
      * @return 是否要处理滑动
      */
     @Override
-    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull FloatingActionButton child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
+    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
         return true;
     }
 
     @Override
-    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull FloatingActionButton child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
 //        Log.d(TAG, "onNestedPreScroll() called with: dx = [" + dx + "], dy = [" + dy + "], consumed = [" + consumed + "], type = [" + type + "]");
         if (dy > 0 && !mCurrentIn) {
             consumed[1] = dy;
@@ -66,18 +67,18 @@ public class FabInOutBehavior extends CoordinatorLayout.Behavior<FloatingActionB
             duration = (long) (currentY / view.getHeight() * mTotalDuration);
         } else {
             start = currentY;
-            end = view.getHeight();
+            int marginBottom = 0;
+            if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                marginBottom = marginLayoutParams.bottomMargin;
+            }
+            end = view.getHeight() + marginBottom;
             duration = (long) ((end - start) / view.getHeight() * mTotalDuration);
         }
 
         ObjectAnimator translationY = ObjectAnimator.ofFloat(view, "translationY", start, end)
                 .setDuration(duration);
         translationY.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-            }
-
             @Override
             public void onAnimationStart(Animator animation) {
                 mCurrentIn = in;
