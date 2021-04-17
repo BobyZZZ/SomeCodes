@@ -9,9 +9,10 @@ package com.bb.module_common.utils;
 public class SortUtils {
     /**
      * 快速排序
-     * @param arr 需要排序的数组
-     * @param low   开始位置
-     * @param high  结束位置
+     *
+     * @param arr  需要排序的数组
+     * @param low  开始位置
+     * @param high 结束位置
      */
     public static void quickSort(int[] arr, int low, int high) {
         if (low < high) {
@@ -42,5 +43,49 @@ public class SortUtils {
             arr[low] = temp;
         }
         return low;
+    }
+
+    /**
+     * 冒泡排序
+     * @param arr   目标数组
+     */
+    public static void bubbleSort(int[] arr) {
+        int length = arr.length;
+        if (length <= 1) {
+            return;
+        }
+        for (int i = 0; i < length - 1; i++) {
+            for (int j = 0; j < length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    /**
+     * 选择排序
+     * @param arr   目标数组
+     */
+    public static void selectSort(int[] arr) {
+        int length = arr.length;
+        if (length <= 1) {
+            return;
+        }
+        for (int i = 0; i < length; i++) {
+            int minIndex = i;
+            for (int j = i; j < length; j++) {
+                if (arr[j] < arr[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            if (minIndex != i) {
+                int temp = arr[i];
+                arr[i] = arr[minIndex];
+                arr[minIndex] = temp;
+            }
+        }
     }
 }
