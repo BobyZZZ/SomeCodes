@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/flash_text_logo"
     app:logo_flash_color="#03DAC5,#2203DAC5,#03DAC5"
     app:logo_text="Enjoy Reading"
     app:logo_text_color="@color/colorAccent"
