@@ -12,13 +12,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bb.module_bookshelf.R;
 import com.bb.module_bookshelf.mvp.contract.LikedNovelFragmentContract;
 import com.bb.module_bookshelf.mvp.presenter.LikedNovelFragmentPresenter;
-import com.bb.module_common.adapter.base.BaseRvAdapter;
-import com.bb.module_common.adapter.base.BaseVH;
 import com.bb.module_common.base.BaseMvpFragment;
 import com.bb.module_common.utils.ResUtils;
 import com.bb.module_novelmanager.arouter.RouterManager;
 import com.bb.module_novelmanager.entity.NovelDetails;
 import com.bb.module_common.utils.GlideUtils;
+import com.bb.uilib.adapter.base.BaseRvAdapter;
+import com.bb.uilib.adapter.base.BaseVH;
 
 import java.util.List;
 

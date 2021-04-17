@@ -15,11 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bb.module_common.adapter.base.BaseVH;
 import com.bb.module_novelmanager.R;
 import com.bb.module_novelmanager.arouter.RouterManager;
 import com.bb.module_novelmanager.entity.HomePageBean;
 import com.bb.module_common.utils.GlideUtils;
+import com.bb.uilib.adapter.base.BaseVH;
 
 import java.util.List;
 

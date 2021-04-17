@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bb.module_common.adapter.base.BaseVH;
+import com.bb.uilib.adapter.base.BaseVH;
 import com.bb.module_noveldetail.R;
 import com.bb.module_novelmanager.entity.NovelDetails;
 import com.bb.module_common.utils.GlideUtils;

@@ -4,8 +4,8 @@ import android.widget.ImageView;
 
 import com.bb.module_bookstore.R;
 import com.bb.module_common.utils.GlideUtils;
-import com.bb.module_common.adapter.base.BaseRvAdapter;
-import com.bb.module_common.adapter.base.BaseVH;
+import com.bb.uilib.adapter.base.BaseRvAdapter;
+import com.bb.uilib.adapter.base.BaseVH;
 import com.bb.module_novelmanager.entity.PageData;
 
 

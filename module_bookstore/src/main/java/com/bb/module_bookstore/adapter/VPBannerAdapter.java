@@ -11,13 +11,13 @@ import androidx.core.graphics.ColorUtils;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bb.module_bookstore.R;
-import com.bb.module_common.adapter.base.BasePagerAdapter;
 import com.bb.module_common.utils.GlideUtils;
 import com.bb.module_common.utils.UIUtils;
 import com.bb.module_common.utils.log.LogUtils;
 import com.bb.module_common.utils.palette.PaletteColorInfo;
 import com.bb.module_common.utils.palette.PaletteUtils;
 import com.bb.module_novelmanager.entity.PageData;
+import com.bb.uilib.adapter.base.BasePagerAdapter;
 
 import java.util.List;
 
