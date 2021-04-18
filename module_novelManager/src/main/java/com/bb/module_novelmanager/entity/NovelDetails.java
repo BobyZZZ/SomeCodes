@@ -44,19 +44,21 @@ public class NovelDetails {
     @Pick("div#list > dl > dd")
     @Transient
     public List<Chapter> chapterList;
+    public boolean hasNewChapter;
 
     @Generated(hash = 95855330)
     public NovelDetails() {
     }
 
-    @Generated(hash = 2064726044)
+    @Generated(hash = 1644369618)
     public NovelDetails(String novelId, String coverUrl, String name, List<String> infos,
-                        String introduction) {
+            String introduction, boolean hasNewChapter) {
         this.novelId = novelId;
         this.coverUrl = coverUrl;
         this.name = name;
         this.infos = infos;
         this.introduction = introduction;
+        this.hasNewChapter = hasNewChapter;
     }
 
     public String getAuthor() {
@@ -128,6 +130,14 @@ public class NovelDetails {
                 ", introduction='" + introduction + '\'' +
                 ", chapterList=" + chapterList +
                 '}';
+    }
+
+    public boolean getHasNewChapter() {
+        return this.hasNewChapter;
+    }
+
+    public void setHasNewChapter(boolean hasNewChapter) {
+        this.hasNewChapter = hasNewChapter;
     }
 
     public static class Chapter {

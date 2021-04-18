@@ -13,6 +13,7 @@ import com.bb.network.observer.BaseObserver;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -122,6 +123,45 @@ public class NovelDBManager {
                     }
                 });
 
+    }
+
+    /**
+     * 更新小说（根据@Id）
+     * @param novelDetails
+     */
+    public void updateLikedNovel(NovelDetails novelDetails) {
+        Observable.just(novelDetails)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new BaseObserver<NovelDetails>() {
+                    @Override
+                    protected void onSuccess(NovelDetails novelDetails) {
+                        mLikedNovelDB.update(novelDetails);
+                    }
+
+                    @Override
+                    protected void onFail(Throwable e) {
+
+                    }
+                });
+    }
+    /**
+     * 更新小说（根据@Id）
+     * @param novelDetails
+     */
+    public void updateLikedNovels(List<NovelDetails> novelDetails) {
+        Observable.just(novelDetails)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new BaseObserver<List<NovelDetails>>() {
+                    @Override
+                    protected void onSuccess(List<NovelDetails> novelDetails) {
+                        mLikedNovelDB.update(novelDetails);
+                    }
+
+                    @Override
+                    protected void onFail(Throwable e) {
+
+                    }
+                });
     }
 
     /**

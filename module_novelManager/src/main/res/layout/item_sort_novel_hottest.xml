@@ -7,20 +7,41 @@
     android:background="@drawable/selector_item_bg_category"
     android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/iv_novel_cover"
-        style="@style/IvNovelCover"
-        android:src="@mipmap/cover_place_holder"
+    <FrameLayout
+        android:id="@+id/fl_cover_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_novel_cover"
+            style="@style/IvNovelCover"
+            android:src="@mipmap/cover_place_holder" />
+
+        <TextView
+            android:id="@+id/tv_has_newer_chapter_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:rotation="45"
+            android:text="@string/update"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_novel_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@id/iv_novel_cover"
-        app:layout_constraintTop_toTopOf="@id/iv_novel_cover"
+        app:layout_constraintStart_toEndOf="@id/fl_cover_container"
+        app:layout_constraintTop_toTopOf="@id/fl_cover_container"
         tools:text="元尊" />
 
     <TextView
@@ -38,9 +59,28 @@
         android:layout_marginTop="6dp"
         android:ellipsize="end"
         android:maxLines="4"
-        app:layout_constraintBottom_toBottomOf="@id/iv_novel_cover"
+        app:layout_constraintBottom_toBottomOf="@id/fl_cover_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_novel_name"
         app:layout_constraintTop_toBottomOf="@id/tv_novel_name"
-        tools:text="这个世界，有儒；有道；有佛；有妖；有术士。 警校毕业的许七安幽幽醒来，发现自己身处牢狱之中，三日后流放边这个世界，有儒；有道；有佛；有妖；有术士。 警校毕业的许七安幽幽醒来，发现自己身处牢狱之中，三日后流放边" />
+        tools:text="这个世界，有儒；有道；有佛；有妖；有术士。 警校毕业的许七安幽幽醒来，发现自己身处牢狱之中，三日后流放边这个世界，有儒；有道；有佛；有妖；有术士。 警校毕业的许七安幽幽醒来，发现自己身处牢狱之中，三日后流放边"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_novel_newest_chapter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="@id/tv_novel_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_novel_name"
+        tools:text="最新章节  :一刀砍死你" />
+
+    <TextView
+        android:id="@+id/tv_novel_last_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="@id/tv_novel_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_novel_newest_chapter"
+        tools:text="最后更新  :2021-01-15 19:30:00" />
 </androidx.constraintlayout.widget.ConstraintLayout>

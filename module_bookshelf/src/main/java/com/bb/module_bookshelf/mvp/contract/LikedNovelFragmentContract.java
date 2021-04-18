@@ -5,9 +5,6 @@ import com.bb.module_novelmanager.entity.NovelDetails;
 import java.util.List;
 
 public interface LikedNovelFragmentContract {
-    interface IModel {
-    }
-
     interface IView {
         void updateLikedNovelList(List<NovelDetails> allLikedNovel);
     }

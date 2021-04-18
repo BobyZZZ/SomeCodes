@@ -68,6 +68,8 @@ public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresen
 /*                //打开小说内容阅读页面
                 Intent intent = ReadingActivity.createIntent(getContext(), data.getNovelId(), null);
                 startActivity(intent);*/
+                data.hasNewChapter = false;
+                mPresenter.updateLiked(data);
                 RouterManager.getInstance().toNovelReading(data.getNovelId(),null);
             }
         });
@@ -122,7 +124,9 @@ public class LikedNovelFragment extends BaseMvpFragment<LikedNovelFragmentPresen
 
             holder.setText(R.id.tv_novel_name, ResUtils.getString(R.string.novel_name,data.name));
             holder.setText(R.id.tv_novel_author, data.getAuthor());
-            holder.setText(R.id.tv_novel_introduction, data.introduction);
+            holder.setText(R.id.tv_novel_last_update, data.getLastUpdateTime());
+            holder.setText(R.id.tv_novel_newest_chapter, data.getNewestChapter());
+            holder.getView(R.id.tv_has_newer_chapter_tag).setVisibility(data.hasNewChapter ? View.VISIBLE : View.GONE);
             ivCover.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
