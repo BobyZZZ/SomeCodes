@@ -24,9 +24,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="-12dp"
             android:background="@color/colorAccent"
             android:gravity="center"
+            android:paddingHorizontal="12dp"
             android:rotation="45"
             android:text="@string/update"
             android:textColor="@android:color/white"
@@ -40,14 +42,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/fl_cover_container"
         app:layout_constraintTop_toTopOf="@id/fl_cover_container"
         tools:text="元尊" />
 
     <TextView
         android:id="@+id/tv_novel_author"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_novel_name"
         app:layout_constraintTop_toTopOf="@id/tv_novel_name"
         tools:text="/ 著：天蚕土豆" />
@@ -68,18 +74,24 @@
 
     <TextView
         android:id="@+id/tv_novel_newest_chapter"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_novel_name"
         app:layout_constraintTop_toBottomOf="@id/tv_novel_name"
         tools:text="最新章节  :一刀砍死你" />
 
     <TextView
         android:id="@+id/tv_novel_last_update"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_novel_name"
         app:layout_constraintTop_toBottomOf="@id/tv_novel_newest_chapter"
         tools:text="最后更新  :2021-01-15 19:30:00" />
