@@ -65,8 +65,9 @@ public abstract class NetworkApiServer implements INetworkEnvironment {
         if (mBaseUrl == null) {
             if (mNetworkRequestInfo != null && mNetworkRequestInfo.isDebug()) {
                 mBaseUrl = getTest();
+            } else {
+                mBaseUrl = getFormal();
             }
-            mBaseUrl = getFormal();
             Log.d(TAG, "initBaseUrl: " + mBaseUrl);
         }
     }
