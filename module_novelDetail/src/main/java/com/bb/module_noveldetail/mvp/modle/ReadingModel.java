@@ -87,8 +87,8 @@ public class ReadingModel implements ReadingActivityContract.IMainModel<NovelCha
 
                     }
                 });*/
-
-        mNovelServiceReal.getNovelChapterDetails(chapterIndex)
+        String url = novelIndex + chapterIndex;
+        mNovelServiceReal.getNovelChapterDetails(url)
                 .compose(RxUtils.<NovelChapterContentFruitBean>rxScheduers())
                 .onErrorResumeNext(RxUtils.<NovelChapterContentFruitBean>handleError())
                 .subscribe(new BaseObserver<NovelChapterContentFruitBean>() {

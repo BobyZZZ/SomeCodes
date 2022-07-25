@@ -14,10 +14,11 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface NovelService {
-    public static String NORVEL_BASE_URL = "http://www.paoshuzw.com/";
-//    public static String NORVEL_BASE_URL = "http://www.xbiquge.la/";//v2
+//    public static String NORVEL_BASE_URL = "http://www.paoshuzw.com/";
+    public static String NORVEL_BASE_URL = "https://www.xbiquwx.la/";//v2
 //    public static String NORVEL_BASE_URL = "http://www.biquge.info/";//v1
 //    public static String NORVEL_BASE_URL = "http://m.biquge.info/";
 
@@ -39,13 +40,11 @@ public interface NovelService {
     Observable<ResponseBody> getChapter(/*@Path("novel_index") String novel_index,*/ @Path("chapter_href") String chapter_href);
 
     @Html
-    @GET("/{chapter_href}")
-    @Headers("needFilter:true")
-    Observable<NovelChapterContentFruitBean> getNovelChapterDetails(/*@Path("novel_index") String novel_index,*/ @Path("chapter_href") String chapter_href);
+    @GET
+    Observable<NovelChapterContentFruitBean> getNovelChapterDetails(/*@Path("novel_index") String novel_index,*/ @Url String fullUrl);
 
-    @GET("{novel_index}/")
-    @Headers("needFilter:true")
-    Observable<ResponseBody> getCategory(@Path("novel_index") String novelIndex);
+    @GET
+    Observable<ResponseBody> getCategory(@Url String fullUrl);
 
     /**
      * 根据分类获取小说
@@ -53,7 +52,7 @@ public interface NovelService {
      * @param page
      * @return
      */
-    @GET("/fenlei/{type}_{page}.html")
+    @GET("/list/{type}_{page}.html")
     @Html
     Observable<PageData> getNovelBySort(@Path("type") int type, @Path("page") int page);
 
@@ -67,13 +66,11 @@ public interface NovelService {
 
     /**
      * 小说详情页面
-     * @param novelIndex
      * @return
      */
     @Html
-    @GET("{novel_index}")
-    @Headers("needFilter:true")
-    Observable<NovelDetails> getNovelDetails(@Path("novel_index") String novelIndex);
+    @GET
+    Observable<NovelDetails> getNovelDetails(@Url String fullUrl);
 
     /**
      * 获取主页数据
