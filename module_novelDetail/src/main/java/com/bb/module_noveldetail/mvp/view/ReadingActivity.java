@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
     private BScrollerControl mScrollerControl;
     private LinearLayoutManager mLayoutManagerCategory;
     private LinearLayoutManager mLayoutManagerNovelContent;
+    private NovelContentOnScrollListener mNovelContentOnScrollListener;
 
     public static Intent createIntent(Context context, String novelId, String chapterID) {
         Intent intent = new Intent(context, ReadingActivity.class);
@@ -221,8 +223,8 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
         /**
          * 内容页面滚动，用于更新"当前正在阅读"
          */
-        mRvNovelContent.addOnScrollListener(new NovelContentOnScrollListener(mLayoutManagerNovelContent,
-                mRvNovelContent,this));
+        mNovelContentOnScrollListener = new NovelContentOnScrollListener(mLayoutManagerNovelContent, mRvNovelContent,this);
+        mRvNovelContent.addOnScrollListener(mNovelContentOnScrollListener);
     }
 
     @Override
@@ -404,5 +406,18 @@ public class ReadingActivity extends BaseMvpActivity<ReadingPresenter> implement
         if (!mPresenter.hasMoreChapter()) {
             showToast(R.string.no_more);
         }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            int currentReadingPosition = mNovelContentOnScrollListener.getLastReadingItemPosition();
+            if (currentReadingPosition >= mNovelContentAdapter.getItemCount() - 1) {
+                return false;
+            }
+            mLayoutManagerNovelContent.scrollToPosition(currentReadingPosition + 1);
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 }

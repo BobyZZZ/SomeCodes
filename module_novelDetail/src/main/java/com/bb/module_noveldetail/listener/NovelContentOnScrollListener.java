@@ -31,6 +31,10 @@ public class NovelContentOnScrollListener extends RecyclerView.OnScrollListener 
      */
     private int mLastReadingItemPosition = -1;
 
+    public int getLastReadingItemPosition() {
+        return mLastReadingItemPosition;
+    }
+
     @Override
     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
         //更新顶部标题
