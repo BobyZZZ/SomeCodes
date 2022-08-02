@@ -70,7 +70,7 @@ public class HomePageBean {
         public static class HottestNovel {
             @Pick(value = "dl > dt > a",attr = Attrs.HREF)
             public String novelDetailUrl;
-            @Pick(value = "div.image > img", attr = Attrs.SRC)
+            @Pick(value = "div.image > a > img", attr = Attrs.SRC)
             public String coverUrl;
             @Pick("dl > dt")
             public String author;

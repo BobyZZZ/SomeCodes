@@ -22,7 +22,7 @@ public class RetrofitManager {
                 LogUtils.v("loggingInterceptor", message);
             }
         });
-        HttpLoggingInterceptor.Level logLevel = BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BASIC : HttpLoggingInterceptor.Level.BODY;
+        HttpLoggingInterceptor.Level logLevel = BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BASIC;
         loggingInterceptor.setLevel(logLevel);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
 //                .proxy(new Proxy(Proxy.Type.HTTP,new InetSocketAddress("192.168.1.102",808)))
