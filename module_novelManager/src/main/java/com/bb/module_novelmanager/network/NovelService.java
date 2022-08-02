@@ -79,7 +79,7 @@ public interface NovelService {
     @GET("/")
     Observable<ResponseBody> getHomeDataTest();
 
-    @GET("modules/article/waps.php")
+    @GET("modules/article/search.php")
     @Html
     Observable<SearchResult> searchNovel(@Query("searchkey")String searchKey);
 

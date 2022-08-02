@@ -7,5 +7,5 @@
     <string name="novel_name">《%s》</string>
     <string name="newest_chapter">最新章节：%s</string>
     <string name="novel_author">作者：%s</string>
-    <string name="novel_update_time">更新：%s</string>
+    <string name="novel_update_time">字数：%s</string>
 </resources>

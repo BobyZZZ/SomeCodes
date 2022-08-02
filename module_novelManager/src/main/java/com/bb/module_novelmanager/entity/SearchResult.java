@@ -38,13 +38,13 @@ public class SearchResult {
 
     public static class Item {
         //文章名称	最新章节	    作者	更新
-        @Pick(value = "td.even > a", attr = Attrs.HREF)
-        public String novelId;
         @Pick(value = "td.odd > a", attr = Attrs.HREF)
+        public String novelId;
+        @Pick(value = "td.even > a", attr = Attrs.HREF)
         public String newestChapterId;
-        @Pick("td.even")
-        private List<String> list1;
         @Pick("td.odd")
+        private List<String> list1;
+        @Pick("td.even")
         private List<String> list2;
 
         public String getName() {

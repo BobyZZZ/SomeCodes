@@ -1,11 +1,9 @@
 package com.bb.module_novelmanager.network;
 
-import com.bb.module_novelmanager.network.interceptor.ChangeUrlInterceptor;
 import com.bb.module_common.utils.log.LogUtils;
+import com.bb.module_novelmanager.BuildConfig;
+import com.bb.module_novelmanager.network.interceptor.ChangeUrlInterceptor;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 import me.ghui.fruit.converter.retrofit.FruitConverterFactory;
@@ -24,7 +22,8 @@ public class RetrofitManager {
                 LogUtils.v("loggingInterceptor", message);
             }
         });
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        HttpLoggingInterceptor.Level logLevel = BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BASIC : HttpLoggingInterceptor.Level.BODY;
+        loggingInterceptor.setLevel(logLevel);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
 //                .proxy(new Proxy(Proxy.Type.HTTP,new InetSocketAddress("192.168.1.102",808)))
                 .addNetworkInterceptor(new ChangeUrlInterceptor())
