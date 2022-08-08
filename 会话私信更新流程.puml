@@ -1,0 +1,63 @@
+@startuml
+start
+fork
+:注册长链监听ImCenter#init#InkePushMessageHandler.observe(PushModel.PUSH_TYPE_MESSAGE);
+:收到推送拉取最新消息MessageStrategy.fetchNewMessage();
+if (strategyArray[userId] != null（非空代表已打开跟userId用户的私聊页）) then (true)
+    partition fetch接口更新消息、会话流程 {
+          :请求消息接口api/v2/message/fetch,拉取最新消息(根据versionId),返回versionId之后的消息数据;
+          note
+          versionID根据推送指定或
+          uid对应的私聊列表最大versionId
+          end note
+          if (api/v2/message/fetch接口返回私聊列表数据,数据不为空) then (true)
+            :更新私聊页列表数据=>MessageStrategy.mergeMessage(MessageMergeType.UPDATE,netMsgList);
+            :私信列表ui刷新;
+            :会话关联fetch接口返回的数据(ToMany);
+            if(fetchType == MessageFetchType.FORWORD) then(true)
+                :更新会话关联的最后一条私信(ToOne);
+            endif
+            :更新数据库=>会话列表ui刷新;
+          endif
+    }
+else (false)
+    partition list接口更新会话、消息流程 {
+        repeat
+            -> 数据库中会话的最大versionId或
+            分页加载的nextVersionId;
+            if (versionId == 0) is (true) then
+                :请求会话接口api/v2/message/list，拉取会话列表数据;
+            else (false)
+              :api/v2/message/init/list，首次拉取接口，拉取会话列表数据;
+            endif
+            fork
+                if(第一次拉取数据为空或最后一次拉取会话列表) then(ture)
+                    :清除未回复消息;
+                endif
+            fork again
+                :更新会话数据库操作;
+            end fork
+        repeat while(has_more == 1)
+    }
+endif
+
+fork again
+:发送消息;
+partition 更新会话数据库操作 {
+    :数据库插入本地消息,存入数据库ImCenter.updateConversation(userId);
+    if(<ConversationEntity>cache) then (true)
+        :target对象：使用cache;
+    else (false)
+        :target对象：从本地数据库查询会话记录;
+    endif
+    :本地会话(根据conversationKey查询得到)id对target的id赋值;
+    :遍历message：本地消息(根据messageId)id对要存储的id赋值，存储messge;
+    :存储会话;
+    :ImRepo.conversationLiveData，数据库数据变化回调触发，会话列表ui刷新;
+    detach
+}
+
+end fork
+
+stop
+@enduml
